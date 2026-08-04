@@ -17,3 +17,13 @@
 
 每个稳定阶段都有对应 Git 标签，可使用 `git switch --detach v0.x.0` 检查历史版本。
 
+## 本地开发与部署
+
+```bash
+npm install
+npm run typecheck
+npm run build
+npm run dev
+```
+
+可直接导入 Vercel，框架选择 Next.js，构建命令使用 `npm run build`。现场记录使用浏览器 Local Storage，不会上传服务器；清除浏览器数据会删除记录。

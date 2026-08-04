@@ -1,0 +1,1 @@
+import type {MetadataRoute} from "next";export default function sitemap():MetadataRoute.Sitemap{const base="https://goldfinder.vercel.app";return ["","/knowledge","/map","/about"].map(path=>({url:base+path,lastModified:new Date(),changeFrequency:"monthly" as const,priority:path===""?1:.7}))}
