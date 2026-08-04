@@ -1,38 +1,40 @@
 # Goldfinder product audit
 
-## Implemented
+## Implemented through v3.0.0
 
 - Responsive Next.js site, safety boundary, SEO, robots, sitemap and security headers.
-- Basic gold, placer, lode, mineral, tool and sampling guidance.
-- Device-local field records and a privacy-first sample-map concept.
+- Illustrated gold, placer, lode, soil, mineral, field-tool and sampling guidance.
+- Dedicated geology interpretation centre with a five-level evidence ladder.
+- Interactive sampling, QA/QC batch, planning, mapping and reporting tools.
+- Device-local field records, photo attachments and privacy-first sample mapping.
+- Versioned data vault with merge/replace restore and coordinate redaction.
 - Verified photo atlas with per-image author, licence, source and interpretation limits.
 - Primary reference register using USGS, Geoscience Australia and Wikimedia Commons.
+- Chinese/English routes, theme switching, responsive overlay navigation and real Lucide icons.
+- Production metadata, structured data, web manifest, social preview and security headers.
 
 ## Next priorities
 
-### P0 — trustworthy field use
+### P0 — content governance
 
 - Add citations at statement level, with reviewer/date/version metadata on every guide.
-- Expand the atlas with soils, limonite, hematite, garnet, ilmenite, zircon, bedrock traps,
-  clay false bottoms, terraces, alluvial fans, alteration and shear-zone examples.
-- Add side-by-side diagnostic tables for gold, pyrite, chalcopyrite and mica.
-- Add offline availability and a prominent emergency/legal checklist.
+- Add named geological reviewer, review date and revision history to every guide.
+- Add more real-photo examples for alluvial fans, terraces, alteration and shear zones.
+- Add a prominent jurisdiction-specific emergency and permit checklist.
 
-### P1 — complete records and sampling
+### P1 — field resilience
 
-- Export/import records as JSON and CSV; generate printable sample labels and chain-of-custody forms.
-- Add QA/QC fields for blanks, duplicates, certified reference material and laboratory methods.
-- Add volume/mass-aware calculators for g/t and g/m³ with uncertainty warnings.
-- Add photo attachments with scale, orientation and privacy controls.
-- Replace the illustrative map with a real offline-capable map only after coordinate privacy is designed.
+- Add service-worker-backed offline availability for selected knowledge and record pages.
+- Add bulk photo archive export while preserving captions and sample links.
+- Add automated backup reminders and backup-integrity checks.
 
 ### P2 — production quality
 
-- Add Chinese, Burmese and English content with geological terminology review.
-- Add light theme, accessibility checks, keyboard testing and reduced-motion support.
+- Add professionally reviewed Burmese content.
+- Complete formal accessibility and keyboard testing.
 - Add content search, filters and related-guide navigation.
 - Add automated tests, dependency/security checks and deployment preview validation.
-- Configure the actual production hostname before publishing canonical URLs.
+- Configure a custom production hostname and replace the temporary canonical domain.
 
 ## Deliberate exclusions
 
