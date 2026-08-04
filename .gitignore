@@ -1,0 +1,15 @@
+node_modules/
+.next/
+out/
+coverage/
+.vercel/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.log
+.DS_Store
+
