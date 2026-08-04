@@ -1,1 +1,1 @@
-import MapWorkspace from "@/components/MapWorkspace";export default function MapPage(){return <MapWorkspace lang="en"/>}
+import MapWorkspace from "@/components/MapWorkspace";import InteractiveSampleMap from "@/components/InteractiveSampleMap";export default function MapPage(){return <><MapWorkspace lang="en"/><InteractiveSampleMap lang="en"/></>}
