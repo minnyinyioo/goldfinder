@@ -1,0 +1,1 @@
+import type {Metadata} from "next";import SearchHub from "@/components/SearchHub";export const metadata:Metadata={title:"Search",description:"Search Goldfinder photo references, geology, sampling, assay and field tools."};export default function Page(){return <SearchHub lang="en"/>}

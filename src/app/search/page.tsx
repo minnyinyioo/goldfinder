@@ -1,0 +1,1 @@
+import type {Metadata} from "next";import SearchHub from "@/components/SearchHub";export const metadata:Metadata={title:"全站搜索",description:"搜索 Goldfinder 真实图鉴、地质判断、取样、化验和现场工具。"};export default function Page(){return <SearchHub lang="zh"/>}
