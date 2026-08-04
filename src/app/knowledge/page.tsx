@@ -1,0 +1,2 @@
+import {guides} from "@/data/knowledge";
+export default function Knowledge(){return <><div className="page-head"><p className="eyebrow">FIELD KNOWLEDGE</p><h1>探金知识库</h1><p className="lead">点击式速查内容按“迹象—验证—警告”组织。</p></div><div className="section"><div className="grid">{guides.map(g=><article className="card" id={g.id} key={g.id}><b>{g.id.toUpperCase()}</b><h3>{g.title}</h3><p>{g.summary}</p><ul>{g.signals.map(x=><li key={x}>{x}</li>)}</ul><p><strong>下一步：</strong>{g.verify}</p><div className="notice">{g.warning}</div></article>)}</div></div></>}
