@@ -1,0 +1,1 @@
+import Link from "next/link";export default function NotFound(){return <div className="hero"><p className="eyebrow">404</p><h1>这条矿脉没有延伸到这里</h1><p className="lead">返回主页，继续沿可靠证据链探索。</p><Link className="button" href="/">返回首页</Link></div>}
