@@ -1,0 +1,1 @@
+import SamplingPlanner from "@/components/SamplingPlanner";export default function EnglishPlanner(){return <><div className="page-head"><p className="eyebrow">SYSTEMATIC SAMPLE DESIGN</p><h1>Sampling design</h1><p className="lead">Estimate fences, points, vertical intervals, sample volume, and QA/QC workload before field mobilisation.</p></div><SamplingPlanner lang="en"/></>}

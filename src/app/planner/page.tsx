@@ -1,0 +1,1 @@
+import SamplingPlanner from "@/components/SamplingPlanner";export default function Planner(){return <><div className="page-head"><p className="eyebrow">SYSTEMATIC SAMPLE DESIGN</p><h1>取样规划系统</h1><p className="lead">在进入现场前计算样线、样点、垂向分层、样品体积和 QA/QC 工作量。</p></div><SamplingPlanner lang="zh"/></>}
