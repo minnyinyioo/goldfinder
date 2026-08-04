@@ -1,0 +1,1 @@
+"use client";import {useEffect} from "react";export default function EnglishLang(){useEffect(()=>{document.documentElement.lang='en';return()=>{document.documentElement.lang='zh-CN'}},[]);return null}
