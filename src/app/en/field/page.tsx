@@ -1,1 +1,1 @@
-import FieldRecords from "@/components/FieldRecords";import LegacyRecordsMigration from "@/components/LegacyRecordsMigration";export default function EnglishField(){return <><LegacyRecordsMigration/><FieldRecords lang="en"/></>}
+import FieldRecords from "@/components/FieldRecords";import LegacyRecordsMigration from "@/components/LegacyRecordsMigration";import SamplePhotos from "@/components/SamplePhotos";export default function Field(){return <><LegacyRecordsMigration/><FieldRecords lang="en"/><SamplePhotos lang="en"/></>}
