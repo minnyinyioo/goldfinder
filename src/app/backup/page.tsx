@@ -1,0 +1,1 @@
+import type {Metadata} from "next";import DataVault from "@/components/DataVault";export const metadata:Metadata={title:"数据备份与隐私 | Goldfinder",description:"备份、恢复并按隐私级别导出本机 Goldfinder 项目数据。"};export default function Page(){return <DataVault lang="zh"/>}

@@ -1,0 +1,1 @@
+import type {Metadata} from "next";import DataVault from "@/components/DataVault";export const metadata:Metadata={title:"Data backup & privacy | Goldfinder",description:"Back up, restore and privacy-filter device-local Goldfinder project data."};export default function Page(){return <DataVault lang="en"/>}
