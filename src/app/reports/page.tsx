@@ -1,0 +1,1 @@
+import ReportBuilder from "@/components/ReportBuilder";export default function Reports(){return <ReportBuilder lang="zh"/>}
