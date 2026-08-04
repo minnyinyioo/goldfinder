@@ -11,5 +11,5 @@ coverage/
 *.p12
 *.pfx
 *.log
+*.tsbuildinfo
 .DS_Store
-

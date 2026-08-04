@@ -5,5 +5,5 @@ import "./globals.css";
 export const metadata: Metadata = { title: { default: "探金 Goldfinder", template: "%s | 探金" }, description: "科学、可验证的野外探金知识与记录工具" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="zh-CN"><body><header><Link className="brand" href="/">◈ 探金 <small>GOLDFINDER</small></Link><nav><Link href="/knowledge">知识库</Link><Link href="/field">现场系统</Link><Link href="/map">样点地图</Link><Link href="/about">安全说明</Link></nav></header><main>{children}</main><footer><p>迹象 ≠ 金矿 · 观察 → 取样 → 检测 → 复核</p><p>教育与记录用途，不构成勘查或投资结论。</p></footer></body></html>;
+  return <html lang="zh-CN"><body><header><Link className="brand" href="/">◈ 探金 <small>GOLDFINDER</small></Link><nav><Link href="/atlas">真实图鉴</Link><Link href="/knowledge">知识库</Link><Link href="/field">现场系统</Link><Link href="/map">样点地图</Link><Link href="/sources">资料来源</Link><Link href="/about">安全说明</Link></nav></header><main>{children}</main><footer><p>迹象 ≠ 金矿 · 观察 → 取样 → 检测 → 复核</p><p><Link href="/sources">参考资料、图片作者与开放许可</Link> · 教育与记录用途，不构成勘查或投资结论。</p></footer></body></html>;
 }
