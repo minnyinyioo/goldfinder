@@ -1,0 +1,1 @@
+import type {Metadata} from "next";import GeologyGuide from "@/components/GeologyGuide";export const metadata:Metadata={title:"Placer & lode interpretation | Goldfinder",description:"An evidence-led field guide to placer settings, lode structures, alteration and verification."};export default function Page(){return <GeologyGuide lang="en"/>}

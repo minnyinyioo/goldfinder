@@ -1,0 +1,1 @@
+import type {Metadata} from "next";import GeologyGuide from "@/components/GeologyGuide";export const metadata:Metadata={title:"沙金与山金地质判断中心 | Goldfinder",description:"以真实图片、河流地层、构造蚀变和证据等级辅助规范判断沙金与山金线索。"};export default function Page(){return <GeologyGuide lang="zh"/>}
