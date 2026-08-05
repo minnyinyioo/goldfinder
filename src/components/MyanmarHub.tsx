@@ -18,6 +18,7 @@ import {
   ShieldAlert,
   Waves,
 } from "lucide-react";
+import SamplingCalculator from "./SamplingCalculator";
 import "./myanmar-hub.css";
 import "./myanmar-tools.css";
 const terms = [
@@ -113,12 +114,42 @@ const terms = [
   ],
 ];
 const toolLinks = [
-  ["ဓာတ်ပုံဖြင့် ခွဲခြားရန်", "ရွှေ၊ အတုရွှေ၊ အနက်ရောင်သဲ၊ မြေသားနှင့် ကျောက်ကို အစစ်အမှန်ဓာတ်ပုံဖြင့် နှိုင်းယှဉ်ပါ။", "/en/atlas", Camera],
-  ["မြေပြင်အမှတ်ပေးရန်", "ရွှေကျင်နှင့် မူလရွှေလက္ခဏာများကို စုစည်း၍ နမူနာယူရမည့် ဦးစားပေးအဆင့် သတ်မှတ်ပါ။", "/en/assess", BookOpenCheck],
-  ["ရွှေပါဝင်နှုန်းတွက်ရန်", "ရွှေကျင် g/m³ နှင့် ကျောက်ရွှေ ppm ↔ g/t ကို တစ်နေရာတည်းတွင် တွက်ချက်ပါ။", "/en/sampling", Calculator],
-  ["နမူနာမှတ်တမ်း", "Sample ID၊ GPS၊ ဓာတ်ပုံ၊ assay နှင့် chain of custody ကို မှတ်တမ်းတင်ပါ။", "/en/field", ClipboardList],
-  ["နမူနာလုပ်ငန်းခွင်", "မြေပုံ၊ report၊ QA/QC နှင့် backup ကို စုစည်းစီမံပါ။", "/en/project", ClipboardCheck],
-  ["လုံခြုံရေးနှင့် ဥပဒေ", "ခွင့်ပြုချက်၊ မြေယာအခွင့်အရေး၊ ပတ်ဝန်းကျင်နှင့် ဓာတုပစ္စည်းအန္တရာယ်ကို စစ်ဆေးပါ။", "#safety", ShieldAlert],
+  [
+    "ဓာတ်ပုံဖြင့် ခွဲခြားရန်",
+    "ရွှေ၊ အတုရွှေ၊ အနက်ရောင်သဲ၊ မြေသားနှင့် ကျောက်ကို အစစ်အမှန်ဓာတ်ပုံဖြင့် နှိုင်းယှဉ်ပါ။",
+    "/en/atlas",
+    Camera,
+  ],
+  [
+    "မြေပြင်အမှတ်ပေးရန်",
+    "ရွှေကျင်နှင့် မူလရွှေလက္ခဏာများကို စုစည်း၍ နမူနာယူရမည့် ဦးစားပေးအဆင့် သတ်မှတ်ပါ။",
+    "/en/assess",
+    BookOpenCheck,
+  ],
+  [
+    "ရွှေပါဝင်နှုန်းတွက်ရန်",
+    "ရွှေကျင် g/m³ နှင့် ကျောက်ရွှေ ppm ↔ g/t ကို မြန်မာဘာသာဖြင့် တွက်ချက်ပါ။",
+    "#my-calculator",
+    Calculator,
+  ],
+  [
+    "နမူနာမှတ်တမ်း",
+    "Sample ID၊ GPS၊ ဓာတ်ပုံ၊ assay နှင့် chain of custody ကို မှတ်တမ်းတင်ပါ။",
+    "/en/field",
+    ClipboardList,
+  ],
+  [
+    "နမူနာလုပ်ငန်းခွင်",
+    "မြေပုံ၊ report၊ QA/QC နှင့် backup ကို စုစည်းစီမံပါ။",
+    "/en/project",
+    ClipboardCheck,
+  ],
+  [
+    "လုံခြုံရေးနှင့် ဥပဒေ",
+    "ခွင့်ပြုချက်၊ မြေယာအခွင့်အရေး၊ ပတ်ဝန်းကျင်နှင့် ဓာတုပစ္စည်းအန္တရာယ်ကို စစ်ဆေးပါ။",
+    "#safety",
+    ShieldAlert,
+  ],
 ] as const;
 export default function MyanmarHub() {
   return (
@@ -173,9 +204,56 @@ export default function MyanmarHub() {
       <section className="my-section my-tool-station">
         <p className="eyebrow">FIELD TOOL STATION</p>
         <h2>လက်တွေ့အသုံးချ ကိရိယာများ</h2>
-        <p className="my-tool-intro">မြန်မာဘာသာရှင်းလင်းချက်ကို အခြေခံပြီး professional calculator နှင့် record system များသို့ တိုက်ရိုက်ဝင်နိုင်သည်။ Tool interface သည် English ဖြစ်သော်လည်း technical term များကို အောက်ပါ glossary နှင့် တွဲဖတ်နိုင်သည်။</p>
-        <div className="my-tool-grid">{toolLinks.map(([title,text,href,Icon])=><Link href={href} key={title}><Icon size={23}/><div><h3>{title}</h3><p>{text}</p></div><span>ဖွင့်ရန် →</span></Link>)}</div>
-        <div className="my-formulas"><article><b>ရွှေကျင် (Placer)</b><code>g/m³ = ရရှိသော ရွှေ (g) ÷ မူလနမူနာထုထည် (m³)</code><p>10 L = 0.01 m³ ဖြစ်သည်။ စမ်းသပ်ထားသော recovery ရှိမှသာ correction အသုံးပြုပါ။</p></article><article><b>ကျောက်ရွှေ (Lode)</b><code>1 ppm Au = 1 mg/kg Au = 1 g/t Au</code><p>Unit ပြောင်းခြင်းက assay quality ကို မတိုးစေပါ။ Method၊ detection limit နှင့် QA/QC ကို စစ်ဆေးပါ။</p></article></div>
+        <p className="my-tool-intro">
+          မြန်မာဘာသာရှင်းလင်းချက်ကို အခြေခံပြီး professional calculator နှင့်
+          record system များသို့ တိုက်ရိုက်ဝင်နိုင်သည်။ Tool interface သည်
+          English ဖြစ်သော်လည်း technical term များကို အောက်ပါ glossary နှင့်
+          တွဲဖတ်နိုင်သည်။
+        </p>
+        <div className="my-tool-grid">
+          {toolLinks.map(([title, text, href, Icon]) => (
+            <Link href={href} key={title}>
+              <Icon size={23} />
+              <div>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </div>
+              <span>ဖွင့်ရန် →</span>
+            </Link>
+          ))}
+        </div>
+        <div className="my-formulas">
+          <article>
+            <b>ရွှေကျင် (Placer)</b>
+            <code>g/m³ = ရရှိသော ရွှေ (g) ÷ မူလနမူနာထုထည် (m³)</code>
+            <p>
+              10 L = 0.01 m³ ဖြစ်သည်။ စမ်းသပ်ထားသော recovery ရှိမှသာ correction
+              အသုံးပြုပါ။
+            </p>
+          </article>
+          <article>
+            <b>ကျောက်ရွှေ (Lode)</b>
+            <code>1 ppm Au = 1 mg/kg Au = 1 g/t Au</code>
+            <p>
+              Unit ပြောင်းခြင်းက assay quality ကို မတိုးစေပါ။ Method၊ detection
+              limit နှင့် QA/QC ကို စစ်ဆေးပါ။
+            </p>
+          </article>
+        </div>
+      </section>
+      <section className="my-section" id="my-calculator">
+        <div className="my-heading">
+          <Calculator />
+          <div>
+            <p className="eyebrow">MYANMAR INTERACTIVE GRADE TOOL</p>
+            <h2>မြန်မာဘာသာ ရွှေပါဝင်နှုန်းတွက်စက်</h2>
+            <p>
+              ရွှေကျင်နမူနာအတွက် g/m³ နှင့် ကျောက်ရွှေ assay အတွက် ppm ↔ g/t ကို
+              တိုက်ရိုက်တွက်နိုင်သည်။
+            </p>
+          </div>
+        </div>
+        <SamplingCalculator lang="my" />
       </section>
       <section className="my-section my-principles">
         <p className="eyebrow">EVIDENCE FIRST</p>

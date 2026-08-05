@@ -95,11 +95,61 @@ const copy = {
     clear: "Clear all",
     defaults: "Restore examples",
   },
+  my: {
+    placer: "ရွှေကျင် g/m³",
+    lode: "ကျောက်ရွှေ ppm ↔ g/t",
+    title: "ရွှေကျင် ထုထည်အလိုက် grade တွက်စက်",
+    intro:
+      "တိုင်းတာထားသော နမူနာထုထည်နှင့် အမှန်တကယ် ပြန်လည်ရရှိသော ရွှေအလေးချိန်ကို အသုံးပြုပါ။ ဖြစ်နိုင်လျှင် မတူးဖော်မီ in-situ volume ကို တိုက်ရိုက်တိုင်းတာပါ။",
+    volume: "နမူနာထုထည် (L)",
+    state: "ထုထည်အခြေအနေ",
+    bank: "မတူးဖော်မီ / bank volume",
+    loose: "တူးဖော်ပြီး / loose volume",
+    swell: "တူးဖော်ပြီး ဖောင်းပွမှု (%)",
+    gold: "ပြန်လည်ရရှိသော ရွှေအလေးချိန် (mg)",
+    recovery: "ခန့်မှန်း recovery (%)",
+    wet: "စိုစွတ်နမူနာအလေးချိန် (kg၊ မဖြစ်မနေမဟုတ်)",
+    moisture: "ရေ/ခြောက်မြေ အလေးချိန်အချိုး (%၊ မဖြစ်မနေမဟုတ်)",
+    density: "ကွင်းဆင်းတိုင်းတာသော dry bulk density (kg/m³၊ မဖြစ်မနေမဟုတ်)",
+    dupA: "Duplicate A (g/m³၊ မဖြစ်မနေမဟုတ်)",
+    dupB: "Duplicate B (g/m³၊ မဖြစ်မနေမဟုတ်)",
+    results: "တွက်ချက်ရလဒ်",
+    bankV: "ပြန်တွက်ထားသော bank volume",
+    raw: "Recovery မပြင်ဆင်မီ grade",
+    corrected: "Recovery ပြင်ဆင်ပြီး grade",
+    dryMass: "ခန့်မှန်း ခြောက်မြေအလေးချိန်",
+    massGrade: "အလေးချိန်အလိုက် grade",
+    rpd: "Duplicate relative percent difference (RPD)",
+    invalid: "မှန်ကန်သော ထုထည်၊ ရွှေအလေးချိန်နှင့် recovery ကို ထည့်ပါ။",
+    band: "အတွင်းပိုင်း စိစစ်အဆင့်",
+    bands: [
+      "နိမ့်",
+      "အားနည်းသော anomaly",
+      "ပိုမိုကောင်းသော လက္ခဏာ",
+      "ပြင်းထန်သော anomaly",
+    ],
+    bandNote:
+      "ဤအဆင့်များ (≤0.1၊ ≤0.3၊ ≤1၊ >1 g/m³) သည် နမူနာဦးစားပေးစီစဉ်ရန်သာ ဖြစ်သည်။ အပြည်ပြည်ဆိုင်ရာ cut-off၊ စီးပွားရေးအဆင့် သို့မဟုတ် သတ္တုတူးဖော်ရေးဆုံးဖြတ်ချက် မဟုတ်ပါ။",
+    warning:
+      "ဤရလဒ်သည် နမူနာတစ်ခု၏ ရလဒ်သာ ဖြစ်ပြီး သိုက်ပျမ်းမျှ grade၊ resource၊ reserve သို့မဟုတ် စီးပွားရေးအဖြေ မဟုတ်ပါ။ ရွှေကြမ်းအမှုန်ကြောင့် နမူနာငယ်တွင် အလွန်ကွာခြားနိုင်သည်။",
+    lodeTitle: "ကျောက်ရွှေ assay unit ပြောင်းစက်",
+    lodeIntro:
+      "အလေးချိန်အခြေခံ Au assay တွင် ppm တန်ဖိုးသည် g/t နှင့် ဂဏန်းတူသည်။ Sample ID၊ unit၊ method၊ detection limit နှင့် QA/QC ကို ဦးစွာစစ်ဆေးပါ။",
+    ppm: "ဓာတ်ခွဲခန်း Au ရလဒ် (ppm)",
+    equivalent: "တူညီသော အလေးချိန် grade",
+    rule: "1 ppm Au = 1 mg/kg Au = 1 g/t Au",
+    lodNote:
+      "Unit ပြောင်းခြင်းက data quality ကို မတိုးစေပါ။ Anomaly တစ်ခုတည်းဖြင့် mineralised body ဆက်လက်တည်ရှိမှု သို့မဟုတ် တူးဖော်နိုင်မှုကို မသက်သေပြနိုင်ပါ။",
+    record: "နမူနာမှတ်တမ်းသို့ ထည့်ရန်",
+    workspace: "နမူနာလုပ်ငန်းခွင်သို့",
+    clear: "အားလုံးရှင်းရန်",
+    defaults: "နမူနာတန်ဖိုးများ ပြန်ထည့်ရန်",
+  },
 };
 export default function SamplingCalculator({
   lang = "zh",
 }: {
-  lang?: "zh" | "en";
+  lang?: "zh" | "en" | "my";
 }) {
   const c = copy[lang],
     [mode, setMode] = useState<"placer" | "lode">("placer"),
@@ -222,7 +272,11 @@ export default function SamplingCalculator({
       <div
         className="tool-reset-actions"
         aria-label={
-          lang === "zh" ? "计算器数据操作" : "Calculator data actions"
+          lang === "zh"
+            ? "计算器数据操作"
+            : lang === "my"
+              ? "တွက်စက် ဒေတာလုပ်ဆောင်ချက်များ"
+              : "Calculator data actions"
         }
       >
         <button type="button" onClick={clearAll}>
