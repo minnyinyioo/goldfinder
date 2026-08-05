@@ -15,7 +15,13 @@ const category = (slug: string): ExplorerItem["category"] =>
       ? "soil"
       : ["native-gold", "placer-flakes", "coarse-pan-gold"].includes(slug)
         ? "gold"
-        : ["arsenopyrite", "stibnite"].includes(slug)
+        : [
+              "arsenopyrite",
+              "stibnite",
+              "scheelite",
+              "galena",
+              "sphalerite",
+            ].includes(slug)
           ? "indicator"
           : ["pyrite", "chalcopyrite", "muscovite"].includes(slug)
             ? "lookalike"

@@ -328,4 +328,44 @@ export const atlasItems: AtlasItem[] = [
     license: "Public Domain",
     source: "https://commons.wikimedia.org/wiki/File:Stibnite.jpg",
   },
+  {
+    slug: "scheelite",
+    name: "白钨矿",
+    image: "/images/scheelite.jpg",
+    alt: "加拿大安大略省白钨矿真实晶体标本",
+    observe:
+      "白钨矿为钨酸钙，颜色可白、黄、橙褐或灰，密度较高；部分标本在短波紫外灯下呈强烈蓝白荧光，但荧光会因成分而变化。",
+    notProof:
+      "白钨矿主要是钨矿物，可出现在某些矽卡岩或热液系统中，但不是黄金指示剂。紫外荧光只能帮助筛查，不能代替矿物学和化验。",
+    author: "James St. John",
+    license: "CC BY 2.0",
+    source:
+      "https://commons.wikimedia.org/wiki/File:Scheelite_(Timmins,_Ontario,_Canada)_1.jpg",
+  },
+  {
+    slug: "galena",
+    name: "方铅矿",
+    image: "/images/galena.jpg",
+    alt: "美国地质调查局公共领域方铅矿标本",
+    observe:
+      "铅灰色金属光泽、密度很高，常见立方体或直角解理面。新鲜面明亮，风化后可能失去光泽；应与磁铁矿及其他灰黑色硫化物区分。",
+    notProof:
+      "方铅矿是含铅矿物，某些多金属脉可能同时含金银，但没有固定比例。铅尘有害：不要现场研磨、吹扫粉末或接触后进食。",
+    author: "U.S. Geological Survey / Mineral Information Institute",
+    license: "Public Domain",
+    source: "https://commons.wikimedia.org/wiki/File:Galena.jpg",
+  },
+  {
+    slug: "sphalerite",
+    name: "闪锌矿",
+    image: "/images/sphalerite.jpg",
+    alt: "美国地质调查局公共领域闪锌矿标本",
+    observe:
+      "颜色变化很大，可浅黄、蜜褐、红褐至近黑，树脂至金刚光泽，解理明显；深色闪锌矿可能被误认为普通黑色矿物。",
+    notProof:
+      "闪锌矿是主要锌矿物，可与方铅矿、黄铜矿和黄铁矿共生；这种组合提示多金属系统，不等于存在黄金或达到可采品位。",
+    author: "U.S. Geological Survey / Mineral Information Institute",
+    license: "Public Domain",
+    source: "https://commons.wikimedia.org/wiki/File:Sphalerite.jpg",
+  },
 ];
