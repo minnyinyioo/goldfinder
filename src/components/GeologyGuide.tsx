@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { atlasItems } from "@/data/media";
 import FieldBenchmarks from "./FieldBenchmarks";
+import RiverAnatomy from "./RiverAnatomy";
 import "./geology-guide.css";
 
 type Lang = "zh" | "en";
@@ -240,6 +241,7 @@ export default function GeologyGuide({ lang }: { lang: Lang }) {
           </div>
         </div>
       </section>
+      <RiverAnatomy lang={lang} />
       <section className="section geology-section" id="lode">
         <div className="geology-title">
           <Mountain />
@@ -337,14 +339,14 @@ export default function GeologyGuide({ lang }: { lang: Lang }) {
             </a>
           </div>
         </div>
-      <div className="geology-actions">
+        <div className="geology-actions">
           <Link href={lang === "zh" ? "/atlas" : "/en/atlas"}>{c.atlas}</Link>
           <Link href={lang === "zh" ? "/sources" : "/en/sources"}>
             {c.sources}
           </Link>
-      </div>
-      <FieldBenchmarks lang={lang} />
-    </section>
+        </div>
+        <FieldBenchmarks lang={lang} />
+      </section>
     </>
   );
 }
