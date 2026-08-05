@@ -134,6 +134,20 @@ export default function SiteNav() {
                   ? "/en/map"
                   : "/en"
         : pairs[path] || "/en",
+    myPath = path.replace(/^\/en/, "") || "/",
+    myHref = isMy
+      ? path
+      : myPath === "/atlas"
+        ? "/my/atlas"
+        : myPath === "/field"
+          ? "/my/field"
+          : myPath === "/map"
+            ? "/my/map"
+            : myPath === "/reports"
+              ? "/my/reports"
+              : myPath === "/backup"
+                ? "/my/backup"
+                : "/my",
     searchHref = isEn ? "/en/search" : "/search";
   const openLabel = isMy
       ? "လမ်းညွှန်ဖွင့်ရန်"
@@ -222,7 +236,7 @@ export default function SiteNav() {
                   <small>EN</small>
                 </Link>
                 <Link
-                  href="/my"
+                  href={myHref}
                   hrefLang="my"
                   onClick={() => setLanguageOpen(false)}
                   aria-current={isMy ? "page" : undefined}
