@@ -160,7 +160,7 @@
 }
 :root[data-theme="light"] .safety-box h3,
 :root[data-theme="light"] .layer-card li span {
-  color: #493607;
+  color: #16231d;
 }
 :root[data-theme="light"] .qaqc-status.pass {
   color: #0b5a38;
