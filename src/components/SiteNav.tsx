@@ -141,7 +141,9 @@ export default function SiteNav() {
           <Link
             className="icon-button"
             href={searchHref}
-            aria-label={isEn ? "Search" : "全站搜索"}
+            aria-label={
+              isMy ? "ဆိုက်အတွင်း ရှာဖွေရန်" : isEn ? "Search" : "全站搜索"
+            }
           >
             <Search size={18} />
           </Link>
@@ -150,12 +152,16 @@ export default function SiteNav() {
             onClick={toggle}
             aria-label={
               theme === "dark"
-                ? isEn
-                  ? "Use light theme"
-                  : "切换浅色模式"
-                : isEn
-                  ? "Use dark theme"
-                  : "切换深色模式"
+                ? isMy
+                  ? "အလင်းရောင် theme သုံးရန်"
+                  : isEn
+                    ? "Use light theme"
+                    : "切换浅色模式"
+                : isMy
+                  ? "အမှောင် theme သုံးရန်"
+                  : isEn
+                    ? "Use dark theme"
+                    : "切换深色模式"
             }
           >
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
