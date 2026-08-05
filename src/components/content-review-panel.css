@@ -1,0 +1,107 @@
+.review-panel {
+  max-width: 1112px;
+  margin: 22px auto 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface) 92%, var(--gold) 8%);
+  padding: 18px;
+  display: grid;
+  grid-template-columns: minmax(260px, 1.25fr) minmax(220px, 0.75fr);
+  gap: 14px 24px;
+  box-shadow: 0 14px 45px #0001;
+}
+.review-summary {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.review-summary > svg {
+  flex: none;
+  color: var(--gold);
+  margin-top: 2px;
+}
+.review-summary b,
+.review-evidence > b {
+  color: var(--text);
+}
+.review-summary p,
+.review-scope {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.review-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+.review-meta div {
+  border-left: 1px solid var(--line);
+  padding-left: 12px;
+}
+.review-meta dt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.review-meta dt svg {
+  width: 14px;
+}
+.review-meta dd {
+  margin: 3px 0 0;
+  font-weight: 800;
+}
+.review-scope {
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+.review-evidence {
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 12px;
+  font-size: 13px;
+}
+.review-evidence > b {
+  width: 100%;
+}
+.review-evidence a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--gold2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.review-evidence a:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+:root[data-theme="light"] .review-panel {
+  background: #f7f9f6;
+  color: #16231d;
+}
+:root[data-theme="light"] .review-evidence a {
+  color: #6b4e08;
+}
+@media (max-width: 760px) {
+  .review-panel {
+    grid-template-columns: 1fr;
+    margin-top: 18px;
+    padding: 15px;
+  }
+  .review-meta div:first-child {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .review-evidence a {
+    min-height: 44px;
+  }
+}

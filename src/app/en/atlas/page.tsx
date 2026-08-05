@@ -1,5 +1,6 @@
 import { enAtlas } from "@/data/english";
 import AtlasExplorer, { ExplorerItem } from "../../atlas/AtlasExplorer";
+import ContentReviewPanel from "@/components/ContentReviewPanel";
 import "../../atlas/atlas.css";
 const slugs = [
   "native-gold",
@@ -78,6 +79,7 @@ export default function EnglishAtlas() {
           observe. A photograph cannot identify a specimen; every item includes
           its creator, licence, and original page.
         </p>
+        <ContentReviewPanel lang="en" topic="atlas" />
       </div>
       <section className="section">
         <div className="compare">

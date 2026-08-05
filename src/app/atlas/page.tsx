@@ -1,5 +1,6 @@
 import { atlasItems } from "@/data/media";
 import AtlasExplorer, { ExplorerItem } from "./AtlasExplorer";
+import ContentReviewPanel from "@/components/ContentReviewPanel";
 import "./atlas.css";
 const category = (slug: string): ExplorerItem["category"] =>
   ["panning", "sluice"].includes(slug)
@@ -36,6 +37,7 @@ export default function Atlas() {
         <p className="lead">
           筛选并放大真实参考图片，学习“应该观察什么”。照片不能直接鉴定样品；每项均附作者、许可和原始页面。
         </p>
+        <ContentReviewPanel topic="atlas" />
       </div>
       <section className="section">
         <div className="compare">

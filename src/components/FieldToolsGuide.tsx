@@ -1,35 +1,428 @@
-import Image from "next/image";import type {LucideIcon} from "lucide-react";import {Compass,Filter,FlaskConical,Focus,Gauge,Grid3X3,Hammer,Magnet,MapPin,Microscope,RadioTower,ScanSearch,Shovel,Waves} from "lucide-react";import "./field-tools-guide.css";
-type Tool={name:string;icon:LucideIcon;can:string;cannot:string;steps:string;error:string;record:string};
-const zh:Tool[]=[
-{name:"淘金盘",icon:Waves,can:"用密度差把砂砾逐步浓集成重矿物精矿，用于侦察和检查尾矿。",cannot:"单盘结果不能代表河段平均品位，也不能保证细金全部回收。",steps:"量取并记录原始体积；浸透解泥；分级去除轻矿物；保留全部精矿复查。",error:"装料过多、动作过猛、未解泥、只保留看见金的那一盘。",record:"样品体积、粒级、盘数、精矿重量、可见金数量及回收人。"},
-{name:"溜槽、金毡与 Riffle",icon:Filter,can:"连续处理物料并在格栅和衬垫形成低速区截留高密度颗粒。",cannot:"设备存在不等于回收率已知；粗金和极细金的最佳条件不同。",steps:"先用已知进料校准坡度和流量；均匀进料；分段清洗；检查尾矿。",error:"坡度过陡、供水不稳、进料结团、衬垫过载后继续运行。",record:"设备宽度、坡度、流量、进料速率、运行时间、清理批次与尾矿结果。"},
-{name:"筛网",icon:Grid3X3,can:"统一最大粒径并分开不同粒级，使不同样品更可比较。",cannot:"筛分不会鉴定黄金，也可能在操作不当时损失附着于大砾石的细粒。",steps:"记录筛孔尺寸；湿筛并冲洗大颗粒表面；各粒级分别保存或称量。",error:"不同样品使用不同筛孔却直接比较；丢弃筛上物而不检查。",record:"筛孔、湿筛/干筛、各粒级质量或体积及损失情况。"},
-{name:"磁铁",icon:Magnet,can:"快速分离强磁性矿物，辅助认识磁铁矿等重砂组成。",cannot:"黄金不被普通磁铁吸引；无磁性也不能证明颗粒是金。",steps:"用塑料袋包住磁铁；分次靠近干燥精矿；保留磁性与非磁性部分。",error:"磁铁直接接触湿精矿造成污染或遗失；把全部黑砂都当磁铁矿。",record:"磁铁规格、距离、次数、磁性部分比例及照片。"},
-{name:"手持放大镜与显微镜",icon:Microscope,can:"观察晶形、解理、片状形态、条纹和表面磨圆。",cannot:"放大外观不能给出元素含量或准确品位。",steps:"清洁样品；使用比例尺和稳定光源；从多个角度观察；拍摄未处理图。",error:"依赖单一照明颜色；没有比例尺；只观察挑选出的亮粒。",record:"放大倍数、照明、粒径、形态、照片编号和初步判断。"},
-{name:"地质锤",icon:Hammer,can:"取得新鲜岩面、检查风化程度并辅助观察结构和矿物。",cannot:"锤击声或新鲜断面不能证明含金。",steps:"佩戴护目镜；检查飞石方向；从安全稳定露头取小块；保留原位照片。",error:"在不稳定边坡下敲击；破坏受保护露头；未取得土地许可。",record:"露头位置、取样面方向、风化程度、样品编号和安全情况。"},
-{name:"地质罗盘",icon:Compass,can:"测量矿脉、断层、层理和节理的走向与倾角。",cannot:"单次读数不能代表弯曲或不规则构造的整体方向。",steps:"远离磁性物体；校正磁偏角；在平整面重复测量；记录右手定则或所用格式。",error:"手机、磁铁或铁锤靠近；混用真北和磁北；走向格式不注明。",record:"方位基准、磁偏角、走向、倾向、倾角、面类型和重复次数。"},
-{name:"GNSS／GPS",icon:MapPin,can:"记录样点位置、轨迹、定位时间和设备估计精度。",cannot:"手机显示的小数位不等于实际精度；峡谷和林下误差可显著增加。",steps:"等待定位稳定；记录坐标系；重复读数；同时描述可复原的位置。",error:"混用 WGS84 与本地坐标；复制错误经纬度顺序；公开敏感矿点。",record:"纬度、经度、坐标系、精度、设备、时间及是否模糊化。"},
-{name:"金属探测器",icon:RadioTower,can:"对浅部导电目标产生响应，可用于寻找较大金块或金属污染物。",cannot:"信号不能鉴定黄金；细粒砂金通常低于实际探测能力。",steps:"用现场土壤和已知目标测试；网格化扫描；交叉方向复测；挖掘前确认安全与许可。",error:"忽视铁垃圾和矿化土壤；只报告强信号；不记录未响应区域。",record:"型号、线圈、模式、灵敏度、地平衡、目标深度和复测结果。"},
-{name:"比重测量",icon:Gauge,can:"用空气与水中重量差估算致密、完整、非多孔标本的体积和密度。",cannot:"多孔、含裂隙、附着气泡或混合矿物样品会产生较大误差。",steps:"校准天平；称干重；排除气泡后称水中重量；重复并报告水温。",error:"样品吸水、线材浮力未扣除、把混合岩密度当单矿物密度。",record:"两次重量、温度、修正方法、重复差异和计算公式。"},
-{name:"手持 XRF",icon:ScanSearch,can:"快速筛查许多元素并辅助判断岩性、蚀变或污染。",cannot:"多数现场条件下不适合可靠测定低含量金；读数不替代代表性取样。",steps:"使用适用校准；制备平整均匀样；测空白和标准物；保存完整谱图与原始结果。",error:"直接测试不均匀湿石块；忽略检出限和基体效应；只保留异常读数。",record:"型号、模式、时间、校准、标准物、检出限、样品制备和原始文件。"},
-{name:"火试金",icon:FlaskConical,can:"通过熔融富集贵金属，是金定量分析常用的实验室制备方法。",cannot:"分析结果只代表送检试样；粗金和样品不均匀仍可能造成代表性问题。",steps:"选择合格实验室；确认样品质量、粒度和最终测定方式；配置空白、重复和标准样。",error:"普通小份试样用于明显粗金样；未核对报告单位；异常结果不复验。",record:"实验室、方法代码、试样质量、检出限、QA/QC 批次和证书。"},
-{name:"ICP-MS／ICP-OES",icon:Focus,can:"在适当消解后测量多元素组成，可用于地球化学异常和伴生元素研究。",cannot:"消解不完全时不代表总量；金的适用性取决于前处理、取样量和检出限。",steps:"先确定目标元素和所需总量/可浸出量；选择消解；配置 QA/QC；核查超量程重测。",error:"忽略消解方法；把低于检出限当零；混淆 ppm、ppb 和百分比。",record:"消解、仪器方法、单位、检出限、稀释、超量程处理和 QA/QC。"},
-{name:"样品袋、标签与封条",icon:Shovel,can:"维持样品身份、完整性和交接链，使结果可以追溯。",cannot:"标签不能弥补非代表性取样或污染。",steps:"使用唯一编号；内外双标签；封口签名；每次交接记录时间和人员。",error:"用易溶墨水；样品编号重复；袋外信息与登记表不一致。",record:"项目、编号、类型、日期、采样人、封条、接收人和异常情况。"}
+import Image from "next/image";
+import type { LucideIcon } from "lucide-react";
+import {
+  Compass,
+  Filter,
+  FlaskConical,
+  Focus,
+  Gauge,
+  Grid3X3,
+  Hammer,
+  Magnet,
+  MapPin,
+  Microscope,
+  RadioTower,
+  ScanSearch,
+  Shovel,
+  Waves,
+} from "lucide-react";
+import ContentReviewPanel from "./ContentReviewPanel";
+import "./field-tools-guide.css";
+type Tool = {
+  name: string;
+  icon: LucideIcon;
+  can: string;
+  cannot: string;
+  steps: string;
+  error: string;
+  record: string;
+};
+const zh: Tool[] = [
+  {
+    name: "淘金盘",
+    icon: Waves,
+    can: "用密度差把砂砾逐步浓集成重矿物精矿，用于侦察和检查尾矿。",
+    cannot: "单盘结果不能代表河段平均品位，也不能保证细金全部回收。",
+    steps: "量取并记录原始体积；浸透解泥；分级去除轻矿物；保留全部精矿复查。",
+    error: "装料过多、动作过猛、未解泥、只保留看见金的那一盘。",
+    record: "样品体积、粒级、盘数、精矿重量、可见金数量及回收人。",
+  },
+  {
+    name: "溜槽、金毡与 Riffle",
+    icon: Filter,
+    can: "连续处理物料并在格栅和衬垫形成低速区截留高密度颗粒。",
+    cannot: "设备存在不等于回收率已知；粗金和极细金的最佳条件不同。",
+    steps: "先用已知进料校准坡度和流量；均匀进料；分段清洗；检查尾矿。",
+    error: "坡度过陡、供水不稳、进料结团、衬垫过载后继续运行。",
+    record: "设备宽度、坡度、流量、进料速率、运行时间、清理批次与尾矿结果。",
+  },
+  {
+    name: "筛网",
+    icon: Grid3X3,
+    can: "统一最大粒径并分开不同粒级，使不同样品更可比较。",
+    cannot: "筛分不会鉴定黄金，也可能在操作不当时损失附着于大砾石的细粒。",
+    steps: "记录筛孔尺寸；湿筛并冲洗大颗粒表面；各粒级分别保存或称量。",
+    error: "不同样品使用不同筛孔却直接比较；丢弃筛上物而不检查。",
+    record: "筛孔、湿筛/干筛、各粒级质量或体积及损失情况。",
+  },
+  {
+    name: "磁铁",
+    icon: Magnet,
+    can: "快速分离强磁性矿物，辅助认识磁铁矿等重砂组成。",
+    cannot: "黄金不被普通磁铁吸引；无磁性也不能证明颗粒是金。",
+    steps: "用塑料袋包住磁铁；分次靠近干燥精矿；保留磁性与非磁性部分。",
+    error: "磁铁直接接触湿精矿造成污染或遗失；把全部黑砂都当磁铁矿。",
+    record: "磁铁规格、距离、次数、磁性部分比例及照片。",
+  },
+  {
+    name: "手持放大镜与显微镜",
+    icon: Microscope,
+    can: "观察晶形、解理、片状形态、条纹和表面磨圆。",
+    cannot: "放大外观不能给出元素含量或准确品位。",
+    steps: "清洁样品；使用比例尺和稳定光源；从多个角度观察；拍摄未处理图。",
+    error: "依赖单一照明颜色；没有比例尺；只观察挑选出的亮粒。",
+    record: "放大倍数、照明、粒径、形态、照片编号和初步判断。",
+  },
+  {
+    name: "地质锤",
+    icon: Hammer,
+    can: "取得新鲜岩面、检查风化程度并辅助观察结构和矿物。",
+    cannot: "锤击声或新鲜断面不能证明含金。",
+    steps: "佩戴护目镜；检查飞石方向；从安全稳定露头取小块；保留原位照片。",
+    error: "在不稳定边坡下敲击；破坏受保护露头；未取得土地许可。",
+    record: "露头位置、取样面方向、风化程度、样品编号和安全情况。",
+  },
+  {
+    name: "地质罗盘",
+    icon: Compass,
+    can: "测量矿脉、断层、层理和节理的走向与倾角。",
+    cannot: "单次读数不能代表弯曲或不规则构造的整体方向。",
+    steps:
+      "远离磁性物体；校正磁偏角；在平整面重复测量；记录右手定则或所用格式。",
+    error: "手机、磁铁或铁锤靠近；混用真北和磁北；走向格式不注明。",
+    record: "方位基准、磁偏角、走向、倾向、倾角、面类型和重复次数。",
+  },
+  {
+    name: "GNSS／GPS",
+    icon: MapPin,
+    can: "记录样点位置、轨迹、定位时间和设备估计精度。",
+    cannot: "手机显示的小数位不等于实际精度；峡谷和林下误差可显著增加。",
+    steps: "等待定位稳定；记录坐标系；重复读数；同时描述可复原的位置。",
+    error: "混用 WGS84 与本地坐标；复制错误经纬度顺序；公开敏感矿点。",
+    record: "纬度、经度、坐标系、精度、设备、时间及是否模糊化。",
+  },
+  {
+    name: "金属探测器",
+    icon: RadioTower,
+    can: "对浅部导电目标产生响应，可用于寻找较大金块或金属污染物。",
+    cannot: "信号不能鉴定黄金；细粒砂金通常低于实际探测能力。",
+    steps:
+      "用现场土壤和已知目标测试；网格化扫描；交叉方向复测；挖掘前确认安全与许可。",
+    error: "忽视铁垃圾和矿化土壤；只报告强信号；不记录未响应区域。",
+    record: "型号、线圈、模式、灵敏度、地平衡、目标深度和复测结果。",
+  },
+  {
+    name: "比重测量",
+    icon: Gauge,
+    can: "用空气与水中重量差估算致密、完整、非多孔标本的体积和密度。",
+    cannot: "多孔、含裂隙、附着气泡或混合矿物样品会产生较大误差。",
+    steps: "校准天平；称干重；排除气泡后称水中重量；重复并报告水温。",
+    error: "样品吸水、线材浮力未扣除、把混合岩密度当单矿物密度。",
+    record: "两次重量、温度、修正方法、重复差异和计算公式。",
+  },
+  {
+    name: "手持 XRF",
+    icon: ScanSearch,
+    can: "快速筛查许多元素并辅助判断岩性、蚀变或污染。",
+    cannot: "多数现场条件下不适合可靠测定低含量金；读数不替代代表性取样。",
+    steps:
+      "使用适用校准；制备平整均匀样；测空白和标准物；保存完整谱图与原始结果。",
+    error: "直接测试不均匀湿石块；忽略检出限和基体效应；只保留异常读数。",
+    record: "型号、模式、时间、校准、标准物、检出限、样品制备和原始文件。",
+  },
+  {
+    name: "火试金",
+    icon: FlaskConical,
+    can: "通过熔融富集贵金属，是金定量分析常用的实验室制备方法。",
+    cannot: "分析结果只代表送检试样；粗金和样品不均匀仍可能造成代表性问题。",
+    steps:
+      "选择合格实验室；确认样品质量、粒度和最终测定方式；配置空白、重复和标准样。",
+    error: "普通小份试样用于明显粗金样；未核对报告单位；异常结果不复验。",
+    record: "实验室、方法代码、试样质量、检出限、QA/QC 批次和证书。",
+  },
+  {
+    name: "ICP-MS／ICP-OES",
+    icon: Focus,
+    can: "在适当消解后测量多元素组成，可用于地球化学异常和伴生元素研究。",
+    cannot: "消解不完全时不代表总量；金的适用性取决于前处理、取样量和检出限。",
+    steps:
+      "先确定目标元素和所需总量/可浸出量；选择消解；配置 QA/QC；核查超量程重测。",
+    error: "忽略消解方法；把低于检出限当零；混淆 ppm、ppb 和百分比。",
+    record: "消解、仪器方法、单位、检出限、稀释、超量程处理和 QA/QC。",
+  },
+  {
+    name: "样品袋、标签与封条",
+    icon: Shovel,
+    can: "维持样品身份、完整性和交接链，使结果可以追溯。",
+    cannot: "标签不能弥补非代表性取样或污染。",
+    steps: "使用唯一编号；内外双标签；封口签名；每次交接记录时间和人员。",
+    error: "用易溶墨水；样品编号重复；袋外信息与登记表不一致。",
+    record: "项目、编号、类型、日期、采样人、封条、接收人和异常情况。",
+  },
 ];
-const en:Tool[]=[
-{name:"Gold pan",icon:Waves,can:"Concentrate dense minerals for reconnaissance and tailings checks.",cannot:"A single pan is not an average reach grade and does not guarantee complete fine-gold recovery.",steps:"Measure feed volume, disaggregate fully, remove light minerals progressively, and retain the complete concentrate.",error:"Overloading, vigorous washing, poor clay breakup, or keeping only the best-looking pan.",record:"Feed volume, size fraction, pan count, concentrate mass, visible-gold count, and operator."},
-{name:"Sluice, matting, and riffles",icon:Filter,can:"Process material continuously and retain dense grains in lower-velocity zones.",cannot:"Equipment presence does not establish recovery; coarse and very fine gold need different conditions.",steps:"Calibrate slope and flow with known feed, feed uniformly, clean by batch, and inspect tailings.",error:"Excess slope, unstable water, clay balls, or continued operation after matting overload.",record:"Width, slope, flow, feed rate, run time, cleanup batch, and tailings result."},
-{name:"Sieves",icon:Grid3X3,can:"Standardise maximum particle size and separate fractions for comparable samples.",cannot:"Sieving does not identify gold and poor washing can lose fines attached to cobbles.",steps:"Record aperture, wet-sieve and wash coarse surfaces, then retain or weigh each fraction.",error:"Comparing samples prepared with different apertures or discarding oversize without inspection.",record:"Aperture, wet or dry method, mass or volume by fraction, and observed losses."},
-{name:"Magnet",icon:Magnet,can:"Separate strongly magnetic grains and help characterise magnetite-rich concentrate.",cannot:"Gold is not attracted by an ordinary magnet; non-magnetic does not mean gold.",steps:"Cover the magnet, approach dry concentrate in stages, and retain both magnetic and non-magnetic fractions.",error:"Direct contact with wet concentrate or treating all black sand as magnetite.",record:"Magnet specification, distance, passes, magnetic proportion, and photographs."},
-{name:"Hand lens and microscope",icon:Microscope,can:"Examine habit, cleavage, flakes, striations, and abrasion.",cannot:"Magnified appearance cannot determine elemental concentration or grade.",steps:"Clean material, use scale and stable lighting, observe multiple angles, and retain unedited images.",error:"Relying on one light colour, omitting scale, or selecting only bright grains.",record:"Magnification, lighting, grain size, form, image ID, and provisional interpretation."},
-{name:"Geological hammer",icon:Hammer,can:"Expose fresh surfaces and assess weathering, structures, and minerals.",cannot:"Hammer response or a fresh break cannot demonstrate gold.",steps:"Wear eye protection, control fly-rock direction, sample stable exposure, and photograph in place.",error:"Working below unstable slopes, damaging protected exposure, or lacking access permission.",record:"Location, face orientation, weathering, sample ID, and safety conditions."},
-{name:"Geological compass",icon:Compass,can:"Measure strike and dip of veins, faults, bedding, and joints.",cannot:"One reading cannot represent a curved or irregular structure.",steps:"Avoid magnetic objects, apply declination, repeat on planar surfaces, and state notation convention.",error:"Nearby phones or hammers, mixing true and magnetic north, or unstated strike format.",record:"North reference, declination, strike, dip direction, dip, feature type, and repeats."},
-{name:"GNSS / GPS",icon:MapPin,can:"Record position, track, time, and device-estimated accuracy.",cannot:"Displayed decimal places are not actual accuracy; canyon and canopy errors may be large.",steps:"Wait for stability, record CRS, repeat readings, and add a recoverable location description.",error:"Mixing WGS84 and local grids, reversing latitude/longitude, or publishing sensitive prospects.",record:"Coordinates, CRS, accuracy, device, time, and whether generalised."},
-{name:"Metal detector",icon:RadioTower,can:"Respond to shallow conductive targets, including larger nuggets and metal contamination.",cannot:"A response does not identify gold; fine placer gold is usually below practical detection.",steps:"Test local ground and known targets, scan a grid, cross-check directions, and confirm digging permission.",error:"Ignoring iron litter or mineralised ground, reporting only strong responses, or omitting blank areas.",record:"Model, coil, mode, sensitivity, ground balance, estimated depth, and repeat response."},
-{name:"Specific-gravity measurement",icon:Gauge,can:"Estimate density of competent, non-porous specimens from air and submerged weights.",cannot:"Porosity, cracks, bubbles, and mixed minerals introduce substantial error.",steps:"Calibrate balance, weigh dry, remove bubbles, weigh submerged, repeat, and report water temperature.",error:"Water absorption, uncorrected suspension buoyancy, or treating mixed-rock density as one mineral.",record:"Both weights, temperature, corrections, repeat difference, and formula."},
-{name:"Handheld XRF",icon:ScanSearch,can:"Screen many elements and support lithology, alteration, or contamination assessment.",cannot:"It is generally unsuitable for reliable low-level gold determination in ordinary field conditions.",steps:"Use suitable calibration, prepare a flat homogeneous sample, measure blanks and references, and retain spectra.",error:"Testing wet heterogeneous rock, ignoring matrix effects, or retaining only anomalous readings.",record:"Model, mode, time, calibration, reference materials, limits, preparation, and raw files."},
-{name:"Fire assay",icon:FlaskConical,can:"Concentrate precious metals by fusion and support quantitative gold analysis.",cannot:"A result represents the submitted test portion; coarse gold can still cause severe representativity error.",steps:"Use a qualified laboratory, specify mass and finish, and include blanks, duplicates, and reference materials.",error:"Small test portions for coarse gold, unit errors, or no repeat of anomalous results.",record:"Laboratory, method code, test mass, detection limit, QA/QC batch, and certificate."},
-{name:"ICP-MS / ICP-OES",icon:Focus,can:"Measure multi-element composition after appropriate digestion for geochemical interpretation.",cannot:"Incomplete digestion is not total concentration; gold suitability depends on preparation, mass, and limit.",steps:"Define target elements and total versus leachable question, choose digestion, run QA/QC, and repeat over-range results.",error:"Ignoring digestion, treating below detection as zero, or confusing ppm, ppb, and percent.",record:"Digestion, instrument method, units, limits, dilution, over-range handling, and QA/QC."},
-{name:"Sample bags, labels, and seals",icon:Shovel,can:"Preserve identity, integrity, and traceable custody.",cannot:"Labelling cannot correct unrepresentative sampling or contamination.",steps:"Use unique IDs, internal and external labels, signed seals, and record every transfer.",error:"Soluble ink, duplicate IDs, or mismatch between bag and register.",record:"Project, ID, type, date, collector, seal, recipient, and exceptions."}
+const en: Tool[] = [
+  {
+    name: "Gold pan",
+    icon: Waves,
+    can: "Concentrate dense minerals for reconnaissance and tailings checks.",
+    cannot:
+      "A single pan is not an average reach grade and does not guarantee complete fine-gold recovery.",
+    steps:
+      "Measure feed volume, disaggregate fully, remove light minerals progressively, and retain the complete concentrate.",
+    error:
+      "Overloading, vigorous washing, poor clay breakup, or keeping only the best-looking pan.",
+    record:
+      "Feed volume, size fraction, pan count, concentrate mass, visible-gold count, and operator.",
+  },
+  {
+    name: "Sluice, matting, and riffles",
+    icon: Filter,
+    can: "Process material continuously and retain dense grains in lower-velocity zones.",
+    cannot:
+      "Equipment presence does not establish recovery; coarse and very fine gold need different conditions.",
+    steps:
+      "Calibrate slope and flow with known feed, feed uniformly, clean by batch, and inspect tailings.",
+    error:
+      "Excess slope, unstable water, clay balls, or continued operation after matting overload.",
+    record:
+      "Width, slope, flow, feed rate, run time, cleanup batch, and tailings result.",
+  },
+  {
+    name: "Sieves",
+    icon: Grid3X3,
+    can: "Standardise maximum particle size and separate fractions for comparable samples.",
+    cannot:
+      "Sieving does not identify gold and poor washing can lose fines attached to cobbles.",
+    steps:
+      "Record aperture, wet-sieve and wash coarse surfaces, then retain or weigh each fraction.",
+    error:
+      "Comparing samples prepared with different apertures or discarding oversize without inspection.",
+    record:
+      "Aperture, wet or dry method, mass or volume by fraction, and observed losses.",
+  },
+  {
+    name: "Magnet",
+    icon: Magnet,
+    can: "Separate strongly magnetic grains and help characterise magnetite-rich concentrate.",
+    cannot:
+      "Gold is not attracted by an ordinary magnet; non-magnetic does not mean gold.",
+    steps:
+      "Cover the magnet, approach dry concentrate in stages, and retain both magnetic and non-magnetic fractions.",
+    error:
+      "Direct contact with wet concentrate or treating all black sand as magnetite.",
+    record:
+      "Magnet specification, distance, passes, magnetic proportion, and photographs.",
+  },
+  {
+    name: "Hand lens and microscope",
+    icon: Microscope,
+    can: "Examine habit, cleavage, flakes, striations, and abrasion.",
+    cannot:
+      "Magnified appearance cannot determine elemental concentration or grade.",
+    steps:
+      "Clean material, use scale and stable lighting, observe multiple angles, and retain unedited images.",
+    error:
+      "Relying on one light colour, omitting scale, or selecting only bright grains.",
+    record:
+      "Magnification, lighting, grain size, form, image ID, and provisional interpretation.",
+  },
+  {
+    name: "Geological hammer",
+    icon: Hammer,
+    can: "Expose fresh surfaces and assess weathering, structures, and minerals.",
+    cannot: "Hammer response or a fresh break cannot demonstrate gold.",
+    steps:
+      "Wear eye protection, control fly-rock direction, sample stable exposure, and photograph in place.",
+    error:
+      "Working below unstable slopes, damaging protected exposure, or lacking access permission.",
+    record:
+      "Location, face orientation, weathering, sample ID, and safety conditions.",
+  },
+  {
+    name: "Geological compass",
+    icon: Compass,
+    can: "Measure strike and dip of veins, faults, bedding, and joints.",
+    cannot: "One reading cannot represent a curved or irregular structure.",
+    steps:
+      "Avoid magnetic objects, apply declination, repeat on planar surfaces, and state notation convention.",
+    error:
+      "Nearby phones or hammers, mixing true and magnetic north, or unstated strike format.",
+    record:
+      "North reference, declination, strike, dip direction, dip, feature type, and repeats.",
+  },
+  {
+    name: "GNSS / GPS",
+    icon: MapPin,
+    can: "Record position, track, time, and device-estimated accuracy.",
+    cannot:
+      "Displayed decimal places are not actual accuracy; canyon and canopy errors may be large.",
+    steps:
+      "Wait for stability, record CRS, repeat readings, and add a recoverable location description.",
+    error:
+      "Mixing WGS84 and local grids, reversing latitude/longitude, or publishing sensitive prospects.",
+    record:
+      "Coordinates, CRS, accuracy, device, time, and whether generalised.",
+  },
+  {
+    name: "Metal detector",
+    icon: RadioTower,
+    can: "Respond to shallow conductive targets, including larger nuggets and metal contamination.",
+    cannot:
+      "A response does not identify gold; fine placer gold is usually below practical detection.",
+    steps:
+      "Test local ground and known targets, scan a grid, cross-check directions, and confirm digging permission.",
+    error:
+      "Ignoring iron litter or mineralised ground, reporting only strong responses, or omitting blank areas.",
+    record:
+      "Model, coil, mode, sensitivity, ground balance, estimated depth, and repeat response.",
+  },
+  {
+    name: "Specific-gravity measurement",
+    icon: Gauge,
+    can: "Estimate density of competent, non-porous specimens from air and submerged weights.",
+    cannot:
+      "Porosity, cracks, bubbles, and mixed minerals introduce substantial error.",
+    steps:
+      "Calibrate balance, weigh dry, remove bubbles, weigh submerged, repeat, and report water temperature.",
+    error:
+      "Water absorption, uncorrected suspension buoyancy, or treating mixed-rock density as one mineral.",
+    record:
+      "Both weights, temperature, corrections, repeat difference, and formula.",
+  },
+  {
+    name: "Handheld XRF",
+    icon: ScanSearch,
+    can: "Screen many elements and support lithology, alteration, or contamination assessment.",
+    cannot:
+      "It is generally unsuitable for reliable low-level gold determination in ordinary field conditions.",
+    steps:
+      "Use suitable calibration, prepare a flat homogeneous sample, measure blanks and references, and retain spectra.",
+    error:
+      "Testing wet heterogeneous rock, ignoring matrix effects, or retaining only anomalous readings.",
+    record:
+      "Model, mode, time, calibration, reference materials, limits, preparation, and raw files.",
+  },
+  {
+    name: "Fire assay",
+    icon: FlaskConical,
+    can: "Concentrate precious metals by fusion and support quantitative gold analysis.",
+    cannot:
+      "A result represents the submitted test portion; coarse gold can still cause severe representativity error.",
+    steps:
+      "Use a qualified laboratory, specify mass and finish, and include blanks, duplicates, and reference materials.",
+    error:
+      "Small test portions for coarse gold, unit errors, or no repeat of anomalous results.",
+    record:
+      "Laboratory, method code, test mass, detection limit, QA/QC batch, and certificate.",
+  },
+  {
+    name: "ICP-MS / ICP-OES",
+    icon: Focus,
+    can: "Measure multi-element composition after appropriate digestion for geochemical interpretation.",
+    cannot:
+      "Incomplete digestion is not total concentration; gold suitability depends on preparation, mass, and limit.",
+    steps:
+      "Define target elements and total versus leachable question, choose digestion, run QA/QC, and repeat over-range results.",
+    error:
+      "Ignoring digestion, treating below detection as zero, or confusing ppm, ppb, and percent.",
+    record:
+      "Digestion, instrument method, units, limits, dilution, over-range handling, and QA/QC.",
+  },
+  {
+    name: "Sample bags, labels, and seals",
+    icon: Shovel,
+    can: "Preserve identity, integrity, and traceable custody.",
+    cannot:
+      "Labelling cannot correct unrepresentative sampling or contamination.",
+    steps:
+      "Use unique IDs, internal and external labels, signed seals, and record every transfer.",
+    error: "Soluble ink, duplicate IDs, or mismatch between bag and register.",
+    record:
+      "Project, ID, type, date, collector, seal, recipient, and exceptions.",
+  },
 ];
-export default function FieldToolsGuide({lang}:{lang:"zh"|"en"}){const items=lang==="zh"?zh:en;return <><div className="page-head tools-head"><p className="eyebrow">FIELD TOOLS · LIMITS · RECORDING</p><h1>{lang==="zh"?"现场工具与检测技术":"Field tools and analytical techniques"}</h1><p className="lead">{lang==="zh"?"工具只能回答设计范围内的问题。每次使用都应记录型号、设置、校准、检出限和原始结果，不能把仪器信号直接写成含金结论。":"A tool answers only the question it was designed for. Record model, settings, calibration, detection limit, and raw output; never turn an instrument response directly into a gold conclusion."}</p></div><section className="section"><div className="tool-photo-grid"><figure><Image src="/images/panning.jpg" alt="Gold panning in a stream" width={900} height={620}/><figcaption>BLM Alaska · Public Domain</figcaption></figure><figure><Image src="/images/sluice.jpg" alt="Historical sluice operation" width={900} height={620}/><figcaption>University of Washington Libraries · Public Domain</figcaption></figure></div><div className="tool-grid">{items.map((x,i)=><article className="card tool-card" key={x.name}><div className="tool-title"><x.icon size={24} aria-hidden="true"/><span>{String(i+1).padStart(2,"0")}</span><h2>{x.name}</h2></div><dl><div><dt>{lang==="zh"?"能判断什么":"What it can do"}</dt><dd>{x.can}</dd></div><div><dt>{lang==="zh"?"不能判断什么":"What it cannot do"}</dt><dd>{x.cannot}</dd></div><div><dt>{lang==="zh"?"操作顺序":"Operating sequence"}</dt><dd>{x.steps}</dd></div><div><dt>{lang==="zh"?"常见错误":"Common error"}</dt><dd>{x.error}</dd></div><div><dt>{lang==="zh"?"必须记录":"Record"}</dt><dd>{x.record}</dd></div></dl></article>)}</div><div className="notice">{lang==="zh"?"安全与许可优先：不要在不稳定边坡、洪水河道或无许可土地上操作；化学分析、XRF 与火试金应由受训人员或合格实验室完成。":"Safety and permission come first. Do not work below unstable slopes, in flood conditions, or without land access. Chemical analysis, XRF, and fire assay require trained personnel or a qualified laboratory."}</div></section></>}
+export default function FieldToolsGuide({ lang }: { lang: "zh" | "en" }) {
+  const items = lang === "zh" ? zh : en;
+  return (
+    <>
+      <div className="page-head tools-head">
+        <p className="eyebrow">FIELD TOOLS · LIMITS · RECORDING</p>
+        <h1>
+          {lang === "zh"
+            ? "现场工具与检测技术"
+            : "Field tools and analytical techniques"}
+        </h1>
+        <p className="lead">
+          {lang === "zh"
+            ? "工具只能回答设计范围内的问题。每次使用都应记录型号、设置、校准、检出限和原始结果，不能把仪器信号直接写成含金结论。"
+            : "A tool answers only the question it was designed for. Record model, settings, calibration, detection limit, and raw output; never turn an instrument response directly into a gold conclusion."}
+        </p>
+        <ContentReviewPanel lang={lang} topic="tools" />
+      </div>
+      <section className="section">
+        <div className="tool-photo-grid">
+          <figure>
+            <Image
+              src="/images/panning.jpg"
+              alt="Gold panning in a stream"
+              width={900}
+              height={620}
+            />
+            <figcaption>BLM Alaska · Public Domain</figcaption>
+          </figure>
+          <figure>
+            <Image
+              src="/images/sluice.jpg"
+              alt="Historical sluice operation"
+              width={900}
+              height={620}
+            />
+            <figcaption>
+              University of Washington Libraries · Public Domain
+            </figcaption>
+          </figure>
+        </div>
+        <div className="tool-grid">
+          {items.map((x, i) => (
+            <article className="card tool-card" key={x.name}>
+              <div className="tool-title">
+                <x.icon size={24} aria-hidden="true" />
+                <span>{String(i + 1).padStart(2, "0")}</span>
+                <h2>{x.name}</h2>
+              </div>
+              <dl>
+                <div>
+                  <dt>{lang === "zh" ? "能判断什么" : "What it can do"}</dt>
+                  <dd>{x.can}</dd>
+                </div>
+                <div>
+                  <dt>
+                    {lang === "zh" ? "不能判断什么" : "What it cannot do"}
+                  </dt>
+                  <dd>{x.cannot}</dd>
+                </div>
+                <div>
+                  <dt>{lang === "zh" ? "操作顺序" : "Operating sequence"}</dt>
+                  <dd>{x.steps}</dd>
+                </div>
+                <div>
+                  <dt>{lang === "zh" ? "常见错误" : "Common error"}</dt>
+                  <dd>{x.error}</dd>
+                </div>
+                <div>
+                  <dt>{lang === "zh" ? "必须记录" : "Record"}</dt>
+                  <dd>{x.record}</dd>
+                </div>
+              </dl>
+            </article>
+          ))}
+        </div>
+        <div className="notice">
+          {lang === "zh"
+            ? "安全与许可优先：不要在不稳定边坡、洪水河道或无许可土地上操作；化学分析、XRF 与火试金应由受训人员或合格实验室完成。"
+            : "Safety and permission come first. Do not work below unstable slopes, in flood conditions, or without land access. Chemical analysis, XRF, and fire assay require trained personnel or a qualified laboratory."}
+        </div>
+      </section>
+    </>
+  );
+}

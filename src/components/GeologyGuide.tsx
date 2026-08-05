@@ -13,6 +13,7 @@ import {
 import { atlasItems } from "@/data/media";
 import FieldBenchmarks from "./FieldBenchmarks";
 import RiverAnatomy from "./RiverAnatomy";
+import ContentReviewPanel from "./ContentReviewPanel";
 import "./geology-guide.css";
 
 type Lang = "zh" | "en";
@@ -159,6 +160,7 @@ export default function GeologyGuide({ lang }: { lang: Lang }) {
         <p className="eyebrow">{c.eyebrow}</p>
         <h1>{c.title}</h1>
         <p className="lead">{c.lead}</p>
+        <ContentReviewPanel lang={lang} topic="geology" />
         <div className="geology-jump">
           <a href="#placer">
             <Waves size={17} />
