@@ -142,6 +142,12 @@ const toolLinks = [
     Scale,
   ],
   [
+    "ဓာတ်ခွဲအသုတ် QA/QC စစ်ဆေးရန်",
+    "Duplicate RPD၊ blank contamination နှင့် CRM recovery ကို စစ်ပြီး control fail ဖြစ်သော assay batch ကို ခွဲထုတ်ပါ။",
+    "/my/qaqc",
+    ClipboardCheck,
+  ],
+  [
     "မြေပြင်အမှတ်ပေးရန်",
     "ရွှေကျင်နှင့် မူလရွှေလက္ခဏာများကို စုစည်း၍ နမူနာယူရမည့် ဦးစားပေးအဆင့် သတ်မှတ်ပါ။",
     "#my-assessment",
@@ -515,9 +521,9 @@ export default function MyanmarHub() {
             <Scale size={17} />
             English sampling calculator
           </Link>
-          <Link href="/en/qaqc">
+          <Link href="/my/qaqc">
             <ClipboardCheck size={17} />
-            English QA/QC checker
+            မြန်မာ QA/QC စစ်ဆေးကိရိယာ
           </Link>
         </div>
       </section>

@@ -8,7 +8,7 @@ import {
   ShieldQuestion,
 } from "lucide-react";
 import "./qaqc-checker.css";
-type Lang = "zh" | "en";
+type Lang = "zh" | "en" | "my";
 type State = "pass" | "review" | "missing";
 const t = {
   zh: {
@@ -64,6 +64,33 @@ const t = {
     note: "Defaults are preliminary screening values, not universal laboratory acceptance criteria. When a control fails, pause interpretation and review sequence, preparation contamination, drift, units and certificate values before re-assay or re-preparation.",
     clear: "Clear all",
     defaults: "Restore examples",
+  },
+  my: {
+    title: "ဓာတ်ခွဲအသုတ် အရည်အသွေးစစ်ဆေးကိရိယာ",
+    lead: "ရွှေမူမမှန်တန်ဖိုးကို အဓိပ္ပာယ်မဖော်မီ control sample ထည့်သွင်းနှုန်း၊ blank ညစ်ညမ်းမှု၊ duplicate precision နှင့် CRM recovery ကို စစ်ဆေးပါ။ Threshold တိုင်းကို project၊ material နှင့် analytical method အလိုက် သတ်မှတ်ရမည်။",
+    batch: "အသုတ်အတွင်း နမူနာအရေအတွက်",
+    routine: "ပုံမှန်နမူနာ",
+    dup: "ကွင်းဆင်း duplicate",
+    blank: "Blank နမူနာ",
+    crm: "Certificate ပါ စံပစ္စည်း (CRM)",
+    target: "Control အမျိုးအစားတစ်ခုစီ၏ ရည်မှန်းထည့်သွင်းနှုန်း (%)",
+    result: "Control ရလဒ်များ",
+    a: "Duplicate A",
+    b: "Duplicate B",
+    rpd: "RPD ပြန်လည်စစ်ဆေးသတ်မှတ်ချက် (%)",
+    blankResult: "Blank ရလဒ်",
+    dl: "နည်းလမ်း၏ detection limit",
+    multiple: "Blank ပြန်စစ်မည့် ဆတိုးကိန်း (× detection limit)",
+    cert: "CRM certificate တန်ဖိုး",
+    measured: "CRM တိုင်းတာရရှိတန်ဖိုး",
+    crmLimit: "CRM ခွင့်ပြုကွာဟချက် (±%)",
+    summary: "အသုတ်အကြိုစိစစ်ရလဒ်",
+    pass: "လက်ခံနိုင်",
+    review: "ပြန်လည်စစ်ဆေးရန်လို",
+    missing: "အချက်အလက်မလုံလောက်",
+    note: "မူလတန်ဖိုးများသည် အကြိုစိစစ်ရန်သာဖြစ်ပြီး ဓာတ်ခွဲခန်းအားလုံးအတွက် တစ်သမတ်တည်းလက်ခံစံ မဟုတ်ပါ။ Control fail ဖြစ်လျှင် ထိုအသုတ်၏ anomaly interpretation ကို ရပ်ထားပြီး sample sequence၊ preparation contamination၊ analytical drift၊ unit နှင့် certificate value ကို စစ်ဆေးကာ re-assay သို့မဟုတ် re-preparation ဆုံးဖြတ်ပါ။",
+    clear: "အားလုံးရှင်းရန်",
+    defaults: "နမူနာတန်ဖိုး ပြန်ထားရန်",
   },
 } as const;
 export default function QAQCChecker({ lang = "zh" }: { lang?: Lang }) {
@@ -218,7 +245,11 @@ export default function QAQCChecker({ lang = "zh" }: { lang?: Lang }) {
       <div
         className="tool-reset-actions"
         aria-label={
-          lang === "zh" ? "质量检查器数据操作" : "Quality checker data actions"
+          lang === "zh"
+            ? "质量检查器数据操作"
+            : lang === "my"
+              ? "အရည်အသွေးစစ်ဆေးကိရိယာ ဒေတာလုပ်ဆောင်ချက်"
+              : "Quality checker data actions"
         }
       >
         <button type="button" onClick={clearAll}>
@@ -257,32 +288,32 @@ export default function QAQCChecker({ lang = "zh" }: { lang?: Lang }) {
             {c.summary}
           </h3>
           <div className="qaqc-total">
-            <span>{lang === "zh" ? "批次总数" : "Total batch items"}</span>
+            <span>{lang === "zh" ? "批次总数" : lang === "my" ? "အသုတ်စုစုပေါင်း" : "Total batch items"}</span>
             <strong>{r.total}</strong>
           </div>
           <Row
-            label={lang === "zh" ? "重复样插入率" : "Duplicate insertion"}
+            label={lang === "zh" ? "重复样插入率" : lang === "my" ? "Duplicate ထည့်သွင်းနှုန်း" : "Duplicate insertion"}
             value={`${r.pct(dups).toFixed(1)}%`}
             state={r.ratio(dups)}
           />
           <Row
-            label={lang === "zh" ? "空白样插入率" : "Blank insertion"}
+            label={lang === "zh" ? "空白样插入率" : lang === "my" ? "Blank ထည့်သွင်းနှုန်း" : "Blank insertion"}
             value={`${r.pct(blanks).toFixed(1)}%`}
             state={r.ratio(blanks)}
           />
           <Row
-            label={lang === "zh" ? "CRM 插入率" : "CRM insertion"}
+            label={lang === "zh" ? "CRM 插入率" : lang === "my" ? "CRM ထည့်သွင်းနှုန်း" : "CRM insertion"}
             value={`${r.pct(crms).toFixed(1)}%`}
             state={r.ratio(crms)}
           />
           <Row
-            label={lang === "zh" ? "重复样 RPD" : "Duplicate RPD"}
+            label={lang === "zh" ? "重复样 RPD" : lang === "my" ? "Duplicate RPD" : "Duplicate RPD"}
             value={r.rpd === null ? "—" : `${r.rpd.toFixed(1)}%`}
             state={r.dupState}
           />
           <Row
             label={
-              lang === "zh" ? "空白污染筛查" : "Blank contamination screen"
+              lang === "zh" ? "空白污染筛查" : lang === "my" ? "Blank ညစ်ညမ်းမှုစိစစ်ချက်" : "Blank contamination screen"
             }
             value={
               Number.isFinite(blank) &&
@@ -294,7 +325,7 @@ export default function QAQCChecker({ lang = "zh" }: { lang?: Lang }) {
             state={r.blankState}
           />
           <Row
-            label={lang === "zh" ? "CRM 回收率" : "CRM recovery"}
+            label={lang === "zh" ? "CRM 回收率" : lang === "my" ? "CRM recovery" : "CRM recovery"}
             value={r.recovery === null ? "—" : `${r.recovery.toFixed(1)}%`}
             state={r.crmState}
           />
@@ -303,7 +334,9 @@ export default function QAQCChecker({ lang = "zh" }: { lang?: Lang }) {
             <code>
               {lang === "zh"
                 ? "CRM 回收率 = 实测值 ÷ 证书值 × 100%"
-                : "CRM recovery = measured ÷ certified × 100%"}
+                : lang === "my"
+                  ? "CRM recovery = တိုင်းတာတန်ဖိုး ÷ certificate တန်ဖိုး × 100%"
+                  : "CRM recovery = measured ÷ certified × 100%"}
             </code>
           </div>
           <div className="qaqc-note">
