@@ -1,7 +1,7 @@
 import { AlertTriangle, Compass, Ruler, Waves } from "lucide-react";
 import PlacerReferenceFigures from "./PlacerReferenceFigures";
 import "./mapping-blueprints.css";
-type Lang = "zh" | "en";
+type Lang = "zh" | "en" | "my";
 const t = {
   zh: {
     title: "勘查平面解剖图",
@@ -69,6 +69,39 @@ const t = {
     ],
     warn: "Diagrams do not replace field measurement, land access, engineering design or qualified resource evaluation.",
   },
+  my: {
+    title: "စူးစမ်းလေ့လာရေး plan-view ခွဲခြမ်းပုံ",
+    lead: "ဆောက်လုပ်ရေးပုံစံကဲ့သို့ ဖတ်ပါ။ ဦးတည်ချက်၊ scale၊ ဘူမိဗေဒ boundary၊ sample line၊ control နှင့် duplicate ကို စာရွက်တစ်ခုတည်းတွင် ပြရမည်။ ဤပုံများသည် template ဖြစ်ပြီး နေရာတစ်ခုအတွက် engineering design မဟုတ်ပါ။",
+    placer: "ရွှေကျင်မြစ်ပိုင်း plan",
+    pn: "Transect သည် မြစ်ချောင်းကို ဖြတ်ရမည်။ အထက်ရေ၊ anomaly နှင့် အောက်ရေ station များတွင် တူညီသော sample support သုံးပြီး black sand များသည့်နေရာကိုသာ မရွေးပါနှင့်။",
+    lode: "မူလရွှေ outcrop plan",
+    ln: "Channel sample ကို သတ္တုကြောနှင့် wall rock နှစ်ဖက်အား တတ်နိုင်သမျှ ထောင့်မှန်ဖြတ်ယူပြီး strike တစ်လျှောက် ထပ်ယူကာ width နှင့် grade continuity ကို စစ်ပါ။",
+    flow: "ရေစီး",
+    inside: "အတွင်းကွေ့ အနည်ကျရာ",
+    outer: "အပြင်ကွေ့ တိုက်စားရာ",
+    boulder: "ကျောက်တုံးနောက်ဘက်",
+    bedrock: "Bedrock crack",
+    upstream: "အထက်ရေ background control",
+    downstream: "အောက်ရေ control",
+    thalweg: "Thalweg / အနက်ဆုံးရေလမ်း",
+    exposure: "Bedrock outcrop",
+    transect: "မြစ်ဖြတ် sample line",
+    equal: "Routine sample တိုင်းတွင် တူညီသော volume နှင့် size fraction ထားပါ",
+    vein: "Vein / mineralised zone",
+    alter: "Alteration halo",
+    wall: "Wall rock",
+    strike: "Vein strike",
+    check: "ပုံတွင် မဖြစ်မနေပါရမည့်အချက်",
+    items: [
+      "မြောက်မြား၊ scale၊ coordinate reference system နှင့် ရက်စွဲ",
+      "ရေစီး သို့မဟုတ် vein strike / dip",
+      "Sample ID၊ အမျိုးအစား၊ volume သို့မဟုတ် width",
+      "Strata၊ contact၊ fault၊ bank နှင့် bedrock boundary",
+      "Blank၊ duplicate နှင့် reference material တည်နေရာ",
+      "တိုင်းတာထားသော၊ ခန့်မှန်းထားသောနှင့် မသိသော boundary ကို ခွဲပြခြင်း",
+    ],
+    warn: "ဤပုံများသည် ကွင်းဆင်းတိုင်းတာမှု၊ မြေယာခွင့်ပြုချက်၊ engineering design သို့မဟုတ် အရည်အချင်းရှိသူ၏ resource evaluation ကို မအစားထိုးနိုင်ပါ။",
+  },
 } as const;
 export default function MappingBlueprints({ lang }: { lang: Lang }) {
   const c = t[lang];
@@ -119,24 +152,40 @@ export default function MappingBlueprints({ lang }: { lang: Lang }) {
           <p>{c.pn}</p>
           <div
             className="placer-legend"
-            aria-label={lang === "en" ? "Plan legend" : "平面图图例"}
+            aria-label={lang === "zh" ? "平面图图例" : "Plan legend"}
           >
-            <strong>{lang === "en" ? "PLAN LEGEND" : "平面图图例"}</strong>
+            <strong>{lang === "zh" ? "平面图图例" : "PLAN LEGEND"}</strong>
             <span>
               <i className="lg-routine" />
-              {lang === "en" ? "Routine equal-volume sample" : "常规等体积样"}
+              {lang === "zh"
+                ? "常规等体积样"
+                : lang === "my"
+                  ? "Routine တူညီထုထည် sample"
+                  : "Routine equal-volume sample"}
             </span>
             <span>
               <i className="lg-duplicate" />
-              {lang === "en" ? "Field duplicate" : "现场重复样"}
+              {lang === "zh"
+                ? "现场重复样"
+                : lang === "my"
+                  ? "ကွင်းဆင်း duplicate"
+                  : "Field duplicate"}
             </span>
             <span>
               <i className="lg-transect" />
-              {lang === "en" ? "Cross-channel transect" : "跨河槽样线"}
+              {lang === "zh"
+                ? "跨河槽样线"
+                : lang === "my"
+                  ? "မြစ်ဖြတ် transect"
+                  : "Cross-channel transect"}
             </span>
             <span>
               <i className="lg-flow" />
-              {lang === "en" ? "Water-flow direction" : "水流方向"}
+              {lang === "zh"
+                ? "水流方向"
+                : lang === "my"
+                  ? "ရေစီးဦးတည်ချက်"
+                  : "Water-flow direction"}
             </span>
             <p>{c.equal}</p>
           </div>
@@ -169,7 +218,7 @@ export default function MappingBlueprints({ lang }: { lang: Lang }) {
           <p>{c.ln}</p>
         </article>
       </div>
-      <PlacerReferenceFigures lang={lang} />
+      <PlacerReferenceFigures lang={lang === "my" ? "en" : lang} />
       <div className="bp-check">
         <div>
           <h3>{c.check}</h3>

@@ -102,8 +102,50 @@ const tx = {
     control: "QA/QC sample",
     none: "Incomplete record",
   },
+  my: {
+    eyebrow: "PRIVATE SAMPLE MAPPING",
+    title: "မြေပုံ၊ နမူနာမှတ်နှင့် ဘူမိဗေဒဆက်စပ်မှု",
+    lead: "မြေပုံသည် အကောင်းဆုံးရလဒ်များကိုသာ ပြသရန်မဟုတ်ပါ။ အထက်ရေ–အောက်ရေ၊ မြေလွှာနှင့် သတ္တုကြော ဆက်စပ်မှုကို စစ်ဆေးရန်ဖြစ်သည်။ တိကျသော coordinate များကို ဤစက်တွင်သာ သိမ်းပြီး sample ကို ဖွင့်သည့်အခါမှ ပြင်ပမြေပုံသို့ ပို့သည်။",
+    all: "Project အားလုံး",
+    located: "Coordinate ပါသော sample",
+    assayed: "Assay ရလဒ်ပါသော sample",
+    points: "နမူနာမှတ်",
+    open: "မြေပုံဖွင့်ရန်",
+    accuracy: "တည်နေရာတိကျမှု",
+    missing: "Coordinate မရှိ",
+    empty:
+      "ဤ filter အောက်တွင် sample မရှိပါ။ Field Records တွင် GPS coordinate ကို ဦးစွာသိမ်းပါ။",
+    record: "နမူနာမှတ် ထည့်ရန်",
+    privacy: "တည်နေရာလုံခြုံရေး",
+    privacyText:
+      "အများပြည်သူသို့ ထုတ်ပြန်သော report တွင် တိကျသော ရွှေရှာနေရာကို ဖယ်ရှား၊ အကြမ်းဖျဉ်းပြောင်း သို့မဟုတ် zone အဖြစ်သာ ပြပါ။ Exact coordinate မျှဝေမီ မြေယာအခွင့်အရေး၊ permit နှင့် လက်ခံသူကို စစ်ဆေးပါ။",
+    how: "နမူနာမှတ်များကို မည်သို့စီစဉ်မည်",
+    placer: "မြစ်ချောင်းနှင့် ရွှေကျင်သိုက်",
+    placerText:
+      "အထက်ရေ၊ anomaly ဧရိယာနှင့် အောက်ရေတွင် တူညီသော ထုထည်ဖြင့် sample ယူပါ။ အတွင်းကွေ့၊ ကျောက်တုံးနောက်ဘက်၊ clay false bottom နှင့် bedrock crack ကို သီးခြားမှတ်တမ်းတင်ပါ။ Rich pan တစ်ခုသည် မြစ်ပိုင်းတစ်ခုလုံး၏ grade မဟုတ်ပါ။",
+    lode: "တောင်စောင်းနှင့် သတ္တုကြော",
+    lodeText:
+      "သတ္တုကြောနှင့် wall rock နှစ်ဖက်ကို ဖြတ်သည့် continuous channel sample ယူပြီး strike တစ်လျှောက် section ထပ်ယူပါ။ Strike၊ dip၊ true width၊ alteration boundary နှင့် blank ကို မှတ်တမ်းတင်ပါ။",
+    reference: "ကွင်းဆင်းအကိုးအကား ဓာတ်ပုံများ",
+    refLead:
+      "ဤဓာတ်ပုံအစစ်များသည် ပတ်ဝန်းကျင်နှင့် ပစ္စည်းကို နားလည်ရန်ဖြစ်သည်။ Prospect coordinate မဟုတ်သကဲ့သို့ သင့် sample တွင် ရွှေပါကြောင်း မသက်သေပြပါ။",
+    river: "ရွှေကျင်ခြင်းနှင့် မြစ်ချောင်း sample",
+    riverText:
+      "အထက်ရေ–အောက်ရေ trend ကို နှိုင်းယှဉ်ရန် processed volume၊ size fraction နှင့် repeat sample လိုအပ်သည်။",
+    channel: "ရှေးဟောင်းမြစ်ကြောင်း ကျောက်စရစ်နှိုင်းယှဉ်ပုံ",
+    channelText:
+      "Conglomerate ပုံသဏ္ဌာန်သည် analogue သာဖြစ်သည်။ Basal contact၊ bedding၊ geometry နှင့် regional context ကို ပေါင်းစပ်ရမည်။",
+    vein: "သတ္တုကြော outcrop မှတ်တမ်း",
+    veinText:
+      "Contact၊ thickness၊ direction နှင့် continuity ကို မှတ်တမ်းတင်ပါ။ အဖြူရောင် quartz သာကြည့်၍ ရွှေပါသည်ဟု မဆုံးဖြတ်ပါနှင့်။",
+    legend: "အခြေအနေအညွှန်း",
+    high: "ဓာတ်ခွဲခန်းရလဒ်ရှိ",
+    field: "ကွင်းဆင်းလက္ခဏာသာရှိ",
+    control: "QA/QC sample",
+    none: "အချက်အလက်မပြည့်စုံ",
+  },
 };
-export default function MapWorkspace({ lang }: { lang: "zh" | "en" }) {
+export default function MapWorkspace({ lang }: { lang: "zh" | "en" | "my" }) {
   const c = tx[lang],
     [records, setRecords] = useState<Sample[]>([]),
     [project, setProject] = useState("all"),
@@ -136,7 +178,7 @@ export default function MapWorkspace({ lang }: { lang: "zh" | "en" }) {
       (mode !== "located" || valid(x)) &&
       (mode !== "assayed" || Boolean(x.result)),
   );
-  const base = lang === "zh" ? "" : "/en";
+  const base = lang === "zh" ? "" : lang === "my" ? "/my" : "/en";
   return (
     <>
       <div className="page-head map-head">
@@ -148,7 +190,11 @@ export default function MapWorkspace({ lang }: { lang: "zh" | "en" }) {
             {c.record}
           </Link>
           <Link className="button secondary" href={`${base}/project`}>
-            {lang === "zh" ? "项目控制台" : "Project control centre"}
+            {lang === "zh"
+              ? "项目控制台"
+              : lang === "my"
+                ? "Project အလုပ်နေရာ"
+                : "Project control centre"}
           </Link>
         </div>
       </div>
@@ -246,12 +292,12 @@ export default function MapWorkspace({ lang }: { lang: "zh" | "en" }) {
           <span className="control">{c.control}</span>
           <span className="none">{c.none}</span>
         </div>
-      <div className="notice">
-        <strong>{c.privacy}：</strong>
-        {c.privacyText}
-      </div>
-      <MappingBlueprints lang={lang} />
-      <section className="mapping-method">
+        <div className="notice">
+          <strong>{c.privacy}：</strong>
+          {c.privacyText}
+        </div>
+        <MappingBlueprints lang={lang} />
+        <section className="mapping-method">
           <p className="eyebrow">SAMPLING GEOMETRY</p>
           <h2>{c.how}</h2>
           <div className="method-grid">

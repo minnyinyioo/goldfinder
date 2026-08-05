@@ -14,6 +14,7 @@ import {
   Languages,
   Layers3,
   Mountain,
+  Map,
   Scale,
   ShieldAlert,
   Waves,
@@ -138,6 +139,12 @@ const toolLinks = [
     "Sample ID၊ GPS၊ ဓာတ်ပုံ၊ assay နှင့် chain of custody ကို မှတ်တမ်းတင်ပါ။",
     "/my/field",
     ClipboardList,
+  ],
+  [
+    "နမူနာမြေပုံနှင့် ဆက်စပ်မှု",
+    "GPS sample များကို project အလိုက်ကြည့်ပြီး အထက်ရေ–အောက်ရေ၊ assay နှင့် QA/QC ဆက်စပ်မှုကို စစ်ဆေးပါ။",
+    "/my/map",
+    Map,
   ],
   [
     "ဒေတာအရန်နှင့် ပြန်လည်ရယူရန်",
