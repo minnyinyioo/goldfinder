@@ -136,7 +136,7 @@ const toolLinks = [
   [
     "နမူနာမှတ်တမ်း",
     "Sample ID၊ GPS၊ ဓာတ်ပုံ၊ assay နှင့် chain of custody ကို မှတ်တမ်းတင်ပါ။",
-    "/en/field",
+    "/my/field",
     ClipboardList,
   ],
   [

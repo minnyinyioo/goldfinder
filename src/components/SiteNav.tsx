@@ -104,8 +104,20 @@ export default function SiteNav() {
     localStorage.setItem("goldfinder-theme", next);
   }
   const home = isMy ? "/my" : isEn ? "/en" : "/",
-    zhHref = isEn ? path.replace(/^\/en/, "") || "/" : isMy ? "/" : path,
-    enHref = isEn ? path : isMy ? "/en" : pairs[path] || "/en",
+    zhHref = isEn
+      ? path.replace(/^\/en/, "") || "/"
+      : isMy
+        ? path === "/my/field"
+          ? "/field"
+          : "/"
+        : path,
+    enHref = isEn
+      ? path
+      : isMy
+        ? path === "/my/field"
+          ? "/en/field"
+          : "/en"
+        : pairs[path] || "/en",
     searchHref = isEn ? "/en/search" : "/search";
   const openLabel = isMy
       ? "လမ်းညွှန်ဖွင့်ရန်"

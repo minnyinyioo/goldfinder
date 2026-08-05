@@ -1,5 +1,12 @@
 "use client";
-import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import "./field-records.css";
 type Sample = {
   id: string;
@@ -72,7 +79,8 @@ const blank: Sample = {
   notes: "",
 };
 const zh = {
-    draft: "已从现场判断报告带入草稿，请检查并补充项目名称、GPS 和交接链后再保存。",
+    draft:
+      "已从现场判断报告带入草稿，请检查并补充项目名称、GPS 和交接链后再保存。",
     eyebrow: "DEVICE-LOCAL SAMPLE REGISTER",
     title: "完整取样记录",
     lead: "记录保存在当前浏览器。默认导出会隐藏精确坐标；请定期备份 JSON，并根据所在地隐私和矿业规定保管数据。",
@@ -131,7 +139,8 @@ const zh = {
     },
   },
   en = {
-    draft: "A draft was imported from Field Assessment. Review it and add project name, GPS and custody before saving.",
+    draft:
+      "A draft was imported from Field Assessment. Review it and add project name, GPS and custody before saving.",
     eyebrow: "DEVICE-LOCAL SAMPLE REGISTER",
     title: "Complete sampling records",
     lead: "Records remain in this browser. Exact coordinates are excluded from exports by default. Back up JSON regularly and protect data under applicable privacy and mining requirements.",
@@ -188,6 +197,66 @@ const zh = {
       seal: "Seal / consignment number",
       notes: "Stratigraphy, contamination controls, and hazards",
     },
+  },
+  my = {
+    draft:
+      "Field Assessment မှ draft ထည့်ထားသည်။ Project name၊ GPS နှင့် chain of custody ကို စစ်ဆေးဖြည့်စွက်ပြီးမှ သိမ်းပါ။",
+    eyebrow: "DEVICE-LOCAL SAMPLE REGISTER",
+    title: "ပြည့်စုံသော နမူနာမှတ်တမ်း",
+    lead: "မှတ်တမ်းများကို ဤ browser နှင့် စက်ပေါ်တွင်သာ သိမ်းထားသည်။ Export တွင် exact coordinate ကို မူလအခြေအနေဖြင့် ဖယ်ထားသည်။ JSON backup ကို ပုံမှန်သိမ်းပြီး privacy နှင့် mining requirement များအတိုင်း ကာကွယ်ပါ။",
+    new: "နမူနာအသစ်",
+    identity: "Project နှင့် နမူနာအမှတ်အသား",
+    field: "တည်နေရာ၊ ပစ္စည်းနှင့် နမူနာအတိုင်းအတာ",
+    gold: "ကွင်းဆင်း recovery နှင့် ဓာတ်ခွဲရလဒ်",
+    custody: "Chain of custody / လွှဲပြောင်းမှတ်တမ်း",
+    save: "နမူနာကို သိမ်းရန်",
+    records: "နမူနာစာရင်း",
+    empty: "နမူနာမှတ်တမ်း မရှိသေးပါ။",
+    exportJson: "JSON backup ထုတ်ရန်",
+    exportCsv: "CSV ထုတ်ရန်",
+    import: "JSON ပြန်သွင်းရန်",
+    coords: "Exact coordinate ထည့်ရန်",
+    print: "နမူနာ label ပုံနှိပ်ရန်",
+    delete: "ဖျက်ရန်",
+    clear: "အားလုံးဖျက်ရန်",
+    confirm: "ဤစက်တွင်သိမ်းထားသော နမူနာမှတ်တမ်းအားလုံးကို ဖျက်မည်လား။",
+    invalid: "Backup file format မမှန်ပါ။ မည်သည့်မှတ်တမ်းမျှ မသွင်းရသေးပါ။",
+    imported: "မှတ်တမ်း ထည့်သွင်းပြီး။",
+    local: "ဤစက်တွင်သာ သိမ်းထားသည်",
+    labels: {
+      project: "Project အမည်",
+      sample: "Sample ID",
+      sampleType: "နမူနာအမျိုးအစား",
+      qcType: "QA/QC အမျိုးအစား",
+      parentSample: "ဆက်စပ်မူလနမူနာ",
+      date: "ရက်စွဲ",
+      environment: "ပတ်ဝန်းကျင်အမျိုးအစား",
+      material: "အမှန်တကယ် မြေ/ပစ္စည်း",
+      lat: "Latitude",
+      lng: "Longitude",
+      accuracy: "တည်နေရာတိကျမှု (m)",
+      depthFrom: "စတင်အနက် (m)",
+      depthTo: "အဆုံးအနက် (m)",
+      volumeL: "နမူနာထုထည် (L)",
+      volumeState: "ထုထည်အခြေအနေ",
+      wetMass: "စိုစွတ်အလေးချိန် (kg)",
+      moisture: "Gravimetric moisture (%)",
+      topSize: "အကြီးဆုံးအမှုန်အရွယ် (mm)",
+      blackSand: "အနက်ရောင်သဲ အချိုး/ဖော်ပြချက်",
+      visibleGold: "မြင်ရသောရွှေအမှုန်အရေအတွက်",
+      recoveredMg: "ပြန်ရသောရွှေ (mg)",
+      recovery: "ခန့်မှန်း recovery (%)",
+      lab: "ဓာတ်ခွဲခန်း",
+      method: "Analytical method",
+      detectionLimit: "Detection limit",
+      result: "ဓာတ်ခွဲရလဒ်",
+      resultUnit: "ရလဒ် unit",
+      collectedBy: "နမူနာယူသူ",
+      handedTo: "လက်ခံသူ / ဓာတ်ခွဲခန်း",
+      handoverAt: "လွှဲပြောင်းရက်စွဲနှင့်အချိန်",
+      seal: "Seal / consignment number",
+      notes: "Stratigraphy၊ contamination control နှင့် အန္တရာယ်မှတ်ချက်",
+    },
   };
 const fieldGroups: {
   title: "identity" | "field" | "gold" | "custody";
@@ -199,11 +268,34 @@ const fieldGroups: {
   },
   {
     title: "field",
-    keys: ["environment", "material", "lat", "lng", "accuracy", "depthFrom", "depthTo", "volumeL", "volumeState", "wetMass", "moisture", "topSize", "blackSand"],
+    keys: [
+      "environment",
+      "material",
+      "lat",
+      "lng",
+      "accuracy",
+      "depthFrom",
+      "depthTo",
+      "volumeL",
+      "volumeState",
+      "wetMass",
+      "moisture",
+      "topSize",
+      "blackSand",
+    ],
   },
   {
     title: "gold",
-    keys: ["visibleGold", "recoveredMg", "recovery", "lab", "method", "detectionLimit", "result", "resultUnit"],
+    keys: [
+      "visibleGold",
+      "recoveredMg",
+      "recovery",
+      "lab",
+      "method",
+      "detectionLimit",
+      "result",
+      "resultUnit",
+    ],
   },
   {
     title: "custody",
@@ -211,16 +303,48 @@ const fieldGroups: {
   },
 ];
 const selects: Partial<Record<keyof Sample, string[]>> = {
-  sampleType: ["Volume", "Channel", "Grab", "Heavy-mineral concentrate", "Rock chip"],
-  qcType: ["Routine", "Field duplicate", "Blank", "Certified reference material"],
+  sampleType: [
+    "Volume",
+    "Channel",
+    "Grab",
+    "Heavy-mineral concentrate",
+    "Rock chip",
+  ],
+  qcType: [
+    "Routine",
+    "Field duplicate",
+    "Blank",
+    "Certified reference material",
+  ],
   environment: ["Stream", "Terrace", "Alluvial fan", "Hillslope", "Outcrop"],
-  material: ["Fine sand / silt", "Sand and gravel", "Cobble-rich gravel", "Clay false bottom", "Bedrock trap", "Black-sand concentrate", "Residual soil", "Weathered rock"],
+  material: [
+    "Fine sand / silt",
+    "Sand and gravel",
+    "Cobble-rich gravel",
+    "Clay false bottom",
+    "Bedrock trap",
+    "Black-sand concentrate",
+    "Residual soil",
+    "Weathered rock",
+  ],
   volumeState: ["Bank", "Loose"],
-  method: ["Fire assay", "Screen fire assay", "Gravity / free-gold test", "ICP-MS", "ICP-OES", "Portable XRF screening", "Other"],
+  method: [
+    "Fire assay",
+    "Screen fire assay",
+    "Gravity / free-gold test",
+    "ICP-MS",
+    "ICP-OES",
+    "Portable XRF screening",
+    "Other",
+  ],
   resultUnit: ["g/m³", "g/t", "mg/kg", "ppb"],
 };
-export default function FieldRecords({ lang = "zh" }: { lang?: "zh" | "en" }) {
-  const c = lang === "zh" ? zh : en;
+export default function FieldRecords({
+  lang = "zh",
+}: {
+  lang?: "zh" | "en" | "my";
+}) {
+  const c = lang === "zh" ? zh : lang === "my" ? my : en;
   const [form, setForm] = useState<Sample>(blank);
   const [records, setRecords] = useState<Sample[]>([]);
   const [includeCoords, setIncludeCoords] = useState(false);
@@ -228,7 +352,9 @@ export default function FieldRecords({ lang = "zh" }: { lang?: "zh" | "en" }) {
   const fileRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     try {
-      const current = JSON.parse(localStorage.getItem("goldfinder-samples-v2") || "[]");
+      const current = JSON.parse(
+        localStorage.getItem("goldfinder-samples-v2") || "[]",
+      );
       if (Array.isArray(current)) setRecords(current);
       const raw = localStorage.getItem("goldfinder-assessment-draft");
       if (raw) {
@@ -250,9 +376,19 @@ export default function FieldRecords({ lang = "zh" }: { lang?: "zh" | "en" }) {
     persist([{ ...form, id: crypto.randomUUID() }, ...records]);
     setForm(blank);
   }
-  const headers = useMemo(() => (Object.keys(blank) as (keyof Sample)[]).filter((k) => k !== "id" && (includeCoords || !["lat", "lng", "accuracy"].includes(k))), [includeCoords]);
+  const headers = useMemo(
+    () =>
+      (Object.keys(blank) as (keyof Sample)[]).filter(
+        (k) =>
+          k !== "id" &&
+          (includeCoords || !["lat", "lng", "accuracy"].includes(k)),
+      ),
+    [includeCoords],
+  );
   function safeRows() {
-    return records.map((r) => Object.fromEntries(headers.map((k) => [k, r[k]])));
+    return records.map((r) =>
+      Object.fromEntries(headers.map((k) => [k, r[k]])),
+    );
   }
   function download(name: string, type: string, data: string) {
     const url = URL.createObjectURL(new Blob([data], { type }));
@@ -297,7 +433,8 @@ export default function FieldRecords({ lang = "zh" }: { lang?: "zh" | "en" }) {
     if (!f) return;
     try {
       const d = JSON.parse(await f.text());
-      if (d.schema !== "goldfinder.samples" || !Array.isArray(d.records)) throw new Error();
+      if (d.schema !== "goldfinder.samples" || !Array.isArray(d.records))
+        throw new Error();
       const imported = d.records.map((x: Partial<Sample>) => ({
         ...blank,
         ...x,
@@ -333,15 +470,38 @@ export default function FieldRecords({ lang = "zh" }: { lang?: "zh" | "en" }) {
                   <label className={k === "notes" ? "wide" : ""} key={k}>
                     {c.labels[k as keyof typeof c.labels]}
                     {selects[k] ? (
-                      <select value={form[k]} onChange={(e) => setForm({ ...form, [k]: e.target.value })}>
+                      <select
+                        value={form[k]}
+                        onChange={(e) =>
+                          setForm({ ...form, [k]: e.target.value })
+                        }
+                      >
                         {selects[k]!.map((x) => (
                           <option key={x}>{x}</option>
                         ))}
                       </select>
                     ) : k === "notes" ? (
-                      <textarea value={form[k]} onChange={(e) => setForm({ ...form, [k]: e.target.value })} />
+                      <textarea
+                        value={form[k]}
+                        onChange={(e) =>
+                          setForm({ ...form, [k]: e.target.value })
+                        }
+                      />
                     ) : (
-                      <input type={k === "date" ? "date" : k === "handoverAt" ? "datetime-local" : "text"} required={k === "project" || k === "sample"} value={form[k]} onChange={(e) => setForm({ ...form, [k]: e.target.value })} />
+                      <input
+                        type={
+                          k === "date"
+                            ? "date"
+                            : k === "handoverAt"
+                              ? "datetime-local"
+                              : "text"
+                        }
+                        required={k === "project" || k === "sample"}
+                        value={form[k]}
+                        onChange={(e) =>
+                          setForm({ ...form, [k]: e.target.value })
+                        }
+                      />
                     )}
                   </label>
                 ))}
@@ -361,13 +521,25 @@ export default function FieldRecords({ lang = "zh" }: { lang?: "zh" | "en" }) {
             </div>
             <div className="record-actions">
               <label className="coord-toggle">
-                <input type="checkbox" checked={includeCoords} onChange={(e) => setIncludeCoords(e.target.checked)} />
+                <input
+                  type="checkbox"
+                  checked={includeCoords}
+                  onChange={(e) => setIncludeCoords(e.target.checked)}
+                />
                 {c.coords}
               </label>
               <button onClick={json}>{c.exportJson}</button>
               <button onClick={csv}>{c.exportCsv}</button>
-              <button onClick={() => fileRef.current?.click()}>{c.import}</button>
-              <input ref={fileRef} type="file" accept="application/json" onChange={load} hidden />
+              <button onClick={() => fileRef.current?.click()}>
+                {c.import}
+              </button>
+              <input
+                ref={fileRef}
+                type="file"
+                accept="application/json"
+                onChange={load}
+                hidden
+              />
               <button onClick={() => window.print()}>{c.print}</button>
             </div>
           </div>
@@ -389,7 +561,8 @@ export default function FieldRecords({ lang = "zh" }: { lang?: "zh" | "en" }) {
                     {r.sampleType} · {r.material}
                   </p>
                   <p>
-                    {r.date} · {r.depthFrom || "—"}–{r.depthTo || "—"} m · {r.volumeL || "—"} L {r.volumeState}
+                    {r.date} · {r.depthFrom || "—"}–{r.depthTo || "—"} m ·{" "}
+                    {r.volumeL || "—"} L {r.volumeState}
                   </p>
                   <p>{r.result ? `${r.result} ${r.resultUnit}` : c.local}</p>
                 </div>
@@ -401,7 +574,8 @@ export default function FieldRecords({ lang = "zh" }: { lang?: "zh" | "en" }) {
                     {r.lab || "—"} · {r.method} · DL {r.detectionLimit || "—"}
                   </p>
                   <p>
-                    {r.collectedBy || "—"} → {r.handedTo || "—"} · {r.seal || "—"}
+                    {r.collectedBy || "—"} → {r.handedTo || "—"} ·{" "}
+                    {r.seal || "—"}
                   </p>
                   <p>{r.notes}</p>
                   <button onClick={() => remove(r.id)}>{c.delete}</button>
