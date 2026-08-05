@@ -1,7 +1,314 @@
 "use client";
-import Link from "next/link";import {useEffect,useMemo,useState} from "react";import "./report-builder.css";
-type Sample=Record<string,string>;
-const tx={zh:{eyebrow:"PRINTABLE FIELD REPORTS",title:"现场报告中心",lead:"从当前设备的样品记录生成单样点或项目报告。使用浏览器打印功能可选择“另存为 PDF”；生成前请检查坐标和敏感信息。",scope:"报告范围",project:"项目报告",sample:"单样点报告",chooseProject:"选择项目",chooseSample:"选择样品",print:"打印／保存 PDF",empty:"当前设备没有可生成报告的样品。",new:"建立现场记录",summary:"项目摘要",samples:"样品数",located:"有坐标",assayed:"有化验",qc:"QA/QC",generated:"生成时间",identity:"样品与取样",location:"位置与地层",result:"现场与实验室结果",custody:"交接链与备注",disclaimer:"本报告整理现场记录，不构成资源量、储量、经济价值或采矿许可结论。现场迹象必须通过代表性取样、QA/QC 和适用实验室分析验证。",sensitive:"打印报告可能包含精确坐标和个人姓名；对外分享前请制作隐私副本。"},en:{eyebrow:"PRINTABLE FIELD REPORTS",title:"Field report centre",lead:"Generate a single-sample or project report from records on this device. Choose “Save as PDF” in the browser print dialogue, and review coordinates and sensitive information first.",scope:"Report scope",project:"Project report",sample:"Single-sample report",chooseProject:"Choose a project",chooseSample:"Choose a sample",print:"Print / save PDF",empty:"No samples on this device are available for a report.",new:"Create field record",summary:"Project summary",samples:"Samples",located:"Located",assayed:"Assayed",qc:"QA/QC",generated:"Generated",identity:"Sample and support",location:"Location and stratigraphy",result:"Field and laboratory results",custody:"Custody and notes",disclaimer:"This report organises field records. It is not a resource, reserve, economic-value, or mining-permit conclusion. Field indications require representative sampling, QA/QC, and fit-for-purpose laboratory analysis.",sensitive:"Printed reports may contain exact coordinates and personal names. Create a privacy-safe copy before external sharing."}};
-const groups={identity:[["sample","Sample ID"],["project","Project"],["date","Date"],["sampleType","Sample type"],["qcType","QA/QC"],["parentSample","Parent sample"],["volumeL","Volume (L)"],["volumeState","Volume condition"],["wetMass","Wet mass (kg)"],["topSize","Top size (mm)"]],location:[["environment","Environment"],["material","Material"],["lat","Latitude"],["lng","Longitude"],["accuracy","Accuracy (m)"],["depthFrom","Depth from (m)"],["depthTo","Depth to (m)"],["blackSand","Black sand"]],result:[["visibleGold","Visible-gold count"],["recoveredMg","Recovered gold (mg)"],["recovery","Recovery (%)"],["lab","Laboratory"],["method","Method"],["detectionLimit","Detection limit"],["result","Result"],["resultUnit","Unit"]],custody:[["collectedBy","Collected by"],["handedTo","Received by"],["handoverAt","Handover"],["seal","Seal / consignment"],["notes","Notes"]]} as const;
-export default function ReportBuilder({lang}:{lang:"zh"|"en"}){const c=tx[lang],[records,setRecords]=useState<Sample[]>([]),[scope,setScope]=useState<"project"|"sample">("project"),[project,setProject]=useState(""),[sample,setSample]=useState("");useEffect(()=>{try{const rows=JSON.parse(localStorage.getItem("goldfinder-samples-v2")||"[]");if(Array.isArray(rows)){setRecords(rows);setProject(rows[0]?.project||"");setSample(rows[0]?.id||rows[0]?.sample||"")}}catch{}},[]);const projects=Array.from(new Set(records.map(x=>x.project).filter(Boolean)));const selected=useMemo(()=>scope==="project"?records.filter(x=>x.project===project):records.filter(x=>(x.id||x.sample)===sample),[records,scope,project,sample]);const located=selected.filter(x=>x.lat&&x.lng).length,assayed=selected.filter(x=>x.result).length,qc=selected.filter(x=>x.qcType&&x.qcType!=="Routine").length,base=lang==="zh"?"":"/en";return <><div className="page-head report-page-head"><p className="eyebrow">{c.eyebrow}</p><h1>{c.title}</h1><p className="lead">{c.lead}</p></div><section className="section report-workspace"><div className="report-controls"><label>{c.scope}<select value={scope} onChange={e=>setScope(e.target.value as "project"|"sample")}><option value="project">{c.project}</option><option value="sample">{c.sample}</option></select></label>{scope==="project"?<label>{c.chooseProject}<select value={project} onChange={e=>setProject(e.target.value)}>{projects.map(x=><option key={x}>{x}</option>)}</select></label>:<label>{c.chooseSample}<select value={sample} onChange={e=>setSample(e.target.value)}>{records.map((x,i)=><option key={x.id||i} value={x.id||x.sample}>{x.sample||"—"} · {x.project||"—"}</option>)}</select></label>}<button className="button" disabled={!selected.length} onClick={()=>window.print()}>{c.print}</button></div><p className="report-sensitive">{c.sensitive}</p>{!records.length?<div className="card report-empty"><p>{c.empty}</p><Link href={`${base}/field`}>{c.new} →</Link></div>:<article className="print-report"><header><p>GOLDFINDER · EVIDENCE-LED FIELD RECORD</p><h2>{scope==="project"?(project||c.project):(selected[0]?.sample||c.sample)}</h2><span>{c.generated}: {new Date().toLocaleString()}</span></header><section className="report-summary"><h3>{c.summary}</h3><div><Metric n={selected.length} label={c.samples}/><Metric n={located} label={c.located}/><Metric n={assayed} label={c.assayed}/><Metric n={qc} label={c.qc}/></div></section>{selected.map((x,i)=><section className="report-sample" key={x.id||i}><div className="report-sample-title"><strong>{x.sample||`#${i+1}`}</strong><span>{x.project||"—"} · {x.date||"—"}</span></div>{(Object.keys(groups) as (keyof typeof groups)[]).map(g=><div className="report-group" key={g}><h3>{c[g]}</h3><dl>{groups[g].map(([key,label])=><div key={key} className={key==="notes"?"wide":""}><dt>{label}</dt><dd>{x[key]||"—"}</dd></div>)}</dl></div>)}</section>)}<footer>{c.disclaimer}</footer></article>}</section></>}
-function Metric({n,label}:{n:number;label:string}){return <div><strong>{n}</strong><span>{label}</span></div>}
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+import "./report-builder.css";
+type Sample = Record<string, string>;
+const tx = {
+  zh: {
+    eyebrow: "PRINTABLE FIELD REPORTS",
+    title: "现场报告中心",
+    lead: "从当前设备的样品记录生成单样点或项目报告。使用浏览器打印功能可选择“另存为 PDF”；生成前请检查坐标和敏感信息。",
+    scope: "报告范围",
+    project: "项目报告",
+    sample: "单样点报告",
+    chooseProject: "选择项目",
+    chooseSample: "选择样品",
+    print: "打印／保存 PDF",
+    empty: "当前设备没有可生成报告的样品。",
+    new: "建立现场记录",
+    summary: "项目摘要",
+    samples: "样品数",
+    located: "有坐标",
+    assayed: "有化验",
+    qc: "QA/QC",
+    generated: "生成时间",
+    identity: "样品与取样",
+    location: "位置与地层",
+    result: "现场与实验室结果",
+    custody: "交接链与备注",
+    disclaimer:
+      "本报告整理现场记录，不构成资源量、储量、经济价值或采矿许可结论。现场迹象必须通过代表性取样、QA/QC 和适用实验室分析验证。",
+    sensitive: "打印报告可能包含精确坐标和个人姓名；对外分享前请制作隐私副本。",
+  },
+  en: {
+    eyebrow: "PRINTABLE FIELD REPORTS",
+    title: "Field report centre",
+    lead: "Generate a single-sample or project report from records on this device. Choose “Save as PDF” in the browser print dialogue, and review coordinates and sensitive information first.",
+    scope: "Report scope",
+    project: "Project report",
+    sample: "Single-sample report",
+    chooseProject: "Choose a project",
+    chooseSample: "Choose a sample",
+    print: "Print / save PDF",
+    empty: "No samples on this device are available for a report.",
+    new: "Create field record",
+    summary: "Project summary",
+    samples: "Samples",
+    located: "Located",
+    assayed: "Assayed",
+    qc: "QA/QC",
+    generated: "Generated",
+    identity: "Sample and support",
+    location: "Location and stratigraphy",
+    result: "Field and laboratory results",
+    custody: "Custody and notes",
+    disclaimer:
+      "This report organises field records. It is not a resource, reserve, economic-value, or mining-permit conclusion. Field indications require representative sampling, QA/QC, and fit-for-purpose laboratory analysis.",
+    sensitive:
+      "Printed reports may contain exact coordinates and personal names. Create a privacy-safe copy before external sharing.",
+  },
+  my: {
+    eyebrow: "PRINTABLE FIELD REPORTS",
+    title: "မြေပြင်အစီရင်ခံစာ စင်တာ",
+    lead: "ဤစက်တွင်သိမ်းထားသော နမူနာမှတ်တမ်းများမှ sample တစ်ခုချင်း သို့မဟုတ် project report ထုတ်ပါ။ Browser print တွင် Save as PDF ကိုရွေးနိုင်ပြီး coordinate နှင့် ကိုယ်ရေးအချက်အလက်များကို ဦးစွာစစ်ဆေးပါ။",
+    scope: "အစီရင်ခံစာအတိုင်းအတာ",
+    project: "Project report",
+    sample: "Sample တစ်ခုချင်း report",
+    chooseProject: "Project ရွေးရန်",
+    chooseSample: "Sample ရွေးရန်",
+    print: "ပုံနှိပ်ရန် / PDF သိမ်းရန်",
+    empty: "ဤစက်တွင် report ထုတ်နိုင်သော နမူနာမရှိသေးပါ။",
+    new: "နမူနာမှတ်တမ်း ဖန်တီးရန်",
+    summary: "Project အကျဉ်းချုပ်",
+    samples: "နမူနာ",
+    located: "Coordinate ပါ",
+    assayed: "Assay ပါ",
+    qc: "QA/QC",
+    generated: "ထုတ်လုပ်ချိန်",
+    identity: "နမူနာနှင့် sampling support",
+    location: "တည်နေရာနှင့် stratigraphy",
+    result: "ကွင်းဆင်းနှင့် ဓာတ်ခွဲရလဒ်",
+    custody: "Chain of custody နှင့် မှတ်ချက်",
+    disclaimer:
+      "ဤ report သည် ကွင်းဆင်းမှတ်တမ်းများကို စုစည်းပေးခြင်းသာ ဖြစ်သည်။ Resource၊ reserve၊ စီးပွားရေးတန်ဖိုး သို့မဟုတ် mining permit ဆုံးဖြတ်ချက် မဟုတ်ပါ။ Representative sampling၊ QA/QC နှင့် သင့်လျော်သော laboratory analysis ဖြင့် စစ်ဆေးရမည်။",
+    sensitive:
+      "ပုံနှိပ် report တွင် exact coordinate နှင့် လူအမည်များ ပါနိုင်သည်။ အပြင်သို့ မျှဝေမီ privacy-safe copy ပြုလုပ်ပါ။",
+  },
+};
+const myFields: Record<string, string> = {
+  Project: "Project",
+  Date: "ရက်စွဲ",
+  "Sample type": "နမူနာအမျိုးအစား",
+  "Parent sample": "မူလနမူနာ",
+  "Volume (L)": "ထုထည် (L)",
+  "Volume condition": "ထုထည်အခြေအနေ",
+  "Wet mass (kg)": "စိုစွတ်အလေးချိန် (kg)",
+  "Top size (mm)": "အကြီးဆုံးအမှုန် (mm)",
+  Environment: "ပတ်ဝန်းကျင်",
+  Material: "ပစ္စည်း",
+  "Accuracy (m)": "တိကျမှု (m)",
+  "Depth from (m)": "စတင်အနက် (m)",
+  "Depth to (m)": "အဆုံးအနက် (m)",
+  "Black sand": "အနက်ရောင်သဲ",
+  "Visible-gold count": "မြင်ရသောရွှေအမှုန်",
+  "Recovered gold (mg)": "ပြန်ရသောရွှေ (mg)",
+  "Recovery (%)": "Recovery (%)",
+  Laboratory: "ဓာတ်ခွဲခန်း",
+  Method: "နည်းလမ်း",
+  "Detection limit": "Detection limit",
+  Result: "ရလဒ်",
+  Unit: "Unit",
+  "Collected by": "နမူနာယူသူ",
+  "Received by": "လက်ခံသူ",
+  Handover: "လွှဲပြောင်းချိန်",
+  "Seal / consignment": "Seal / consignment",
+  Notes: "မှတ်ချက်",
+};
+const groups = {
+  identity: [
+    ["sample", "Sample ID"],
+    ["project", "Project"],
+    ["date", "Date"],
+    ["sampleType", "Sample type"],
+    ["qcType", "QA/QC"],
+    ["parentSample", "Parent sample"],
+    ["volumeL", "Volume (L)"],
+    ["volumeState", "Volume condition"],
+    ["wetMass", "Wet mass (kg)"],
+    ["topSize", "Top size (mm)"],
+  ],
+  location: [
+    ["environment", "Environment"],
+    ["material", "Material"],
+    ["lat", "Latitude"],
+    ["lng", "Longitude"],
+    ["accuracy", "Accuracy (m)"],
+    ["depthFrom", "Depth from (m)"],
+    ["depthTo", "Depth to (m)"],
+    ["blackSand", "Black sand"],
+  ],
+  result: [
+    ["visibleGold", "Visible-gold count"],
+    ["recoveredMg", "Recovered gold (mg)"],
+    ["recovery", "Recovery (%)"],
+    ["lab", "Laboratory"],
+    ["method", "Method"],
+    ["detectionLimit", "Detection limit"],
+    ["result", "Result"],
+    ["resultUnit", "Unit"],
+  ],
+  custody: [
+    ["collectedBy", "Collected by"],
+    ["handedTo", "Received by"],
+    ["handoverAt", "Handover"],
+    ["seal", "Seal / consignment"],
+    ["notes", "Notes"],
+  ],
+} as const;
+export default function ReportBuilder({ lang }: { lang: "zh" | "en" | "my" }) {
+  const c = tx[lang],
+    [records, setRecords] = useState<Sample[]>([]),
+    [scope, setScope] = useState<"project" | "sample">("project"),
+    [project, setProject] = useState(""),
+    [sample, setSample] = useState("");
+  useEffect(() => {
+    try {
+      const rows = JSON.parse(
+        localStorage.getItem("goldfinder-samples-v2") || "[]",
+      );
+      if (Array.isArray(rows)) {
+        setRecords(rows);
+        setProject(rows[0]?.project || "");
+        setSample(rows[0]?.id || rows[0]?.sample || "");
+      }
+    } catch {}
+  }, []);
+  const projects = Array.from(
+    new Set(records.map((x) => x.project).filter(Boolean)),
+  );
+  const selected = useMemo(
+    () =>
+      scope === "project"
+        ? records.filter((x) => x.project === project)
+        : records.filter((x) => (x.id || x.sample) === sample),
+    [records, scope, project, sample],
+  );
+  const located = selected.filter((x) => x.lat && x.lng).length,
+    assayed = selected.filter((x) => x.result).length,
+    qc = selected.filter((x) => x.qcType && x.qcType !== "Routine").length,
+    base = lang === "zh" ? "" : lang === "my" ? "/my" : "/en";
+  return (
+    <>
+      <div className="page-head report-page-head">
+        <p className="eyebrow">{c.eyebrow}</p>
+        <h1>{c.title}</h1>
+        <p className="lead">{c.lead}</p>
+      </div>
+      <section className="section report-workspace">
+        <div className="report-controls">
+          <label>
+            {c.scope}
+            <select
+              value={scope}
+              onChange={(e) => setScope(e.target.value as "project" | "sample")}
+            >
+              <option value="project">{c.project}</option>
+              <option value="sample">{c.sample}</option>
+            </select>
+          </label>
+          {scope === "project" ? (
+            <label>
+              {c.chooseProject}
+              <select
+                value={project}
+                onChange={(e) => setProject(e.target.value)}
+              >
+                {projects.map((x) => (
+                  <option key={x}>{x}</option>
+                ))}
+              </select>
+            </label>
+          ) : (
+            <label>
+              {c.chooseSample}
+              <select
+                value={sample}
+                onChange={(e) => setSample(e.target.value)}
+              >
+                {records.map((x, i) => (
+                  <option key={x.id || i} value={x.id || x.sample}>
+                    {x.sample || "—"} · {x.project || "—"}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
+          <button
+            className="button"
+            disabled={!selected.length}
+            onClick={() => window.print()}
+          >
+            {c.print}
+          </button>
+        </div>
+        <p className="report-sensitive">{c.sensitive}</p>
+        {!records.length ? (
+          <div className="card report-empty">
+            <p>{c.empty}</p>
+            <Link href={`${base}/field`}>{c.new} →</Link>
+          </div>
+        ) : (
+          <article className="print-report">
+            <header>
+              <p>GOLDFINDER · EVIDENCE-LED FIELD RECORD</p>
+              <h2>
+                {scope === "project"
+                  ? project || c.project
+                  : selected[0]?.sample || c.sample}
+              </h2>
+              <span>
+                {c.generated}: {new Date().toLocaleString()}
+              </span>
+            </header>
+            <section className="report-summary">
+              <h3>{c.summary}</h3>
+              <div>
+                <Metric n={selected.length} label={c.samples} />
+                <Metric n={located} label={c.located} />
+                <Metric n={assayed} label={c.assayed} />
+                <Metric n={qc} label={c.qc} />
+              </div>
+            </section>
+            {selected.map((x, i) => (
+              <section className="report-sample" key={x.id || i}>
+                <div className="report-sample-title">
+                  <strong>{x.sample || `#${i + 1}`}</strong>
+                  <span>
+                    {x.project || "—"} · {x.date || "—"}
+                  </span>
+                </div>
+                {(Object.keys(groups) as (keyof typeof groups)[]).map((g) => (
+                  <div className="report-group" key={g}>
+                    <h3>{c[g]}</h3>
+                    <dl>
+                      {groups[g].map(([key, label]) => (
+                        <div
+                          key={key}
+                          className={key === "notes" ? "wide" : ""}
+                        >
+                          <dt>
+                            {lang === "my" ? myFields[label] || label : label}
+                          </dt>
+                          <dd>{x[key] || "—"}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
+                ))}
+              </section>
+            ))}
+            <footer>{c.disclaimer}</footer>
+          </article>
+        )}
+      </section>
+    </>
+  );
+}
+function Metric({ n, label }: { n: number; label: string }) {
+  return (
+    <div>
+      <strong>{n}</strong>
+      <span>{label}</span>
+    </div>
+  );
+}

@@ -109,14 +109,18 @@ export default function SiteNav() {
       : isMy
         ? path === "/my/field"
           ? "/field"
-          : "/"
+          : path === "/my/reports"
+            ? "/reports"
+            : "/"
         : path,
     enHref = isEn
       ? path
       : isMy
         ? path === "/my/field"
           ? "/en/field"
-          : "/en"
+          : path === "/my/reports"
+            ? "/en/reports"
+            : "/en"
         : pairs[path] || "/en",
     searchHref = isEn ? "/en/search" : "/search";
   const openLabel = isMy

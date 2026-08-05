@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import {
   ChangeEvent,
   FormEvent,
@@ -509,6 +510,11 @@ export default function FieldRecords({
             </fieldset>
           ))}
           <button className="button">{c.save}</button>
+          {lang === "my" && (
+            <Link className="button secondary" href="/my/reports">
+              အစီရင်ခံစာ ထုတ်ရန်
+            </Link>
+          )}
           <small>{c.local}</small>
         </form>
         <section className="register">

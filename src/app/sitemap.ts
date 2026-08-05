@@ -41,7 +41,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/en/copyright",
     "/en/about",
   ];
-  const my = ["/my", "/my/field"];
+  const my = ["/my", "/my/field", "/my/reports"];
   return [...zh, ...en, ...my].map((path) => ({
     url: base + path,
     lastModified: new Date(),
