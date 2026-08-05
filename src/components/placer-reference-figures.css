@@ -64,6 +64,15 @@
   font-size: 0.86rem;
   line-height: 1.6;
 }
+.provided-grid figcaption a {
+  display: inline-block;
+  margin-top: 0.7rem;
+  color: var(--gold);
+  font-size: 0.72rem;
+  line-height: 1.45;
+  text-decoration: underline;
+  overflow-wrap: anywhere;
+}
 .provenance-warning {
   display: flex;
   gap: 0.7rem;
