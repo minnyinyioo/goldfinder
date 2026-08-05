@@ -93,6 +93,49 @@ const copy = {
       ],
     ],
   },
+  my: {
+    search: "အမည် သို့မဟုတ် မြင်နိုင်သောလက္ခဏာ ရှာရန်",
+    all: "အားလုံး",
+    gold: "ရွှေကျင်ပုံသဏ္ဌာန်",
+    heavy: "လေးလံသတ္တု",
+    lookalike: "ရွှေနှင့် မှားနိုင်သောသတ္တု",
+    indicator: "Mineralisation နှင့်ဆက်စပ်သတ္တု",
+    soil: "မြေဆီလွှာနှင့် bedrock",
+    field: "ကွင်းဆင်းနည်းလမ်း",
+    results: "အကိုးအကား",
+    empty:
+      "ကိုက်ညီသောအချက် မရှိပါ။ အခြားစကားလုံး သို့မဟုတ် category ကို စမ်းပါ။",
+    observe: "မည်သို့ကြည့်မည်",
+    meaning: "မည်သည်ကို ကိုယ်စားပြုသည်",
+    evidence: "သက်သေအထောက်အထားတန်ဖိုး",
+    mistake: "အများဆုံးမှားယွင်းမှု",
+    action: "နောက်တစ်ဆင့်",
+    no: "ဤအချက်တစ်ခုတည်းဖြင့် မဆုံးဖြတ်ရ — ",
+    source: "မူရင်းပုံနှင့် licence",
+    close: "ပုံအကြီးပိတ်ရန်",
+    zoom: "ပုံချဲ့ရန်",
+    decision: "မသိသေးသော sample ကို အဆင့်လိုက်စစ်ခြင်း",
+    decisionLead:
+      "အရောင်တစ်ခုတည်းမှ အဖြေမချပါနှင့်။ ဓာတ်ပုံ၊ စမ်းသပ်မှုနှင့် နမူနာမှတ်တမ်းကို အစဉ်လိုက် ထိန်းသိမ်းပါ။",
+    steps: [
+      [
+        "01 မူလနေရာကို မှတ်တမ်းတင်ရန်",
+        "နေရာ၊ မြေလွှာနှင့် contact ကို ဦးစွာရိုက်ပြီး scale ပါသော close-up ကို ထပ်ရိုက်ပါ။",
+      ],
+      [
+        "02 သံလိုက်ဖြင့် ခွဲရန်",
+        "ပြင်းစွာဆွဲကပ်သော အနက်ရောင် grain သည် magnetite ဖြစ်နိုင်သည်။ Streak နှင့် hardness ကို ဆက်စစ်ပါ။",
+      ],
+      [
+        "03 ပုံသဏ္ဌာန်စစ်ရန်",
+        "ပြား၍ နှေးကွေးစွာရွေ့ပြီး ဖိပြားနိုင်သော grain သည် gold နှင့် ကိုက်ညီနိုင်သည်။ ကြွပ်ဆတ်ခြင်းနှင့် ထောင့်အလိုက်တောက်ခြင်းကို ဖယ်ထုတ်စစ်ပါ။",
+      ],
+      [
+        "04 စံနည်းဖြင့် အတည်ပြုရန်",
+        "Grain size နှင့် volume ကို မှတ်တမ်းတင်ပြီး duplicate၊ blank နှင့် သင့်လျော်သော laboratory analysis သုံးပါ။",
+      ],
+    ],
+  },
 };
 const guidance = {
   zh: {
@@ -171,13 +214,51 @@ const guidance = {
       "Record volume, size fraction, recovery and tailings checks.",
     ],
   },
+  my: {
+    gold: [
+      "အတည်ပြုပြီးသောရွှေ၏ morphology ကို နှိုင်းယှဉ်ရန်သာဖြစ်ပြီး မသိ sample ကို အတည်ပြုခြင်းမဟုတ်ပါ။",
+      "ပုံသဏ္ဌာန်အထောက်အထား · အလယ်အလတ်",
+      "Pyrite၊ chalcopyrite၊ mica နှင့် ရွှေရောင် coating ကို ရွှေဟု မှားခြင်း။",
+      "မူလနေရာဓာတ်ပုံကို သိမ်းပြီး malleability စစ်ကာ သိထားသော volume sample ကို ချိန်ပါ။",
+    ],
+    heavy: [
+      "Density sorting သို့မဟုတ် source rock ကို ညွှန်ပြနိုင်ပြီး sampling horizon ရွေးရာတွင် ကူညီနိုင်သည်။",
+      "ပတ်ဝန်းကျင်အချက်ပြ · အလယ်အလတ်",
+      "အနက်ရောင် သို့မဟုတ် လေးလံသော grain အားလုံးကို ရွှေပါသည့်အမှတ်ဟု ယူဆခြင်း။",
+      "သံလိုက်ခွဲခြင်း၊ magnification နှင့် တူညီထုထည် repeat sample သုံးပါ။",
+    ],
+    lookalike: [
+      "ရွှေနှင့် မှားလေ့ရှိသောသတ္တုကို ဖယ်ထုတ်ရန် ကူညီသော်လည်း natural gold ကို တစ်ခုတည်းဖြင့် အတည်မပြုနိုင်ပါ။",
+      "မှားယွင်းမှုဖယ်ထုတ်တန်ဖိုး · မြင့်",
+      "အဝါရောင်၊ အလင်းတောက်မှု သို့မဟုတ် ဓာတ်ပုံတစ်ပုံတည်းဖြင့် ရွှေဟု ဆုံးဖြတ်ခြင်း။",
+      "Crystal habit၊ streak၊ hardness၊ cleavage နှင့် malleability ကို အစဉ်လိုက်စစ်ပါ။",
+    ],
+    indicator: [
+      "Hydrothermal သို့မဟုတ် sulphide assemblage အတွက် clue ဖြစ်ပြီး structure၊ alteration နှင့် assay နှင့်ပေါင်းဖတ်ရမည်။",
+      "ဆက်စပ်အချက်ပြ · အလယ်အလတ်",
+      "Sulphide crystal တစ်ခုကို ရွှေသက်သေဟုယူခြင်း သို့မဟုတ် arsenic/antimony mineral ကို လက်ဖြင့်ချေခြင်း။",
+      "Vein–wall-rock ဆက်စပ်မှုကို မှတ်တမ်းတင်၊ ဖုန်ကိုရှောင်ပြီး cross-zone sample နှင့် laboratory analysis သုံးပါ။",
+    ],
+    soil: [
+      "Stratigraphy၊ weathering နှင့် mechanical trap ဖြစ်နိုင်ရာကို ညွှန်ပြနိုင်သည်။",
+      "မြေလွှာအချက်ပြ · အလယ်အလတ်",
+      "Laterite၊ clay၊ conglomerate သို့မဟုတ် bedrock ကို အမြဲရွှေပါသည့်အလွှာဟု သတ်မှတ်ခြင်း။",
+      "Contact တစ်ခုချင်းမှတ်ပြီး တူညီထုထည် control နှင့် duplicate ယူပါ။",
+    ],
+    field: [
+      "ကွင်းဆင်းလုပ်ငန်းနည်းနှင့် မှတ်တမ်းတင်ပုံအတွက် အကိုးအကားဖြစ်သည်။",
+      "နည်းလမ်းအကိုးအကား · အလယ်အလတ်",
+      "Rich pan တစ်ခု သို့မဟုတ် စက်ပုံသဏ္ဌာန်ကို မြစ်ပိုင်းပျမ်းမျှ grade ဟုယူခြင်း။",
+      "Processed volume၊ size fraction၊ recovery နှင့် tailings check ကို မှတ်တမ်းတင်ပါ။",
+    ],
+  },
 } as const;
 export default function AtlasExplorer({
   items,
   lang,
 }: {
   items: ExplorerItem[];
-  lang: "zh" | "en";
+  lang: "zh" | "en" | "my";
 }) {
   const t = copy[lang],
     [category, setCategory] = useState("all"),
@@ -253,7 +334,13 @@ export default function AtlasExplorer({
                 </span>
               </button>
               <div className="atlas-body">
-                <b>{lang === "zh" ? "现场参考" : "FIELD REFERENCE"}</b>
+                <b>
+                  {lang === "zh"
+                    ? "现场参考"
+                    : lang === "my"
+                      ? "ကွင်းဆင်းအကိုးအကား"
+                      : "FIELD REFERENCE"}
+                </b>
                 <h2>{x.name}</h2>
                 <dl className="atlas-facts">
                   <Fact label={t.observe} value={x.observe} />
@@ -267,7 +354,8 @@ export default function AtlasExplorer({
                   {x.notProof}
                 </div>
                 <p className="atlas-meta">
-                  {lang === "zh" ? "图片" : "Image"}：{x.author} · {x.license} ·{" "}
+                  {lang === "zh" ? "图片" : lang === "my" ? "ဓာတ်ပုံ" : "Image"}
+                  ：{x.author} · {x.license} ·{" "}
                   <a href={x.source} target="_blank" rel="noreferrer">
                     {t.source}
                     <ExternalLink size={13} />

@@ -109,26 +109,30 @@ export default function SiteNav() {
       : isMy
         ? path === "/my/field"
           ? "/field"
-          : path === "/my/reports"
-            ? "/reports"
-            : path === "/my/backup"
-              ? "/backup"
-              : path === "/my/map"
-                ? "/map"
-                : "/"
+          : path === "/my/atlas"
+            ? "/atlas"
+            : path === "/my/reports"
+              ? "/reports"
+              : path === "/my/backup"
+                ? "/backup"
+                : path === "/my/map"
+                  ? "/map"
+                  : "/"
         : path,
     enHref = isEn
       ? path
       : isMy
         ? path === "/my/field"
           ? "/en/field"
-          : path === "/my/reports"
-            ? "/en/reports"
-            : path === "/my/backup"
-              ? "/en/backup"
-              : path === "/my/map"
-                ? "/en/map"
-                : "/en"
+          : path === "/my/atlas"
+            ? "/en/atlas"
+            : path === "/my/reports"
+              ? "/en/reports"
+              : path === "/my/backup"
+                ? "/en/backup"
+                : path === "/my/map"
+                  ? "/en/map"
+                  : "/en"
         : pairs[path] || "/en",
     searchHref = isEn ? "/en/search" : "/search";
   const openLabel = isMy
