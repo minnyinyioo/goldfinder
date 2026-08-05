@@ -17,6 +17,7 @@ import {
   Map,
   Scale,
   ShieldAlert,
+  Wrench,
   Waves,
 } from "lucide-react";
 import SamplingCalculator from "./SamplingCalculator";
@@ -127,6 +128,12 @@ const toolLinks = [
     "ရွှေဖြစ်ပေါ်ပုံ၊ ရွှေကျင်နှင့် မူလရွှေ၊ black sand၊ grade၊ QA/QC နှင့် လိမ်လည်မှုစစ်ဆေးခြင်းကို တစ်နေရာတည်းတွင် လေ့လာပါ။",
     "/my/knowledge",
     BookOpen,
+  ],
+  [
+    "ကွင်းဆင်းကိရိယာနှင့် စမ်းသပ်နည်း",
+    "Pan၊ sluice၊ sieve၊ magnet၊ GPS၊ compass၊ XRF၊ fire assay နှင့် ICP ၏ လုပ်ဆောင်နိုင်မှုနှင့် ကန့်သတ်ချက်ကို စစ်ပါ။",
+    "/my/tools",
+    Wrench,
   ],
   [
     "မြေပြင်အမှတ်ပေးရန်",

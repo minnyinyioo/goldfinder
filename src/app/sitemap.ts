@@ -45,6 +45,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/my",
     "/my/atlas",
     "/my/knowledge",
+    "/my/tools",
     "/my/field",
     "/my/map",
     "/my/reports",
