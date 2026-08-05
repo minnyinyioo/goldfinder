@@ -180,6 +180,14 @@
   flex-wrap: wrap;
   margin: 0 0 18px;
 }
+.vault-plan-state {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.vault-plan-state svg {
+  color: var(--green);
+}
 .tool-reset-actions button {
   border: 1px solid var(--line);
   border-radius: 9px;
@@ -194,4 +202,36 @@
   border-color: var(--gold);
   outline: 2px solid color-mix(in srgb, var(--gold) 40%, transparent);
   outline-offset: 2px;
+}
+@media (max-width: 800px) {
+  .menu-button {
+    width: 38px;
+    height: 38px;
+    justify-content: center;
+    padding: 0;
+  }
+  .menu-button span {
+    display: none;
+  }
+  .atlas-meta a,
+  .knowledge-image a,
+  .knowledge-actions a,
+  .geology-grid figcaption a,
+  .method-note a,
+  .provided-grid figcaption a,
+  .my-photo-row figcaption a,
+  .my-hero figcaption a,
+  .dashboard-empty a,
+  .report-empty a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+  .filter-row button,
+  .reset {
+    min-height: 44px;
+  }
+  .reset {
+    padding: 8px 12px;
+  }
 }
