@@ -140,9 +140,9 @@ const toolLinks = [
     ClipboardList,
   ],
   [
-    "နမူနာလုပ်ငန်းခွင်",
-    "မြေပုံ၊ report၊ QA/QC နှင့် backup ကို စုစည်းစီမံပါ။",
-    "/en/project",
+    "ဒေတာအရန်နှင့် ပြန်လည်ရယူရန်",
+    "နမူနာ၊ sampling plan နှင့် coordinate privacy ကို backup တစ်ခုတည်းတွင် စီမံပါ။",
+    "/my/backup",
     ClipboardCheck,
   ],
   [
