@@ -44,6 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const my = [
     "/my",
     "/my/atlas",
+    "/my/knowledge",
     "/my/field",
     "/my/map",
     "/my/reports",
