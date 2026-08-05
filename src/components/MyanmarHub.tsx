@@ -19,6 +19,7 @@ import {
   Waves,
 } from "lucide-react";
 import SamplingCalculator from "./SamplingCalculator";
+import MyanmarAssessment from "./MyanmarAssessment";
 import "./myanmar-hub.css";
 import "./myanmar-tools.css";
 const terms = [
@@ -123,7 +124,7 @@ const toolLinks = [
   [
     "မြေပြင်အမှတ်ပေးရန်",
     "ရွှေကျင်နှင့် မူလရွှေလက္ခဏာများကို စုစည်း၍ နမူနာယူရမည့် ဦးစားပေးအဆင့် သတ်မှတ်ပါ။",
-    "/en/assess",
+    "#my-assessment",
     BookOpenCheck,
   ],
   [
@@ -254,6 +255,20 @@ export default function MyanmarHub() {
           </div>
         </div>
         <SamplingCalculator lang="my" />
+      </section>
+      <section className="my-section" id="my-assessment">
+        <div className="my-heading">
+          <BookOpenCheck />
+          <div>
+            <p className="eyebrow">MYANMAR FIELD ASSESSMENT</p>
+            <h2>မြန်မာဘာသာ မြေပြင်အမှတ်ပေးစနစ်</h2>
+            <p>
+              ကြည့်ရှုချက်များကို အတူတကွသုံး၍ နောက်တစ်ဆင့်နမူနာယူရမည့်
+              ဦးစားပေးကို စီစဉ်ပါ။
+            </p>
+          </div>
+        </div>
+        <MyanmarAssessment />
       </section>
       <section className="my-section my-principles">
         <p className="eyebrow">EVIDENCE FIRST</p>
