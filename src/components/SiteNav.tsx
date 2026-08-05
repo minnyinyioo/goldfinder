@@ -1,16 +1,263 @@
 "use client";
-import Link from "next/link";import {useEffect,useState} from "react";import {usePathname} from "next/navigation";import type {LucideIcon} from "lucide-react";import {BookOpen,Camera,ChevronRight,ClipboardCheck,Home,Info,Languages,Menu,Moon,Mountain,PanelTop,Search,ShieldAlert,Sun,TestTubes,Waves,X} from "lucide-react";
-type NavItem=[string,string,LucideIcon];
-const zh:NavItem[]=[["/","首页",Home],["/atlas","看图识金",Camera],["/assess","现场判断",TestTubes],["/knowledge","知识与方法",BookOpen],["/project","样品工作台",PanelTop],["/about","安全与来源",ShieldAlert]];
-const en:NavItem[]=[["/en","Home",Home],["/en/atlas","Photo Identification",Camera],["/en/assess","Field Assessment",TestTubes],["/en/knowledge","Knowledge & Methods",BookOpen],["/en/project","Sample Workspace",PanelTop],["/en/about","Safety & Sources",ShieldAlert]];
-const my:NavItem[]=[["/my","ပင်မစာမျက်နှာ",Home],["/my#placer","ရွှေကျင်သိုက်",Waves],["/my#lode","မူလရွှေသိုက်",Mountain],["/my#minerals","သတ္တုခွဲခြားခြင်း",Camera],["/my#sampling","နမူနာနှင့် QA/QC",ClipboardCheck],["/my#safety","လုံခြုံရေးနှင့် ဥပဒေ",ShieldAlert],["/my#glossary","ဘူမိဗေဒဝေါဟာရ",BookOpen]];
-const pairs:Record<string,string>={"/":"/en","/search":"/en/search","/project":"/en/project","/atlas":"/en/atlas","/assess":"/en/assess","/knowledge":"/en/knowledge","/geology":"/en/geology","/tools":"/en/tools","/sampling":"/en/sampling","/qaqc":"/en/qaqc","/planner":"/en/planner","/field":"/en/field","/map":"/en/map","/reports":"/en/reports","/backup":"/en/backup","/sources":"/en/sources","/copyright":"/en/copyright","/about":"/en/about"};
-export default function SiteNav(){
- const path=usePathname(),isEn=path.startsWith("/en"),isMy=path.startsWith("/my"),[open,setOpen]=useState(false),[theme,setTheme]=useState<"dark"|"light">("dark"),links=isMy?my:isEn?en:zh;
- useEffect(()=>{const saved=localStorage.getItem("goldfinder-theme"),next=saved==="light"||(!saved&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark";setTheme(next);document.documentElement.dataset.theme=next},[]);
- useEffect(()=>{document.documentElement.lang=isMy?"my":isEn?"en":"zh-CN"},[isMy,isEn]);
- useEffect(()=>{document.body.style.overflow=open?"hidden":"";return()=>{document.body.style.overflow=""}},[open]);
- function toggle(){const next=theme==="dark"?"light":"dark";setTheme(next);document.documentElement.dataset.theme=next;localStorage.setItem("goldfinder-theme",next)}
- const home=isMy?"/my":isEn?"/en":"/",languageHref=isMy?"/":isEn?"/my":pairs[path]||"/en",languageLabel=isMy?"中文":isEn?"မြန်မာ":"EN",languageCode=isMy?"zh-CN":isEn?"my":"en",searchHref=isEn?"/en/search":"/search";
- const openLabel=isMy?"လမ်းညွှန်ဖွင့်ရန်":isEn?"Open navigation":"打开导航",closeLabel=isMy?"လမ်းညွှန်ပိတ်ရန်":isEn?"Close navigation":"关闭导航";
- return <><header className="site-header"><Link className="brand" href={home} onClick={()=>setOpen(false)}><TestTubes size={21}/><span>{isMy?"ရွှေရှာဖွေ":isEn?"GOLDFINDER":"探金"}</span><small>GOLDFINDER</small></Link><div className="header-actions"><Link className="icon-button" href={searchHref} aria-label={isEn?"Search":"全站搜索"}><Search size={18}/></Link><button className="icon-button" onClick={toggle} aria-label={theme==="dark"?(isEn?"Use light theme":"切换浅色模式"):(isEn?"Use dark theme":"切换深色模式")}>{theme==="dark"?<Sun size={18}/>:<Moon size={18}/>}</button><Link className="language-switch" href={languageHref} hrefLang={languageCode}><Languages size={16}/><span>{languageLabel}</span></Link><button className="menu-button" onClick={()=>setOpen(!open)} aria-expanded={open} aria-controls="site-menu" aria-label={open?closeLabel:openLabel}>{open?<X size={18}/>:<Menu size={18}/>}<span>{open?(isMy?"ပိတ်":isEn?"CLOSE":"关闭"):(isMy?"မီနူး":isEn?"MENU":"菜单")}</span></button></div></header><div id="site-menu" className={`nav-overlay ${open?"is-open":""}`} aria-hidden={!open}><div className="nav-inner"><p className="eyebrow">EXPLORE GOLDFINDER</p><nav>{links.map(([href,label,Icon])=><Link href={href} key={href} onClick={()=>setOpen(false)}><Icon size={19}/><b>{label}</b><ChevronRight size={17}/></Link>)}</nav><div className="nav-note"><Info size={20}/><strong>{isMy?"မြေပြင်ဆုံးဖြတ်ချက်အခြခံ":isEn?"Field interpretation principle":"现场判断原则"}</strong><p>{isMy?"ကြည့်ရှုချက်သည် အပြီးသတ်အဖြေမဟုတ်ပါ။ ဓာတ်ပုံတစ်ပုံသည် သတ္တုအတည်ပြုချက်မဟုတ်ပါ။ ကိုယ်စားပြုနမူနာ၊ သင့်လျော်သော စမ်းသပ်မှုနှင့် ပြန်လည်စစ်ဆေးမှု လိုအပ်သည်။":isEn?"Observation is not a conclusion, and a photograph is not an identification. Verify every anomaly through representative sampling, fit-for-purpose analysis, and review.":"观察不是结论，图片不是鉴定。所有异常必须经过代表性取样、适用检测与复核。"}</p></div></div></div></>}
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import type { LucideIcon } from "lucide-react";
+import "./language-picker.css";
+import {
+  BookOpen,
+  Camera,
+  ChevronDown,
+  ChevronRight,
+  ClipboardCheck,
+  Home,
+  Info,
+  Languages,
+  Menu,
+  Moon,
+  Mountain,
+  PanelTop,
+  Search,
+  ShieldAlert,
+  Sun,
+  TestTubes,
+  Waves,
+  X,
+} from "lucide-react";
+type NavItem = [string, string, LucideIcon];
+const zh: NavItem[] = [
+  ["/", "首页", Home],
+  ["/atlas", "看图识金", Camera],
+  ["/assess", "现场判断", TestTubes],
+  ["/knowledge", "知识与方法", BookOpen],
+  ["/project", "样品工作台", PanelTop],
+  ["/about", "安全与来源", ShieldAlert],
+];
+const en: NavItem[] = [
+  ["/en", "Home", Home],
+  ["/en/atlas", "Photo Identification", Camera],
+  ["/en/assess", "Field Assessment", TestTubes],
+  ["/en/knowledge", "Knowledge & Methods", BookOpen],
+  ["/en/project", "Sample Workspace", PanelTop],
+  ["/en/about", "Safety & Sources", ShieldAlert],
+];
+const my: NavItem[] = [
+  ["/my", "ပင်မစာမျက်နှာ", Home],
+  ["/my#placer", "ရွှေကျင်သိုက်", Waves],
+  ["/my#lode", "မူလရွှေသိုက်", Mountain],
+  ["/my#minerals", "သတ္တုခွဲခြားခြင်း", Camera],
+  ["/my#sampling", "နမူနာနှင့် QA/QC", ClipboardCheck],
+  ["/my#safety", "လုံခြုံရေးနှင့် ဥပဒေ", ShieldAlert],
+  ["/my#glossary", "ဘူမိဗေဒဝေါဟာရ", BookOpen],
+];
+const pairs: Record<string, string> = {
+  "/": "/en",
+  "/search": "/en/search",
+  "/project": "/en/project",
+  "/atlas": "/en/atlas",
+  "/assess": "/en/assess",
+  "/knowledge": "/en/knowledge",
+  "/geology": "/en/geology",
+  "/tools": "/en/tools",
+  "/sampling": "/en/sampling",
+  "/qaqc": "/en/qaqc",
+  "/planner": "/en/planner",
+  "/field": "/en/field",
+  "/map": "/en/map",
+  "/reports": "/en/reports",
+  "/backup": "/en/backup",
+  "/sources": "/en/sources",
+  "/copyright": "/en/copyright",
+  "/about": "/en/about",
+};
+export default function SiteNav() {
+  const path = usePathname(),
+    isEn = path.startsWith("/en"),
+    isMy = path.startsWith("/my"),
+    [open, setOpen] = useState(false),
+    [languageOpen, setLanguageOpen] = useState(false),
+    [theme, setTheme] = useState<"dark" | "light">("dark"),
+    links = isMy ? my : isEn ? en : zh;
+  useEffect(() => {
+    const saved = localStorage.getItem("goldfinder-theme"),
+      next =
+        saved === "light" ||
+        (!saved && matchMedia("(prefers-color-scheme: light)").matches)
+          ? "light"
+          : "dark";
+    setTheme(next);
+    document.documentElement.dataset.theme = next;
+  }, []);
+  useEffect(() => {
+    document.documentElement.lang = isMy ? "my" : isEn ? "en" : "zh-CN";
+  }, [isMy, isEn]);
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+  function toggle() {
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem("goldfinder-theme", next);
+  }
+  const home = isMy ? "/my" : isEn ? "/en" : "/",
+    zhHref = isEn ? path.replace(/^\/en/, "") || "/" : isMy ? "/" : path,
+    enHref = isEn ? path : isMy ? "/en" : pairs[path] || "/en",
+    searchHref = isEn ? "/en/search" : "/search";
+  const openLabel = isMy
+      ? "လမ်းညွှန်ဖွင့်ရန်"
+      : isEn
+        ? "Open navigation"
+        : "打开导航",
+    closeLabel = isMy
+      ? "လမ်းညွှန်ပိတ်ရန်"
+      : isEn
+        ? "Close navigation"
+        : "关闭导航";
+  return (
+    <>
+      <header className="site-header">
+        <Link className="brand" href={home} onClick={() => setOpen(false)}>
+          <TestTubes size={21} />
+          <span>{isMy ? "ရွှေရှာဖွေ" : isEn ? "GOLDFINDER" : "探金"}</span>
+          <small>GOLDFINDER</small>
+        </Link>
+        <div className="header-actions">
+          <Link
+            className="icon-button"
+            href={searchHref}
+            aria-label={isEn ? "Search" : "全站搜索"}
+          >
+            <Search size={18} />
+          </Link>
+          <button
+            className="icon-button"
+            onClick={toggle}
+            aria-label={
+              theme === "dark"
+                ? isEn
+                  ? "Use light theme"
+                  : "切换浅色模式"
+                : isEn
+                  ? "Use dark theme"
+                  : "切换深色模式"
+            }
+          >
+            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+          <div className="language-picker">
+            <button
+              className="language-switch"
+              type="button"
+              onClick={() => setLanguageOpen(!languageOpen)}
+              aria-expanded={languageOpen}
+              aria-controls="language-options"
+              aria-label={
+                isEn
+                  ? "Choose language"
+                  : isMy
+                    ? "ဘာသာစကား ရွေးရန်"
+                    : "选择语言"
+              }
+            >
+              <Languages size={16} />
+              <span>{isEn ? "English" : isMy ? "မြန်မာ" : "中文"}</span>
+              <ChevronDown size={14} />
+            </button>
+            {languageOpen && (
+              <div className="language-options" id="language-options">
+                <Link
+                  href={zhHref}
+                  hrefLang="zh-CN"
+                  onClick={() => setLanguageOpen(false)}
+                  aria-current={!isEn && !isMy ? "page" : undefined}
+                >
+                  <b>中文</b>
+                  <small>Chinese</small>
+                </Link>
+                <Link
+                  href={enHref}
+                  hrefLang="en"
+                  onClick={() => setLanguageOpen(false)}
+                  aria-current={isEn ? "page" : undefined}
+                >
+                  <b>English</b>
+                  <small>EN</small>
+                </Link>
+                <Link
+                  href="/my"
+                  hrefLang="my"
+                  onClick={() => setLanguageOpen(false)}
+                  aria-current={isMy ? "page" : undefined}
+                >
+                  <b>မြန်မာ</b>
+                  <small>Myanmar</small>
+                </Link>
+              </div>
+            )}
+          </div>
+          <button
+            className="menu-button"
+            onClick={() => setOpen(!open)}
+            aria-expanded={open}
+            aria-controls="site-menu"
+            aria-label={open ? closeLabel : openLabel}
+          >
+            {open ? <X size={18} /> : <Menu size={18} />}
+            <span>
+              {open
+                ? isMy
+                  ? "ပိတ်"
+                  : isEn
+                    ? "CLOSE"
+                    : "关闭"
+                : isMy
+                  ? "မီနူး"
+                  : isEn
+                    ? "MENU"
+                    : "菜单"}
+            </span>
+          </button>
+        </div>
+      </header>
+      <div
+        id="site-menu"
+        className={`nav-overlay ${open ? "is-open" : ""}`}
+        aria-hidden={!open}
+      >
+        <div className="nav-inner">
+          <p className="eyebrow">EXPLORE GOLDFINDER</p>
+          <nav>
+            {links.map(([href, label, Icon]) => (
+              <Link href={href} key={href} onClick={() => setOpen(false)}>
+                <Icon size={19} />
+                <b>{label}</b>
+                <ChevronRight size={17} />
+              </Link>
+            ))}
+          </nav>
+          <div className="nav-note">
+            <Info size={20} />
+            <strong>
+              {isMy
+                ? "မြေပြင်ဆုံးဖြတ်ချက်အခြခံ"
+                : isEn
+                  ? "Field interpretation principle"
+                  : "现场判断原则"}
+            </strong>
+            <p>
+              {isMy
+                ? "ကြည့်ရှုချက်သည် အပြီးသတ်အဖြေမဟုတ်ပါ။ ဓာတ်ပုံတစ်ပုံသည် သတ္တုအတည်ပြုချက်မဟုတ်ပါ။ ကိုယ်စားပြုနမူနာ၊ သင့်လျော်သော စမ်းသပ်မှုနှင့် ပြန်လည်စစ်ဆေးမှု လိုအပ်သည်။"
+                : isEn
+                  ? "Observation is not a conclusion, and a photograph is not an identification. Verify every anomaly through representative sampling, fit-for-purpose analysis, and review."
+                  : "观察不是结论，图片不是鉴定。所有异常必须经过代表性取样、适用检测与复核。"}
+            </p>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}

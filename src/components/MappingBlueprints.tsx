@@ -1,4 +1,5 @@
 import { AlertTriangle, Compass, Ruler, Waves } from "lucide-react";
+import PlacerReferenceFigures from "./PlacerReferenceFigures";
 import "./mapping-blueprints.css";
 type Lang = "zh" | "en";
 const t = {
@@ -168,6 +169,7 @@ export default function MappingBlueprints({ lang }: { lang: Lang }) {
           <p>{c.ln}</p>
         </article>
       </div>
+      <PlacerReferenceFigures lang={lang} />
       <div className="bp-check">
         <div>
           <h3>{c.check}</h3>
