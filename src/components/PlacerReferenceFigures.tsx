@@ -4,7 +4,7 @@ import "./placer-reference-figures.css";
 type Lang = "zh" | "en";
 const figures = [
   {
-    src: "/images/user-placer-bend.jfif",
+    src: "/images/user-placer-bend.jpg",
     source:
       "https://hobbymineroutlet.com/blogs/techniques-methods/reading-the-ground-how-to-find-gold-like-a-pro",
     credit: "Hobby Miner Outlet · original article · reuse licence not stated",
@@ -15,7 +15,7 @@ const figures = [
       "应组合观察内弯缓流、砾石坝生长、巨石后涡流、黑砂富集及裸露基岩裂缝。这些只是应验证的取样目标，不是必然的富金带。",
   },
   {
-    src: "/images/user-placer-origin.jfif",
+    src: "/images/user-placer-origin.jpg",
     source:
       "https://geo.libretexts.org/Bookshelves/Geology/Geology_of_California/09%3A_Sierra_Nevada/9.04%3A_Gold_of_the_Sierra_Nevada",
     credit:
@@ -27,7 +27,7 @@ const figures = [
       "风化可能从矿化脉中释放金；河流搬运后，会在流速下降或河床粗糙的位置反复再富集重颗粒。",
   },
   {
-    src: "/images/user-placer-meanders.jfif",
+    src: "/images/user-placer-meanders.jpg",
     source: "https://rawbrothers.co.uk/blog/bend-in-the-river",
     credit: "RAW Brothers · original article · reuse licence not stated",
     title: "Coarse and fine gold through successive bends",
@@ -37,7 +37,7 @@ const figures = [
       "颗粒大小、洪水历史和局部水动力都会改变分布。不能认定每个内弯都富金，应对浅滩、深潭和砾石坝做等体积比较。",
   },
   {
-    src: "/images/user-placer-traps.jfif",
+    src: "/images/user-placer-traps.jpg",
     source: "https://earthsci.org/mineral/mindep/auplace/auplace.html",
     credit:
       "Earth Science Australia · Gold Placer Deposits · reuse licence not stated",
@@ -48,7 +48,7 @@ const figures = [
       "岩坎、锅穴、瀑布下游、河曲、支流汇入口及海底起伏说明同一原理：搬运能量变化处可能滞留重颗粒。",
   },
   {
-    src: "/images/user-placer-boulder.jfif",
+    src: "/images/user-placer-boulder.jpg",
     source: "https://www.americanminingrights.com/reading-a-stream/",
     credit:
       "American Mining Rights Association · original article · reuse licence not stated",
