@@ -189,7 +189,10 @@ export default function MapWorkspace({ lang }: { lang: "zh" | "en" | "my" }) {
           <Link className="button" href={`${base}/field`}>
             {c.record}
           </Link>
-          <Link className="button secondary" href={`${base}/project`}>
+          <Link
+            className="button secondary"
+            href={lang === "my" ? "/my" : `${base}/project`}
+          >
             {lang === "zh"
               ? "项目控制台"
               : lang === "my"
