@@ -136,6 +136,12 @@ const toolLinks = [
     Wrench,
   ],
   [
+    "စနစ်တကျ နမူနာစီမံကိန်း",
+    "Sample fence၊ point၊ layer၊ volume၊ duplicate၊ blank နှင့် CRM အရေအတွက်ကို တွက်ပြီး plan ကို သိမ်းပါ။",
+    "/my/planner",
+    Scale,
+  ],
+  [
     "မြေပြင်အမှတ်ပေးရန်",
     "ရွှေကျင်နှင့် မူလရွှေလက္ခဏာများကို စုစည်း၍ နမူနာယူရမည့် ဦးစားပေးအဆင့် သတ်မှတ်ပါ။",
     "#my-assessment",

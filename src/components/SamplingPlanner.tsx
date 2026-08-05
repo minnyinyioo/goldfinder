@@ -60,33 +60,67 @@ const text = {
     warning:
       "These are layout and workload calculations, not proof of statistical sufficiency. Use orientation and progressive-volume tests, then have a qualified person adjust the design for grade variance, coarse-gold size, geological continuity, and target precision.",
   },
+  my: {
+    eyebrow: "SAMPLING DESIGN TOOL · မြန်မာဘာသာ",
+    title: "နမူနာစီမံကိန်းနှင့် လုပ်ငန်းပမာဏ",
+    lead: "Target ဧရိယာကို systematic fence၊ vertical interval နှင့် QA/QC အရေအတွက်အဖြစ် ပြောင်းတွက်ပါ။ Spacing နှင့် sample support ကို ဘူမိဗေဒပြောင်းလဲမှု၊ particle size နှင့် pilot test ဖြင့် သတ်မှတ်ရမည်။",
+    objective: "လေ့လာမှုရည်ရွယ်ချက်",
+    material: "အဓိက မြေ/ပစ္စည်း",
+    length: "Target သို့မဟုတ် မြစ်ပိုင်းအရှည် (m)",
+    spacing: "Fence / traverse အကွာအဝေး (m)",
+    points: "Fence တစ်ခုလျှင် primary point",
+    layers: "Point တစ်ခုလျှင် vertical interval",
+    volume: "Primary sample တစ်ခု၏ volume (L)",
+    dup: "ကွင်းဆင်း duplicate (%)",
+    blank: "Blank sample (%)",
+    crm: "Certified reference material (%)",
+    result: "စီစဉ်ထားသော လုပ်ငန်းပမာဏ",
+    fences: "Fence အရေအတွက်",
+    primary: "Primary sample",
+    duplicates: "ကွင်းဆင်း duplicate",
+    blanks: "Blank sample",
+    standards: "Reference material",
+    bags: "Sample bag / record စုစုပေါင်း",
+    total: "Primary volume စုစုပေါင်း",
+    save: "ဤစက်တွင် plan သိမ်းရန်",
+    export: "Plan JSON ထုတ်ရန်",
+    clear: "အားလုံးရှင်းရန်",
+    defaults: "ဥပမာတန်ဖိုး ပြန်ထားရန်",
+    warning:
+      "ဤကိန်းဂဏန်းများသည် layout နှင့် workload တွက်ချက်ခြင်းသာဖြစ်ပြီး statistical sufficiency သက်သေမဟုတ်ပါ။ Orientation sample နှင့် progressive-volume test အရင်လုပ်ပြီး grade variance၊ coarse-gold size၊ geological continuity နှင့် target precision အပေါ် မူတည်၍ အရည်အချင်းရှိသူက design ကို ပြင်ဆင်ရမည်။",
+  },
 };
-const guidance: Record<string, { zh: string; en: string }> = {
+const guidance: Record<string, { zh: string; en: string; my: string }> = {
   "Fine sand / silt": {
     zh: "在同一沉积单元内做等体积组合样，避免只取表面黑砂条带。",
     en: "Use equal-support composites within one depositional unit; do not sample only visible black-sand streaks.",
+    my: "Depositional unit တစ်ခုအတွင်း တူညီသော support composite သုံးပြီး မြင်ရသော black-sand streak ကိုသာ မယူပါနှင့်။",
   },
   "Sand and gravel": {
     zh: "记录最大粒径和筛上物，区分原位与挖松体积。",
     en: "Record top size and oversize; distinguish bank from loose volume.",
+    my: "Maximum particle size နှင့် oversize ကို မှတ်ပြီး bank volume နှင့် loose volume ကို ခွဲပါ။",
   },
   "Cobble-rich gravel": {
     zh: "小淘金盘通常不具代表性，应以试坑/沟槽覆盖完整粒级。",
     en: "Small pans are rarely representative; use pits or trenches that include the full size distribution.",
+    my: "Pan သေးသည် ကိုယ်စားပြုမှုနည်းတတ်သည်။ Particle-size distribution အပြည့်ပါသော pit သို့မဟုတ် trench သုံးပါ။",
   },
   "Clay false bottom": {
     zh: "接触面上方、黏土表面和裂缝材料分层编号，不要混成一个样。",
     en: "Number the overlying interval, clay surface, and crack material separately.",
+    my: "အပေါ် interval၊ clay surface နှင့် crack material ကို sample ID သီးခြားပေးပါ။",
   },
   "Residual soil": {
     zh: "按坡位和土层布网，使用质量品位时保留实测干容重。",
     en: "Stratify the grid by slope position and soil horizon; retain measured dry bulk density.",
+    my: "Slope position နှင့် soil horizon အလိုက် grid ကို ခွဲပြီး တိုင်းထားသော dry bulk density ကို သိမ်းပါ။",
   },
 };
 export default function SamplingPlanner({
   lang = "zh",
 }: {
-  lang?: "zh" | "en";
+  lang?: "zh" | "en" | "my";
 }) {
   const c = text[lang];
   const [objective, setObjective] = useState("Reconnaissance");
@@ -139,7 +173,13 @@ export default function SamplingPlanner({
       "goldfinder-sampling-plan",
       JSON.stringify({ ...plan, savedAt: new Date().toISOString() }),
     );
-    alert(lang === "zh" ? "计划已保存在本机。" : "Plan saved on this device.");
+    alert(
+      lang === "zh"
+        ? "计划已保存在本机。"
+        : lang === "my"
+          ? "Plan ကို ဤစက်တွင် သိမ်းပြီးပါပြီ။"
+          : "Plan saved on this device.",
+    );
   }
   function download() {
     const url = URL.createObjectURL(
@@ -203,7 +243,11 @@ export default function SamplingPlanner({
       <div
         className="tool-reset-actions"
         aria-label={
-          lang === "zh" ? "取样规划器数据操作" : "Sampling planner data actions"
+          lang === "zh"
+            ? "取样规划器数据操作"
+            : lang === "my"
+              ? "နမူနာစီမံကိန်း ဒေတာလုပ်ဆောင်ချက်"
+              : "Sampling planner data actions"
         }
       >
         <button type="button" onClick={clearAll}>
