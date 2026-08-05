@@ -160,8 +160,10 @@ export default function ReportBuilder({ lang }: { lang: "zh" | "en" | "my" }) {
     [records, setRecords] = useState<Sample[]>([]),
     [scope, setScope] = useState<"project" | "sample">("project"),
     [project, setProject] = useState(""),
-    [sample, setSample] = useState("");
+    [sample, setSample] = useState(""),
+    [generatedAt, setGeneratedAt] = useState("");
   useEffect(() => {
+    setGeneratedAt(new Date().toLocaleString());
     try {
       const rows = JSON.parse(
         localStorage.getItem("goldfinder-samples-v2") || "[]",
@@ -257,7 +259,7 @@ export default function ReportBuilder({ lang }: { lang: "zh" | "en" | "my" }) {
                   : selected[0]?.sample || c.sample}
               </h2>
               <span>
-                {c.generated}: {new Date().toLocaleString()}
+                {c.generated}: {generatedAt || "—"}
               </span>
             </header>
             <section className="report-summary">

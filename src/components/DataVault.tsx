@@ -143,6 +143,7 @@ export default function DataVault({ lang }: { lang: Lang }) {
     [restoreMode, setRestoreMode] = useState<Restore>("merge"),
     [phrase, setPhrase] = useState(""),
     [message, setMessage] = useState(""),
+    [generatedAt, setGeneratedAt] = useState(""),
     file = useRef<HTMLInputElement>(null);
   function refresh() {
     try {
@@ -161,7 +162,14 @@ export default function DataVault({ lang }: { lang: Lang }) {
       setPlan(null);
     }
   }
-  useEffect(refresh, []);
+  useEffect(() => {
+    refresh();
+    setGeneratedAt(
+      new Date().toLocaleDateString(
+        lang === "zh" ? "zh-CN" : lang === "my" ? "my-MM" : "en-GB",
+      ),
+    );
+  }, [lang]);
   const located = useMemo(
     () =>
       samples.filter(
@@ -314,10 +322,7 @@ export default function DataVault({ lang }: { lang: Lang }) {
             </span>
             <span>{c.schema}: goldfinder.vault / 1</span>
             <span>
-              {c.generated}:{" "}
-              {new Date().toLocaleDateString(
-                lang === "zh" ? "zh-CN" : lang === "my" ? "my-MM" : "en-GB",
-              )}
+              {c.generated}: {generatedAt || "—"}
             </span>
           </div>
           <fieldset>
