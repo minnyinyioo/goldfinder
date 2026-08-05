@@ -1,4 +1,97 @@
-import {enAtlas} from "@/data/english";import AtlasExplorer,{ExplorerItem} from "../../atlas/AtlasExplorer";import "../../atlas/atlas.css";
-const slugs=["native-gold","pyrite","chalcopyrite","magnetite","muscovite","quartz-vein","panning","sluice","laterite-red","laterite-profile","hematite","grey-clay-profile","conglomerate","black-sand-field","weathered-bedrock","fresh-bedrock","ilmenite-sand","garnet","zircon","chromite","placer-flakes","coarse-pan-gold"];
-const category=(slug:string):ExplorerItem["category"]=>["panning","sluice"].includes(slug)?"field":["laterite-red","laterite-profile","grey-clay-profile","conglomerate","weathered-bedrock","fresh-bedrock"].includes(slug)?"soil":["native-gold","placer-flakes","coarse-pan-gold"].includes(slug)?"gold":["pyrite","chalcopyrite","muscovite"].includes(slug)?"lookalike":"heavy";
-export default function EnglishAtlas(){const items:ExplorerItem[]=enAtlas.map((x,i)=>({slug:slugs[i],name:x[0],image:`/images/${x[1]}`,alt:x[0],observe:x[2],notProof:x[3],author:x[4],license:x[5],source:x[6],category:category(slugs[i])}));return <><div className="page-head"><p className="eyebrow">VERIFIED PHOTO ATLAS</p><h1>Field reference photo atlas</h1><p className="lead">Filter and enlarge verified reference photographs to learn what to observe. A photograph cannot identify a specimen; every item includes its creator, licence, and original page.</p></div><section className="section"><div className="compare"><div><strong>Observe form</strong><p>Crystal habit, flakes, grains, cleavage, malleability, or brittle fracture</p></div><div><strong>Test properties</strong><p>Magnetism, streak, hardness, density, and cleavage</p></div><div><strong>Verify</strong><p>Representative sampling and fit-for-purpose laboratory analysis</p></div></div><AtlasExplorer items={items} lang="en"/></section></>}
+import { enAtlas } from "@/data/english";
+import AtlasExplorer, { ExplorerItem } from "../../atlas/AtlasExplorer";
+import "../../atlas/atlas.css";
+const slugs = [
+  "native-gold",
+  "pyrite",
+  "chalcopyrite",
+  "magnetite",
+  "muscovite",
+  "quartz-vein",
+  "panning",
+  "sluice",
+  "laterite-red",
+  "laterite-profile",
+  "hematite",
+  "grey-clay-profile",
+  "conglomerate",
+  "black-sand-field",
+  "weathered-bedrock",
+  "fresh-bedrock",
+  "ilmenite-sand",
+  "garnet",
+  "zircon",
+  "chromite",
+  "placer-flakes",
+  "coarse-pan-gold",
+  "arsenopyrite",
+  "stibnite",
+];
+const category = (slug: string): ExplorerItem["category"] =>
+  ["panning", "sluice"].includes(slug)
+    ? "field"
+    : [
+          "laterite-red",
+          "laterite-profile",
+          "grey-clay-profile",
+          "conglomerate",
+          "weathered-bedrock",
+          "fresh-bedrock",
+        ].includes(slug)
+      ? "soil"
+      : ["native-gold", "placer-flakes", "coarse-pan-gold"].includes(slug)
+        ? "gold"
+        : ["arsenopyrite", "stibnite"].includes(slug)
+          ? "indicator"
+          : ["pyrite", "chalcopyrite", "muscovite"].includes(slug)
+            ? "lookalike"
+            : "heavy";
+export default function EnglishAtlas() {
+  const items: ExplorerItem[] = enAtlas.map((x, i) => ({
+    slug: slugs[i],
+    name: x[0],
+    image: `/images/${x[1]}`,
+    alt: x[0],
+    observe: x[2],
+    notProof: x[3],
+    author: x[4],
+    license: x[5],
+    source: x[6],
+    category: category(slugs[i]),
+  }));
+  return (
+    <>
+      <div className="page-head">
+        <p className="eyebrow">VERIFIED PHOTO ATLAS</p>
+        <h1>Field reference photo atlas</h1>
+        <p className="lead">
+          Filter and enlarge verified reference photographs to learn what to
+          observe. A photograph cannot identify a specimen; every item includes
+          its creator, licence, and original page.
+        </p>
+      </div>
+      <section className="section">
+        <div className="compare">
+          <div>
+            <strong>Observe form</strong>
+            <p>
+              Crystal habit, flakes, grains, cleavage, malleability, or brittle
+              fracture
+            </p>
+          </div>
+          <div>
+            <strong>Test properties</strong>
+            <p>Magnetism, streak, hardness, density, and cleavage</p>
+          </div>
+          <div>
+            <strong>Verify</strong>
+            <p>
+              Representative sampling and fit-for-purpose laboratory analysis
+            </p>
+          </div>
+        </div>
+        <AtlasExplorer items={items} lang="en" />
+      </section>
+    </>
+  );
+}
