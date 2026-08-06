@@ -194,6 +194,7 @@ export default function GeologyGuide({ lang }: { lang: Lang }) {
               width={960}
               height={720}
               priority
+              loading="eager"
             />
             <figcaption>
               {images[0].author} · {images[0].license} ·{" "}

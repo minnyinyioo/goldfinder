@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { BookOpen, ExternalLink, Search, ShieldAlert } from "lucide-react";
 import { enAtlas } from "@/data/english";
 import GeologyFieldGallery from "./GeologyFieldGallery";
+import ContentReviewPanel from "./ContentReviewPanel";
 import "@/app/knowledge/knowledge.css";
 
 type Category = "geology" | "identify" | "sampling" | "quality" | "safety";
@@ -222,6 +223,7 @@ export default function MyanmarKnowledge() {
           စစ်ဆေးပါ။ လက္ခဏာသည် deposit၊ grade သို့မဟုတ် mining permission
           မဟုတ်ပါ။
         </p>
+        <ContentReviewPanel lang="my" topic="knowledge" />
       </div>
       <section className="section">
         <div className="atlas-tools">
@@ -268,6 +270,7 @@ export default function MyanmarKnowledge() {
                   width={960}
                   height={720}
                   priority={i === 0}
+                  loading={i === 0 ? "eager" : "lazy"}
                 />
                 <p>
                   ဓာတ်ပုံ — {media[4]} · {media[5]} ·{" "}

@@ -17,9 +17,9 @@
 
 ### P0 — content governance
 
-- Add citations at statement level, with reviewer/date/version metadata on every guide.
+- Continue statement-level citations across legacy guides; real-field geology references now include per-card scientific sources and shared guides carry editor/date/version metadata.
 - Add named geological reviewer, review date and revision history to every guide.
-- Add more real-photo examples for alluvial fans, terraces, alteration and shear zones.
+- Completed in v3.35.0: local, licensed real-photo examples for alluvial fans, terraces, alteration and shear zones.
 - Add a prominent jurisdiction-specific emergency and permit checklist.
 
 ### P1 — field resilience
