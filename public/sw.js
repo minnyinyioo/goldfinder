@@ -1,4 +1,4 @@
-const VERSION = "goldfinder-v3.53.2";
+const VERSION = "goldfinder-v3.53.3";
 const PAGE_CACHE = `${VERSION}-pages`;
 const ASSET_CACHE = `${VERSION}-assets`;
 
@@ -129,12 +129,29 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  event.respondWith(
-    caches.match(request).then((cached) => cached || fetch(request).then((response) => {
+  event.respondWith((async () => {
+    // Next/Image responses vary by the browser Accept header. The offline pack
+    // is fetched by the worker with a different Accept value than an iPhone
+    // image element, so match the already verified same-origin URL regardless
+    // of that content-negotiation header.
+    const cached = await caches.match(request, { ignoreVary: true });
+    if (cached) return cached;
+    try {
+      const response = await fetch(request);
       if (response.ok && (url.pathname.startsWith("/_next/") || url.pathname.startsWith("/images/") || url.pathname === "/manifest.webmanifest")) {
-        caches.open(ASSET_CACHE).then((cache) => cache.put(request, response.clone()));
+        const cache = await caches.open(ASSET_CACHE);
+        await cache.put(request, response.clone());
       }
       return response;
-    })),
-  );
+    } catch (error) {
+      if (url.pathname === "/_next/image") {
+        const original = sameOriginPath(url.searchParams.get("url") || "");
+        if (original) {
+          const fallback = await caches.match(original, { ignoreVary: true });
+          if (fallback) return fallback;
+        }
+      }
+      throw error;
+    }
+  })());
 });
