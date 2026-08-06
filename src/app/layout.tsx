@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import SiteNav from "@/components/SiteNav";import SiteFooter from "@/components/SiteFooter";
+import OfflineStatus from "@/components/OfflineStatus";
 import "./globals.css";
 import "./chrome.css";
 import "./theme.css";
@@ -19,5 +20,5 @@ export const viewport:Viewport={themeColor:[{media:"(prefers-color-scheme: dark)
 const structured={"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":`${site}/#website`,name:"Goldfinder",alternateName:["探金","ရွှေရှာဖွေ"],url:site,inLanguage:["zh-CN","en","my"],description:"Evidence-led field geology, mineral recognition, sampling and record tools.",publisher:{"@id":`${site}/#organization`}},{"@type":"Organization","@id":`${site}/#organization`,name:"Goldfinder Project",url:site},{"@type":"SoftwareApplication","@id":`${site}/#application`,name:"Goldfinder Field Toolkit",url:site,applicationCategory:"EducationalApplication",operatingSystem:"Any web browser",isAccessibleForFree:true,availableLanguage:["Chinese","English","Burmese"],featureList:["Real-photo mineral reference atlas","Placer and lode field-evidence scoring","Placer g/m³ and lode ppm to g/t calculations","Device-local sample records, mapping, reports and QA/QC"],offers:{"@type":"Offer",price:"0",priceCurrency:"USD"}},{"@type":"LearningResource","@id":`${site}/#knowledge`,name:"Goldfinder illustrated field knowledge base",url:`${site}/knowledge`,educationalUse:"Field geology education",learningResourceType:"Reference guide",inLanguage:["zh-CN","en","my"],isPartOf:{"@id":`${site}/#website`}}]};
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="zh-CN"><body><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(structured)}}/><SiteNav/><main>{children}</main><SiteFooter/></body></html>;
+  return <html lang="zh-CN"><body><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(structured)}}/><SiteNav/><main>{children}</main><SiteFooter/><OfflineStatus/></body></html>;
 }

@@ -24,7 +24,7 @@
 
 ### P1 — field resilience
 
-- Add service-worker-backed offline availability for selected knowledge and record pages.
+- Completed in v3.38.0: service-worker-backed offline availability for core trilingual knowledge, geology and safety pages, plus runtime caching for visited pages and local assets.
 - Add bulk photo archive export while preserving captions and sample links.
 - Add automated backup reminders and backup-integrity checks.
 
