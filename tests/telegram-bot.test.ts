@@ -37,3 +37,17 @@ test("setup script configures commands, menu button and webhook", async () => {
   }
   assert.match(setup, /secret_token/);
 });
+
+test("server-side setup uses Vercel secrets and never returns the bot token", async () => {
+  const route = await readFile(
+    new URL("src/app/api/telegram/setup/route.ts", root),
+    "utf8",
+  );
+  assert.match(route, /authorization/);
+  assert.match(route, /timingSafeEqual/);
+  assert.match(route, /process\.env\.TELEGRAM_BOT_TOKEN/);
+  assert.match(route, /getMe/);
+  assert.match(route, /setChatMenuButton/);
+  assert.match(route, /setWebhook/);
+  assert.doesNotMatch(route, /NextResponse\.json\(\{[\s\S]*?\btoken\s*:/);
+});

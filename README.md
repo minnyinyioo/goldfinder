@@ -76,6 +76,14 @@ npm run telegram:setup
 
 该命令会设置命令菜单、简介、聊天菜单按钮和带 secret header 验证的 webhook。不要把 Token 写进 `.env.example`、README、Issue、提交记录或聊天消息。
 
+如果 Token 和 webhook secret 已配置在 Vercel Production，可直接从安全终端调用服务器端初始化，不必把 Bot Token 再复制到本机：
+
+```powershell
+Invoke-RestMethod -Method Post -Uri "https://goldfinder.vercel.app/api/telegram/setup" -Headers @{ Authorization = "Bearer $env:TELEGRAM_WEBHOOK_SECRET" }
+```
+
+初始化端点只接受与 Vercel `TELEGRAM_WEBHOOK_SECRET` 完全一致的 Bearer 值，并采用常量时间比较；它不会返回 Bot Token。
+
 ## 图片、资料与版权
 
 第三方图片和资料的权利归原作者或权利人，网站按各来源页标注的许可进行教育性整理与聚合。图片版权、原始链接和资料引用集中列在站内“资料与图片来源”及“版权与免责声明”页面。
