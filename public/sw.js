@@ -1,4 +1,4 @@
-const VERSION = "goldfinder-v3.52.0";
+const VERSION = "goldfinder-v3.53.0";
 const PAGE_CACHE = `${VERSION}-pages`;
 const ASSET_CACHE = `${VERSION}-assets`;
 
@@ -32,7 +32,11 @@ const OFFLINE_PACK = [...ROUTES, ...IMAGES, "/manifest.webmanifest", "/offline.h
 
 function sameOriginPath(value, base = self.location.origin) {
   try {
-    const url = new URL(value, base);
+    // Asset URLs are read from raw HTML rather than a DOM. Decode ampersands
+    // before constructing the URL or Next/Image query strings become
+    // `&amp;w=...`, which the image optimizer correctly rejects with HTTP 400.
+    const decoded = value.replace(/&(?:amp|#0*38|#x0*26);/gi, "&");
+    const url = new URL(decoded, base);
     return url.origin === self.location.origin ? `${url.pathname}${url.search}` : null;
   } catch {
     return null;

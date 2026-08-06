@@ -12,6 +12,8 @@ test("offline pack includes all language surfaces and local reference images", a
   assert.match(worker, /CACHE_OFFLINE_PACK/);
   assert.match(worker, /OFFLINE_PROGRESS/);
   assert.match(worker, /discoverAssets/);
+  assert.match(worker, /#0\*38/);
+  assert.match(worker, /#x0\*26/);
   assert.match(worker, /gold-native\.jpg/);
 });
 
