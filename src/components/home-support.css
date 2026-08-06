@@ -15,9 +15,8 @@
   min-height: 230px;
   padding: 20px;
   border: 1px solid var(--line);
-  border-radius: 15px;
-  background: linear-gradient(145deg, var(--panel), var(--surface));
-  box-shadow: 0 16px 45px #0001;
+  border-radius: 5px;
+  background: var(--surface);
 }
 .usage-grid a > span {
   color: var(--muted);
@@ -47,7 +46,7 @@
 }
 .usage-grid a:hover {
   border-color: var(--gold);
-  transform: translateY(-2px);
+  background: var(--panel);
 }
 .faq-grid {
   display: grid;
@@ -56,8 +55,8 @@
 }
 .faq-grid details {
   border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--panel);
+  border-radius: 4px;
+  background: var(--surface);
   overflow: hidden;
 }
 .faq-grid summary {

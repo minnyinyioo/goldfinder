@@ -37,8 +37,7 @@ html {
 }
 body {
   margin: 0;
-  background:
-    radial-gradient(circle at 80% -10%, #1c382d 0, transparent 34%), var(--bg);
+  background: var(--bg);
   color: var(--text);
   font-family: Inter, "Noto Sans SC", "Microsoft YaHei", Arial, sans-serif;
   line-height: 1.65;
@@ -48,11 +47,11 @@ body:before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.035;
+  opacity: 0.025;
   background-image:
     linear-gradient(#fff 1px, transparent 1px),
     linear-gradient(90deg, #fff 1px, transparent 1px);
-  background-size: 56px 56px;
+  background-size: 72px 72px;
 }
 a {
   color: inherit;
@@ -89,7 +88,7 @@ textarea {
   top: 0;
   background: #07100de8;
   border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(12px);
   z-index: 40;
 }
 .brand {
@@ -206,7 +205,8 @@ main:focus {
 .hero {
   max-width: 1160px;
   margin: auto;
-  padding: 96px 24px 72px;
+  padding: 84px 24px 66px;
+  border-bottom: 1px solid var(--line);
 }
 .eyebrow {
   color: var(--gold);
@@ -240,7 +240,7 @@ main:focus {
   background: var(--gold);
   color: #171306;
   padding: 11px 19px;
-  border-radius: 8px;
+  border-radius: 4px;
   font-weight: 800;
   border: 1px solid var(--gold);
   cursor: pointer;
@@ -258,6 +258,9 @@ main:focus {
   margin: auto;
   padding: 55px 24px;
 }
+.section + .section {
+  border-top: 1px solid color-mix(in srgb, var(--line) 62%, transparent);
+}
 .section h2 {
   font-size: clamp(22px, 3vw, 30px);
   letter-spacing: -0.025em;
@@ -274,16 +277,15 @@ main:focus {
 }
 .card {
   display: block;
-  background: linear-gradient(145deg, #14251e, #0c1713);
+  background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 6px;
   padding: 22px;
-  transition: 0.22s;
-  box-shadow: 0 18px 60px #0002;
+  transition: border-color 0.18s, background-color 0.18s;
 }
 .card:hover {
-  transform: translateY(-3px);
   border-color: #8c783b;
+  background: var(--panel);
 }
 .card b {
   color: var(--gold);
@@ -303,7 +305,7 @@ main:focus {
   gap: 1px;
   background: var(--line);
   border: 1px solid var(--line);
-  border-radius: 13px;
+  border-radius: 4px;
   overflow: hidden;
 }
 .step {
@@ -348,14 +350,64 @@ footer {
   padding: 38px 24px 45px;
   color: var(--muted);
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 24px;
+  grid-template-columns: minmax(220px, 0.8fr) minmax(280px, 1.2fr);
+  gap: 28px 48px;
   font-size: 13px;
 }
 .footer-links {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
+}
+.footer-social {
+  grid-column: 1/-1;
+  padding: 22px 0 2px;
+  border-top: 1px solid var(--line);
+}
+.footer-social > p {
+  margin: 0 0 12px;
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.footer-social > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.footer-social :where(a, span) {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--text);
+}
+.footer-social :where(a, span) svg {
+  width: 16px;
+  height: 16px;
+  color: var(--gold);
+}
+.footer-social span[aria-disabled="true"] {
+  color: var(--muted);
+  cursor: default;
+}
+.footer-social small {
+  padding-left: 7px;
+  border-left: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.footer-social a:hover {
+  border-color: var(--gold);
+  color: var(--gold);
 }
 .footer-links a:hover {
   color: var(--gold);

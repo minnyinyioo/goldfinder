@@ -1,7 +1,47 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Scale, ShieldAlert, TestTubes } from "lucide-react";
+import { BookOpen, Mail, Scale, ShieldAlert, TestTubes } from "lucide-react";
+import {
+  FaDiscord,
+  FaFacebookF,
+  FaGithub,
+  FaTelegram,
+} from "react-icons/fa6";
+
+function SocialChannels({ locale }: { locale: "zh" | "en" | "my" }) {
+  const reserved = locale === "zh" ? "预留" : locale === "my" ? "မကြာမီ" : "Reserved";
+  const title =
+    locale === "zh" ? "联系与社区" : locale === "my" ? "ဆက်သွယ်ရန်နှင့် အသိုင်းအဝိုင်း" : "Contact & community";
+
+  return (
+    <section className="footer-social" aria-label={title}>
+      <p>{title}</p>
+      <div>
+        <span aria-disabled="true" title={`Facebook · ${reserved}`}>
+          <FaFacebookF aria-hidden="true" /> Facebook <small>{reserved}</small>
+        </span>
+        <span aria-disabled="true" title={`Email · ${reserved}`}>
+          <Mail aria-hidden="true" /> Email <small>{reserved}</small>
+        </span>
+        <span aria-disabled="true" title={`Discord · ${reserved}`}>
+          <FaDiscord aria-hidden="true" /> Discord <small>{reserved}</small>
+        </span>
+        <span aria-disabled="true" title={`Telegram · ${reserved}`}>
+          <FaTelegram aria-hidden="true" /> Telegram <small>{reserved}</small>
+        </span>
+        <a
+          href="https://github.com/minnyinyioo/goldfinder"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Goldfinder GitHub repository"
+        >
+          <FaGithub aria-hidden="true" /> GitHub
+        </a>
+      </div>
+    </section>
+  );
+}
 export default function SiteFooter() {
   const path = usePathname(),
     en = path.startsWith("/en"),
@@ -33,6 +73,7 @@ export default function SiteFooter() {
             လုံခြုံရေးနှင့် ဥပဒေ
           </Link>
         </div>
+        <SocialChannels locale="my" />
         <p className="footer-legal">
           ဤပညာပေးစီမံကိန်းသည် ဥပဒေ၊ ဘူမိဗေဒ၊ သတ္တုတူးဖော်ရေး သို့မဟုတ်
           ရင်းနှီးမြှုပ်နှံမှုအကြံဉာဏ် မဟုတ်ပါ။ Third-party material ၏
@@ -68,6 +109,7 @@ export default function SiteFooter() {
           {en ? "Safety" : "安全说明"}
         </Link>
       </div>
+      <SocialChannels locale={en ? "en" : "zh"} />
       <p className="footer-legal">
         {en
           ? "Original editorial structure, interface design, and text produced for this site are protected under applicable law. Third-party material remains subject to the licence stated at its source. This project is not legal, geological, mining, or investment advice."

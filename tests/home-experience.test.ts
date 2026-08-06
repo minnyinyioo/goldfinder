@@ -29,9 +29,21 @@ test("global typography uses the compact heading and menu scale", async () => {
   assert.match(css, /font-size: clamp\(17px, 2vw, 24px\)/);
 });
 
-test("light theme retains layered surfaces instead of flat blocks", async () => {
+test("light theme uses restrained field-manual surfaces", async () => {
   const css = await readFile(new URL("src/app/theme.css", root), "utf8");
-  assert.match(css, /radial-gradient\(circle at 8% 20%/);
+  assert.match(css, /background: #edf1ec/);
   assert.match(css, /\.usage-grid a/);
-  assert.match(css, /box-shadow/);
+  assert.match(css, /box-shadow: none/);
+});
+
+test("footer reserves community channels without dead links", async () => {
+  const footer = await readFile(
+    new URL("src/components/SiteFooter.tsx", root),
+    "utf8",
+  );
+  for (const platform of ["Facebook", "Email", "Discord", "Telegram", "GitHub"]) {
+    assert.match(footer, new RegExp(platform));
+  }
+  assert.match(footer, /aria-disabled="true"/);
+  assert.match(footer, /github\.com\/minnyinyioo\/goldfinder/);
 });
