@@ -7,6 +7,7 @@ import { enAtlas } from "@/data/english";
 import GeologyFieldGallery from "./GeologyFieldGallery";
 import ContentReviewPanel from "./ContentReviewPanel";
 import RelatedGuideNav from "./RelatedGuideNav";
+import GuideCitations from "./GuideCitations";
 import "@/app/knowledge/knowledge.css";
 
 type Category = "geology" | "identify" | "sampling" | "quality" | "safety";
@@ -299,6 +300,7 @@ export default function MyanmarKnowledge() {
                   <ShieldAlert size={18} />
                   {g.warning}
                 </div>
+                <GuideCitations guideId={g.id} lang="my" />
                 <div className="knowledge-actions">
                   <Link href="/my/atlas">
                     <BookOpen size={16} />

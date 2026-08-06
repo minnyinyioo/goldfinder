@@ -17,7 +17,7 @@
 
 ### P0 — content governance
 
-- Continue statement-level citations across legacy guides; real-field geology references now include per-card scientific sources and shared guides carry editor/date/version metadata.
+- Completed in v3.43.0 for the trilingual core knowledge library: every guide now carries section-level primary-source links with an explicit note describing which statement group each USGS or EPA source supports. Real-field geology cards retain their per-card scientific sources and shared guides retain editor/date/version metadata.
 - Add named geological reviewer, review date and revision history to every guide.
 - Completed in v3.35.0: local, licensed real-photo examples for alluvial fans, terraces, alteration and shear zones.
 - Completed in v3.37.0: printable Myanmar-specific permit verification and universal emergency go/no-go checklist in three languages.

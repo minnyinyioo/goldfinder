@@ -9,6 +9,7 @@ import { sampling } from "@/data/sampling";
 import { atlasItems } from "@/data/media";
 import ContentReviewPanel from "@/components/ContentReviewPanel";
 import RelatedGuideNav from "@/components/RelatedGuideNav";
+import GuideCitations from "@/components/GuideCitations";
 import "./knowledge.css";
 const visual: Record<string, string> = {
   basics: "native-gold",
@@ -67,6 +68,7 @@ export default function Knowledge() {
                   <p>{g.verify}</p>
                 </div>
                 <div className="notice">{g.warning}</div>
+                <GuideCitations guideId={g.id} lang="zh" />
                 <div className="knowledge-actions">
                   <Link href={`/atlas#${media.slug}`}>打开对应图鉴</Link>
                   <Link href="/sources">核对资料来源</Link>

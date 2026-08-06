@@ -3,6 +3,7 @@ import Link from "next/link";
 import { enGuides } from "@/data/english";
 import ContentReviewPanel from "@/components/ContentReviewPanel";
 import RelatedGuideNav from "@/components/RelatedGuideNav";
+import GuideCitations from "@/components/GuideCitations";
 import "../../knowledge/knowledge.css";
 export default function EnglishKnowledge() {
   return (
@@ -49,6 +50,7 @@ export default function EnglishKnowledge() {
                 <p>{g.verify}</p>
               </div>
               <div className="notice">{g.warning}</div>
+              <GuideCitations guideId={g.id} lang="en" />
               <div className="knowledge-actions">
                 <Link href="/en/atlas">Open the photo atlas</Link>
                 <Link href="/en/sources">Review references</Link>

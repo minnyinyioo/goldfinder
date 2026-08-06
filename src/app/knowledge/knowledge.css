@@ -79,6 +79,52 @@
   padding-top: 18px;
   border-top: 1px solid var(--line);
 }
+.guide-citations {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg);
+}
+.guide-citations h3 {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 10px;
+  color: var(--gold);
+  font-size: 0.82rem;
+}
+.guide-citations a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 0;
+  border-top: 1px solid var(--line);
+  color: var(--text);
+  text-decoration: none;
+}
+.guide-citations a:first-of-type {
+  border-top: 0;
+}
+.guide-citations span {
+  min-width: 0;
+}
+.guide-citations b,
+.guide-citations small {
+  display: block;
+}
+.guide-citations b {
+  font-size: 0.78rem;
+}
+.guide-citations small {
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+.guide-citations svg {
+  flex: none;
+}
 .related-guides > strong {
   display: flex;
   align-items: center;
