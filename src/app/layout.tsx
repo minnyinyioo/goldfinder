@@ -5,8 +5,9 @@ import OfflineStatus from "@/components/OfflineStatus";
 import "./globals.css";
 import "./chrome.css";
 import "./theme.css";
+import { SITE_URL } from "@/lib/site";
 
-const site = "https://goldfinder.vercel.app";
+const site = SITE_URL;
 export const metadata: Metadata = {
   metadataBase: new URL(site),
   applicationName: "Goldfinder",

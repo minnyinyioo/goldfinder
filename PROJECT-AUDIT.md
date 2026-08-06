@@ -34,7 +34,7 @@
 - Completed in v3.41.0: keyboard skip navigation, universal high-contrast focus indicators, Escape-close and trapped focus for the overlay navigation, plus automated accessibility contract tests and manual trilingual keyboard verification.
 - Completed in v3.42.0: trilingual full-content discovery indexes knowledge articles, photo references and project tools with category filters, keyboard shortcuts and contextual previous/next guide navigation without expanding the global menu.
 - Completed in v3.40.0: automated sampling-math regression tests plus GitHub Actions type, test, build and high-severity dependency security gates for every push and pull request; production route/link/image verification remains available for post-deployment checks.
-- Configure a custom production hostname and replace the temporary canonical domain.
+- v3.45.0 centralised metadata, structured data, robots and sitemap origins behind `NEXT_PUBLIC_SITE_URL`, so a verified custom hostname can replace the temporary canonical domain without scattered code edits. Final hostname attachment remains pending the owner's domain choice and DNS control.
 
 ## Deliberate exclusions
 

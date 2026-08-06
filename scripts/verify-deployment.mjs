@@ -1,10 +1,11 @@
 import { readdir } from "node:fs/promises";
 import { join, relative, sep } from "node:path";
 
-const base = (process.argv[2] || "https://goldfinder.vercel.app").replace(
-  /\/$/,
-  "",
-);
+const base = (
+  process.argv[2] ||
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  "https://goldfinder.vercel.app"
+).replace(/\/$/, "");
 const routes = [
   "",
   "/search",
