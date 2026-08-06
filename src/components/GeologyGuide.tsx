@@ -14,6 +14,7 @@ import { atlasItems } from "@/data/media";
 import FieldBenchmarks from "./FieldBenchmarks";
 import RiverAnatomy from "./RiverAnatomy";
 import ContentReviewPanel from "./ContentReviewPanel";
+import GeologyFieldGallery from "./GeologyFieldGallery";
 import "./geology-guide.css";
 
 type Lang = "zh" | "en";
@@ -192,6 +193,7 @@ export default function GeologyGuide({ lang }: { lang: Lang }) {
               alt={images[0].alt}
               width={960}
               height={720}
+              priority
             />
             <figcaption>
               {images[0].author} · {images[0].license} ·{" "}
@@ -244,6 +246,7 @@ export default function GeologyGuide({ lang }: { lang: Lang }) {
         </div>
       </section>
       <RiverAnatomy lang={lang} />
+      <GeologyFieldGallery lang={lang} />
       <section className="section geology-section" id="lode">
         <div className="geology-title">
           <Mountain />

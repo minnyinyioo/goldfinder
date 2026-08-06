@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { BookOpen, ExternalLink, Search, ShieldAlert } from "lucide-react";
 import { enAtlas } from "@/data/english";
+import GeologyFieldGallery from "./GeologyFieldGallery";
 import "@/app/knowledge/knowledge.css";
 
 type Category = "geology" | "identify" | "sampling" | "quality" | "safety";
@@ -266,6 +267,7 @@ export default function MyanmarKnowledge() {
                   alt={g.title}
                   width={960}
                   height={720}
+                  priority={i === 0}
                 />
                 <p>
                   ဓာတ်ပုံ — {media[4]} · {media[5]} ·{" "}
@@ -305,6 +307,7 @@ export default function MyanmarKnowledge() {
           );
         })}
       </section>
+      <GeologyFieldGallery lang="my" />
     </>
   );
 }
