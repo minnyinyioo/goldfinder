@@ -68,12 +68,12 @@ export default function OfflinePackManager({ lang }: { lang: Lang }) {
       if (event.data?.type === "OFFLINE_COMPLETE") {
         setProgress({ done: event.data.done, total: event.data.total });
         setState(event.data.errors?.length ? "error" : "ready");
-        if (!event.data.errors?.length) localStorage.setItem("goldfinder-offline-pack", "3.53.1");
+        if (!event.data.errors?.length) localStorage.setItem("goldfinder-offline-pack", "3.53.2");
       }
     };
     addEventListener("beforeinstallprompt", capture);
     navigator.serviceWorker?.addEventListener("message", receive);
-    if (localStorage.getItem("goldfinder-offline-pack") === "3.53.1") setState("ready");
+    if (localStorage.getItem("goldfinder-offline-pack") === "3.53.2") setState("ready");
     return () => {
       removeEventListener("beforeinstallprompt", capture);
       navigator.serviceWorker?.removeEventListener("message", receive);
@@ -81,6 +81,7 @@ export default function OfflinePackManager({ lang }: { lang: Lang }) {
   }, []);
 
   async function downloadPack() {
+    if (state === "loading" || state === "ready") return;
     setState("loading");
     setProgress({ done: 0, total: 0 });
     try {
@@ -127,7 +128,7 @@ export default function OfflinePackManager({ lang }: { lang: Lang }) {
         </div>
       </header>
       <div className="offline-pack-actions">
-        <button className="vault-primary" onClick={downloadPack} disabled={state === "loading"}>
+        <button className="vault-primary" onClick={downloadPack} disabled={state === "loading" || state === "ready"}>
           {state === "ready" ? <CheckCircle2 /> : <Download />}
           {state === "loading" ? `${c.downloading} ${percent}%` : state === "ready" ? c.ready : c.download}
         </button>
