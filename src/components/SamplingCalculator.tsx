@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ArrowRight, FlaskConical, Mountain, Waves } from "lucide-react";
+import { calculatePlacerGrade, ppmToGramsPerTonne, screeningBand } from "@/lib/sampling-math";
 import "./sampling-calculator.css";
 import "./grade-tools.css";
 const copy = {
@@ -165,40 +166,7 @@ export default function SamplingCalculator({
     [b, setB] = useState(0),
     [ppm, setPpm] = useState(1);
   const r = useMemo(() => {
-    if (
-      !Number.isFinite(v) ||
-      !Number.isFinite(gold) ||
-      !Number.isFinite(recovery) ||
-      v <= 0 ||
-      gold < 0 ||
-      recovery <= 0 ||
-      recovery > 100
-    )
-      return null;
-    const measured = v / 1000,
-      bank = condition === "loose" ? measured / (1 + swell / 100) : measured,
-      recoveredG = gold / 1000,
-      raw = recoveredG / bank,
-      corrected = raw / (recovery / 100),
-      dry =
-        Number.isFinite(wet) && wet > 0
-          ? wet /
-            (1 + Math.max(0, Number.isFinite(moisture) ? moisture : 0) / 100)
-          : 0;
-    return {
-      bank,
-      raw,
-      corrected,
-      dry,
-      derivedDensity: dry > 0 ? dry / bank : 0,
-      derivedVolume:
-        dry > 0 && Number.isFinite(density) && density > 0 ? dry / density : 0,
-      mgkg: dry > 0 ? gold / dry / (recovery / 100) : 0,
-      rpd:
-        Number.isFinite(a) && Number.isFinite(b) && a > 0 && b > 0
-          ? (Math.abs(a - b) / ((a + b) / 2)) * 100
-          : 0,
-    };
+    return calculatePlacerGrade({ volumeLitres: v, condition, swellPercent: swell, recoveredGoldMg: gold, recoveryPercent: recovery, wetMassKg: wet, moisturePercent: moisture, dryBulkDensity: density, duplicateA: a, duplicateB: b });
   }, [v, condition, swell, gold, recovery, wet, moisture, density, a, b]);
   const input = (label: string, value: number, set: (x: number) => void) => (
       <label>
@@ -215,15 +183,7 @@ export default function SamplingCalculator({
       </label>
     ),
     base = lang === "zh" ? "" : "/en";
-  const band = r
-    ? r.corrected <= 0.1
-      ? c.bands[0]
-      : r.corrected <= 0.3
-        ? c.bands[1]
-        : r.corrected <= 1
-          ? c.bands[2]
-          : c.bands[3]
-    : "";
+  const band = r ? c.bands[screeningBand(r.correctedGradeGm3)] : "";
   function clearAll() {
     [
       setV,
@@ -323,35 +283,35 @@ export default function SamplingCalculator({
                 <p>{c.invalid}</p>
               ) : (
                 <>
-                  <Result label={c.bankV} value={`${r.bank.toFixed(4)} m³`} />
-                  <Result label={c.raw} value={`${r.raw.toFixed(3)} g/m³`} />
+                  <Result label={c.bankV} value={`${r.bankVolumeM3.toFixed(4)} m³`} />
+                  <Result label={c.raw} value={`${r.rawGradeGm3.toFixed(3)} g/m³`} />
                   <Result
                     label={c.corrected}
-                    value={`${r.corrected.toFixed(3)} g/m³`}
+                    value={`${r.correctedGradeGm3.toFixed(3)} g/m³`}
                   />
                   <Result label={c.band} value={band} />
-                  {r.dry > 0 && (
+                  {r.dryMassKg > 0 && (
                     <>
                       <Result
                         label={c.dryMass}
-                        value={`${r.dry.toFixed(2)} kg`}
+                        value={`${r.dryMassKg.toFixed(2)} kg`}
                       />
                       <Result
                         label={c.massGrade}
-                        value={`${r.mgkg.toFixed(3)} mg/kg`}
+                        value={`${r.massGradeMgkg.toFixed(3)} mg/kg`}
                       />
                       <Result
                         label="Measured dry bulk density"
-                        value={`${r.derivedDensity.toFixed(0)} kg/m³`}
+                        value={`${r.derivedDensityKgm3.toFixed(0)} kg/m³`}
                       />
                       <Result
                         label="Volume from mass ÷ entered density"
-                        value={`${r.derivedVolume.toFixed(4)} m³`}
+                        value={`${r.derivedVolumeM3.toFixed(4)} m³`}
                       />
                     </>
                   )}
-                  {r.rpd > 0 && (
-                    <Result label={c.rpd} value={`${r.rpd.toFixed(1)}%`} />
+                  {r.rpdPercent > 0 && (
+                    <Result label={c.rpd} value={`${r.rpdPercent.toFixed(1)}%`} />
                   )}
                   <p className="band-note">{c.bandNote}</p>
                   <div className="calc-formula">
@@ -386,11 +346,11 @@ export default function SamplingCalculator({
               <FlaskConical size={25} />
               <span>{c.equivalent}</span>
               <strong>
-                {Number.isFinite(ppm) ? Math.max(0, ppm).toLocaleString() : "—"}{" "}
+                {ppmToGramsPerTonne(ppm)?.toLocaleString() ?? "—"}{" "}
                 g/t Au
               </strong>
               <small>
-                {Number.isFinite(ppm) ? Math.max(0, ppm).toLocaleString() : "—"}{" "}
+                {ppmToGramsPerTonne(ppm)?.toLocaleString() ?? "—"}{" "}
                 mg/kg Au
               </small>
             </div>

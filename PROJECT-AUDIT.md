@@ -33,7 +33,7 @@
 - Add professionally reviewed Burmese content.
 - Complete formal accessibility and keyboard testing.
 - Add content search, filters and related-guide navigation.
-- Add automated tests, dependency/security checks and deployment preview validation.
+- Completed in v3.40.0: automated sampling-math regression tests plus GitHub Actions type, test, build and high-severity dependency security gates for every push and pull request; production route/link/image verification remains available for post-deployment checks.
 - Configure a custom production hostname and replace the temporary canonical domain.
 
 ## Deliberate exclusions
