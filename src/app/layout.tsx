@@ -31,6 +31,14 @@ export const metadata: Metadata = {
     "QA/QC",
   ],
   manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    title: "Goldfinder",
+    statusBarStyle: "black-translucent",
+  },
+  icons: {
+    apple: [{ url: "/images/gold-native.jpg", sizes: "960x960", type: "image/jpeg" }],
+  },
   openGraph: {
     type: "website",
     locale: "zh_CN",

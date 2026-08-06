@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { strToU8, zipSync } from "fflate";
 import { getAllPhotos, type StoredPhoto } from "@/lib/field-media";
+import OfflinePackManager from "@/components/OfflinePackManager";
 import "./data-vault.css";
 type Lang = "zh" | "en" | "my";
 type Sample = Record<string, unknown> & {
@@ -331,6 +332,7 @@ export default function DataVault({ lang }: { lang: Lang }) {
         </h1>
         <p>{c.lead}</p>
       </header>
+      <OfflinePackManager lang={lang} />
       <div className="vault-metrics">
         <Metric icon={FileCheck2} value={samples.length} label={c.samples} />
         <Metric

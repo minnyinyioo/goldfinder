@@ -1,7 +1,14 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Mail, Scale, ShieldAlert, TestTubes } from "lucide-react";
+import {
+  BookOpen,
+  HardDriveDownload,
+  Mail,
+  Scale,
+  ShieldAlert,
+  TestTubes,
+} from "lucide-react";
 import {
   FaDiscord,
   FaFacebookF,
@@ -72,6 +79,10 @@ export default function SiteFooter() {
             <ShieldAlert size={15} />
             လုံခြုံရေးနှင့် ဥပဒေ
           </Link>
+          <Link href="/my/backup">
+            <HardDriveDownload size={15} />
+            အော့ဖ်လိုင်း အက်ပ်
+          </Link>
         </div>
         <SocialChannels locale="my" />
         <p className="footer-legal">
@@ -107,6 +118,10 @@ export default function SiteFooter() {
         <Link href={en ? "/en/about" : "/about"}>
           <ShieldAlert size={15} />
           {en ? "Safety" : "安全说明"}
+        </Link>
+        <Link href={en ? "/en/backup" : "/backup"}>
+          <HardDriveDownload size={15} />
+          {en ? "Offline app" : "离线应用"}
         </Link>
       </div>
       <SocialChannels locale={en ? "en" : "zh"} />
