@@ -68,12 +68,12 @@ export default function OfflinePackManager({ lang }: { lang: Lang }) {
       if (event.data?.type === "OFFLINE_COMPLETE") {
         setProgress({ done: event.data.done, total: event.data.total });
         setState(event.data.errors?.length ? "error" : "ready");
-        if (!event.data.errors?.length) localStorage.setItem("goldfinder-offline-pack", "3.53.0");
+        if (!event.data.errors?.length) localStorage.setItem("goldfinder-offline-pack", "3.53.1");
       }
     };
     addEventListener("beforeinstallprompt", capture);
     navigator.serviceWorker?.addEventListener("message", receive);
-    if (localStorage.getItem("goldfinder-offline-pack") === "3.53.0") setState("ready");
+    if (localStorage.getItem("goldfinder-offline-pack") === "3.53.1") setState("ready");
     return () => {
       removeEventListener("beforeinstallprompt", capture);
       navigator.serviceWorker?.removeEventListener("message", receive);
@@ -85,10 +85,21 @@ export default function OfflinePackManager({ lang }: { lang: Lang }) {
     setProgress({ done: 0, total: 0 });
     try {
       if (!("serviceWorker" in navigator)) throw new Error();
-      await navigator.serviceWorker.register("/sw.js", { scope: "/" });
-      const registration = await navigator.serviceWorker.ready;
+      const registration = await navigator.serviceWorker.register("/sw.js", { scope: "/" });
       await registration.update();
-      const worker = registration.active || registration.waiting || registration.installing;
+      const updating = registration.installing || registration.waiting;
+      if (updating && updating.state !== "activated") {
+        await new Promise<void>((resolve, reject) => {
+          const changed = () => {
+            if (updating.state === "activated") resolve();
+            if (updating.state === "redundant") reject(new Error("Service worker update failed"));
+          };
+          updating.addEventListener("statechange", changed);
+          changed();
+        });
+      }
+      const ready = await navigator.serviceWorker.ready;
+      const worker = ready.active || registration.active;
       if (!worker) throw new Error();
       worker.postMessage({ type: "CACHE_OFFLINE_PACK" });
     } catch {

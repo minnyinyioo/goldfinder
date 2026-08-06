@@ -28,4 +28,6 @@ test("data vault exposes the trilingual offline pack manager", async () => {
   assert.match(manager, /Android/);
   assert.match(manager, /Windows/);
   assert.match(manager, /serviceWorker\.register\("\/sw\.js"/);
+  assert.match(manager, /updating\.state === "activated"/);
+  assert.match(manager, /navigator\.serviceWorker\.ready/);
 });
