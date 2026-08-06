@@ -1,6 +1,454 @@
 "use client";
-import Link from "next/link";import {useEffect,useMemo,useRef,useState} from "react";import {Archive,ArrowRight,Calculator,ClipboardCheck,ClipboardList,FileText,Map,Route} from "lucide-react";import "./project-dashboard.css";
-type Sample={id?:string;project?:string;sample?:string;date?:string;qcType?:string;sampleType?:string;material?:string;lat?:string;lng?:string;result?:string;resultUnit?:string;seal?:string;collectedBy?:string};
-const text={zh:{eyebrow:"LOCAL SAMPLE WORKSPACE",title:"样品工作台",lead:"记录、地图、报告与备份集中在一个工作入口。数据保存在当前设备，不会自动上传；外出前后都应制作备份。",samples:"样品总数",located:"有坐标",assayed:"有化验结果",qc:"QA/QC 样",projects:"项目",recent:"最近样品",empty:"当前设备尚无样品记录。",new:"新建样品",atlas:"识别图鉴",backup:"立即备份 JSON",geo:"导出 GeoJSON",import:"恢复备份",invalid:"备份文件无效，未导入。",imported:"条记录已恢复。",map:"地图",missing:"待补充",complete:"完整",local:"仅保存在本设备",privacy:"GeoJSON 含精确坐标，应只在受控环境保存和分享。",workflow:"样品流程",support:"分析与质量工具",tools:{record:["样品档案","建立编号、GPS、照片、取样支持和交接链。"],map:["样点地图","检查上下游、层位和矿脉走向的空间连续性。"],report:["现场报告","按单样或项目整理报告，并打印为 PDF。"],vault:["数据备份","约化敏感坐标，导出或恢复完整项目数据。"],plan:["取样规划","设计点样、槽样、重复样和对照样。"],qaqc:["化验 QA/QC","检查空白、重复样与标准样表现。"],grade:["品位计算","换算 g/m³、回收率与实验室品位。"]},fields:{result:"化验",coords:"坐标",custody:"交接链"}},en:{eyebrow:"LOCAL SAMPLE WORKSPACE",title:"Sample workspace",lead:"Records, mapping, reports and backups now share one working entry. Data remains on this device and is not uploaded automatically; back it up before and after fieldwork.",samples:"Total samples",located:"Located",assayed:"With assays",qc:"QA/QC samples",projects:"Projects",recent:"Recent samples",empty:"No sampling records are stored on this device.",new:"New sample",atlas:"Identification atlas",backup:"Back up JSON now",geo:"Export GeoJSON",import:"Restore backup",invalid:"Invalid backup; nothing was imported.",imported:"records restored.",map:"Map",missing:"Missing",complete:"Complete",local:"Stored on this device only",privacy:"GeoJSON contains exact coordinates and should be stored and shared only in a controlled environment.",workflow:"Sample workflow",support:"Analysis and quality tools",tools:{record:["Sample register","Keep IDs, GPS, photographs, sample support and custody."],map:["Sample map","Review spatial continuity along streams, strata and veins."],report:["Field reports","Prepare single-sample or project reports and print to PDF."],vault:["Data backup","Reduce sensitive coordinates, export or restore project data."],plan:["Sampling design","Plan point, channel, duplicate and control samples."],qaqc:["Assay QA/QC","Check blanks, duplicates and reference materials."],grade:["Grade calculation","Convert g/m³, recovery and laboratory grades."]},fields:{result:"assay",coords:"coordinates",custody:"custody"}}};
-export default function ProjectDashboard({lang}:{lang:"zh"|"en"}){const c=text[lang],[records,setRecords]=useState<Sample[]>([]),file=useRef<HTMLInputElement>(null);useEffect(()=>{try{const x=JSON.parse(localStorage.getItem("goldfinder-samples-v2")||"[]");if(Array.isArray(x))setRecords(x)}catch{}},[]);const stats=useMemo(()=>({located:records.filter(x=>valid(x.lat,-90,90)&&valid(x.lng,-180,180)).length,assayed:records.filter(x=>x.result?.trim()).length,qc:records.filter(x=>x.qcType&&x.qcType!=="Routine").length,projects:new Set(records.map(x=>x.project).filter(Boolean)).size}),[records]);function valid(v:string|undefined,min:number,max:number){const n=Number(v);return v!==undefined&&v!==""&&Number.isFinite(n)&&n>=min&&n<=max}function download(name:string,data:string,type="application/json"){const url=URL.createObjectURL(new Blob([data],{type})),a=document.createElement("a");a.href=url;a.download=name;a.click();URL.revokeObjectURL(url)}function backup(){download("goldfinder-project-backup.json",JSON.stringify({schema:"goldfinder.project",version:1,exportedAt:new Date().toISOString(),sampleSchemaVersion:2,records},null,2))}function geo(){const features=records.filter(x=>valid(x.lat,-90,90)&&valid(x.lng,-180,180)).map(x=>({type:"Feature",geometry:{type:"Point",coordinates:[Number(x.lng),Number(x.lat)]},properties:{sample:x.sample||"",project:x.project||"",date:x.date||"",sampleType:x.sampleType||"",material:x.material||"",qcType:x.qcType||"",result:x.result||"",resultUnit:x.resultUnit||""}}));download("goldfinder-sample-points.geojson",JSON.stringify({type:"FeatureCollection",features},null,2),"application/geo+json")}async function restore(){const f=file.current?.files?.[0];if(!f)return;try{const d=JSON.parse(await f.text()),rows=d.schema==="goldfinder.project"?d.records:d.schema==="goldfinder.samples"?d.records:null;if(!Array.isArray(rows))throw new Error();localStorage.setItem("goldfinder-samples-v2",JSON.stringify(rows));setRecords(rows);alert(`${rows.length} ${c.imported}`)}catch{alert(c.invalid)}finally{if(file.current)file.current.value=""}}const base=lang==="zh"?"":"/en",primary=[{key:"record",href:`${base}/field`,Icon:ClipboardList},{key:"map",href:`${base}/map`,Icon:Map},{key:"report",href:`${base}/reports`,Icon:FileText},{key:"vault",href:`${base}/backup`,Icon:Archive}] as const,secondary=[{key:"plan",href:`${base}/planner`,Icon:Route},{key:"qaqc",href:`${base}/qaqc`,Icon:ClipboardCheck},{key:"grade",href:`${base}/sampling`,Icon:Calculator}] as const;return <><div className="page-head dashboard-head"><p className="eyebrow">{c.eyebrow}</p><h1>{c.title}</h1><p className="lead">{c.lead}</p><div className="actions"><Link className="button" href={`${base}/field`}>{c.new}</Link><Link className="button secondary" href={`${base}/atlas`}>{c.atlas}</Link></div></div><section className="section dashboard"><div className="workspace-title"><p className="eyebrow">WORKFLOW</p><h2>{c.workflow}</h2></div><div className="workspace-grid">{primary.map(({key,href,Icon},i)=>{const item=c.tools[key];return <Link href={href} className="workspace-card" key={key}><span className="workspace-index">0{i+1}</span><Icon size={24}/><div><h3>{item[0]}</h3><p>{item[1]}</p></div><ArrowRight size={18}/></Link>})}</div><div className="metric-grid"><Metric n={records.length} label={c.samples}/><Metric n={stats.located} label={c.located}/><Metric n={stats.assayed} label={c.assayed}/><Metric n={stats.qc} label={c.qc}/><Metric n={stats.projects} label={c.projects}/></div><div className="dashboard-actions"><button onClick={backup}>{c.backup}</button><button onClick={geo} disabled={!stats.located}>{c.geo}</button><button onClick={()=>file.current?.click()}>{c.import}</button><input ref={file} type="file" accept="application/json" hidden onChange={restore}/><span>{c.local}</span></div><p className="privacy-note">{c.privacy}</p><div className="support-head"><p className="eyebrow">SUPPORT TOOLS</p><h2>{c.support}</h2></div><div className="support-grid">{secondary.map(({key,href,Icon})=>{const item=c.tools[key];return <Link href={href} key={key}><Icon size={20}/><div><b>{item[0]}</b><span>{item[1]}</span></div><ArrowRight size={16}/></Link>})}</div><div className="register-title"><div><p className="eyebrow">SAMPLE STATUS</p><h2>{c.recent}</h2></div><strong>{records.length}</strong></div>{!records.length?<div className="card dashboard-empty"><p>{c.empty}</p><Link href={`${base}/field`}>{c.new} →</Link></div>:<div className="sample-table"><div className="sample-row sample-header"><span>ID</span><span>{c.projects}</span><span>{c.fields.coords}</span><span>{c.fields.result}</span><span>{c.fields.custody}</span></div>{records.slice(0,50).map((x,i)=>{const located=valid(x.lat,-90,90)&&valid(x.lng,-180,180),custody=Boolean(x.collectedBy&&x.seal);return <article className="sample-row" key={x.id||`${x.sample}-${i}`}><strong>{x.sample||"—"}<small>{x.date||x.sampleType||"—"}</small></strong><span>{x.project||"—"}</span><span>{located?<a target="_blank" rel="noreferrer" href={`https://www.openstreetmap.org/?mlat=${x.lat}&mlon=${x.lng}#map=16/${x.lat}/${x.lng}`}>{c.map} ↗</a>:<i>{c.missing}</i>}</span><span>{x.result?<b>{x.result} {x.resultUnit}</b>:<i>{c.missing}</i>}</span><span className={custody?"ok":"warn"}>{custody?c.complete:c.missing}</span></article>})}</div>}</section></>}
-function Metric({n,label}:{n:number;label:string}){return <article><strong>{n}</strong><span>{label}</span></article>}
+import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  Archive,
+  ArrowRight,
+  Calculator,
+  ClipboardCheck,
+  ClipboardList,
+  FileText,
+  Map,
+  Route,
+} from "lucide-react";
+import "./project-dashboard.css";
+type Sample = {
+  id?: string;
+  project?: string;
+  sample?: string;
+  date?: string;
+  qcType?: string;
+  sampleType?: string;
+  material?: string;
+  lat?: string;
+  lng?: string;
+  result?: string;
+  resultUnit?: string;
+  seal?: string;
+  collectedBy?: string;
+};
+const text = {
+  zh: {
+    eyebrow: "LOCAL SAMPLE WORKSPACE",
+    title: "样品工作台",
+    lead: "记录、地图、报告与备份集中在一个工作入口。数据保存在当前设备，不会自动上传；外出前后都应制作备份。",
+    samples: "样品总数",
+    located: "有坐标",
+    assayed: "有化验结果",
+    qc: "QA/QC 样",
+    projects: "项目",
+    recent: "最近样品",
+    empty: "当前设备尚无样品记录。",
+    new: "新建样品",
+    atlas: "识别图鉴",
+    backup: "立即备份 JSON",
+    geo: "导出 GeoJSON",
+    import: "恢复备份",
+    invalid: "备份文件无效，未导入。",
+    imported: "条记录已恢复。",
+    map: "地图",
+    missing: "待补充",
+    complete: "完整",
+    local: "仅保存在本设备",
+    privacy: "GeoJSON 含精确坐标，应只在受控环境保存和分享。",
+    workflow: "样品流程",
+    support: "分析与质量工具",
+    tools: {
+      record: ["样品档案", "建立编号、GPS、照片、取样支持和交接链。"],
+      map: ["样点地图", "检查上下游、层位和矿脉走向的空间连续性。"],
+      report: ["现场报告", "按单样或项目整理报告，并打印为 PDF。"],
+      vault: ["数据备份", "约化敏感坐标，导出或恢复完整项目数据。"],
+      plan: ["取样规划", "设计点样、槽样、重复样和对照样。"],
+      qaqc: ["化验 QA/QC", "检查空白、重复样与标准样表现。"],
+      grade: ["品位计算", "换算 g/m³、回收率与实验室品位。"],
+    },
+    fields: { result: "化验", coords: "坐标", custody: "交接链" },
+  },
+  en: {
+    eyebrow: "LOCAL SAMPLE WORKSPACE",
+    title: "Sample workspace",
+    lead: "Records, mapping, reports and backups now share one working entry. Data remains on this device and is not uploaded automatically; back it up before and after fieldwork.",
+    samples: "Total samples",
+    located: "Located",
+    assayed: "With assays",
+    qc: "QA/QC samples",
+    projects: "Projects",
+    recent: "Recent samples",
+    empty: "No sampling records are stored on this device.",
+    new: "New sample",
+    atlas: "Identification atlas",
+    backup: "Back up JSON now",
+    geo: "Export GeoJSON",
+    import: "Restore backup",
+    invalid: "Invalid backup; nothing was imported.",
+    imported: "records restored.",
+    map: "Map",
+    missing: "Missing",
+    complete: "Complete",
+    local: "Stored on this device only",
+    privacy:
+      "GeoJSON contains exact coordinates and should be stored and shared only in a controlled environment.",
+    workflow: "Sample workflow",
+    support: "Analysis and quality tools",
+    tools: {
+      record: [
+        "Sample register",
+        "Keep IDs, GPS, photographs, sample support and custody.",
+      ],
+      map: [
+        "Sample map",
+        "Review spatial continuity along streams, strata and veins.",
+      ],
+      report: [
+        "Field reports",
+        "Prepare single-sample or project reports and print to PDF.",
+      ],
+      vault: [
+        "Data backup",
+        "Reduce sensitive coordinates, export or restore project data.",
+      ],
+      plan: [
+        "Sampling design",
+        "Plan point, channel, duplicate and control samples.",
+      ],
+      qaqc: [
+        "Assay QA/QC",
+        "Check blanks, duplicates and reference materials.",
+      ],
+      grade: [
+        "Grade calculation",
+        "Convert g/m³, recovery and laboratory grades.",
+      ],
+    },
+    fields: { result: "assay", coords: "coordinates", custody: "custody" },
+  },
+  my: {
+    eyebrow: "LOCAL SAMPLE WORKSPACE",
+    title: "နမူနာ Project Workspace",
+    lead: "နမူနာမှတ်တမ်း၊ မြေပုံ၊ report နှင့် backup ကို အလုပ်ဝင်ပေါက်တစ်ခုတည်းတွင် စီမံပါ။ ဒေတာကို ဤစက်ထဲတွင်သာ သိမ်းပြီး အလိုအလျောက် upload မလုပ်ပါ။ ကွင်းမဆင်းမီနှင့် ပြန်ရောက်ပြီးတိုင်း backup လုပ်ပါ။",
+    samples: "နမူနာစုစုပေါင်း",
+    located: "Coordinate ပါရှိ",
+    assayed: "Assay ပါရှိ",
+    qc: "QA/QC နမူနာ",
+    projects: "Project များ",
+    recent: "မကြာသေးမီနမူနာ",
+    empty: "ဤစက်တွင် နမူနာမှတ်တမ်း မရှိသေးပါ။",
+    new: "နမူနာအသစ်",
+    atlas: "ဓာတ်ပုံအကိုးအကား",
+    backup: "JSON backup လုပ်ရန်",
+    geo: "GeoJSON ထုတ်ရန်",
+    import: "Backup ပြန်သွင်းရန်",
+    invalid: "Backup file မမှန်သဖြင့် မသွင်းပါ။",
+    imported: "နမူနာမှတ်တမ်း ပြန်သွင်းပြီး။",
+    map: "မြေပုံ",
+    missing: "ဖြည့်ရန်လို",
+    complete: "ပြည့်စုံ",
+    local: "ဤစက်တွင်သာ သိမ်းထားသည်",
+    privacy:
+      "GeoJSON တွင် တိကျသော coordinate ပါရှိသဖြင့် ထိန်းချုပ်ထားသောနေရာတွင်သာ သိမ်းဆည်းမျှဝေပါ။",
+    workflow: "နမူနာလုပ်ငန်းစဉ်",
+    support: "Analysis နှင့် quality tools",
+    tools: {
+      record: [
+        "နမူနာမှတ်တမ်း",
+        "ID၊ GPS၊ ဓာတ်ပုံ၊ sample support နှင့် chain of custody ကို သိမ်းပါ။",
+      ],
+      map: [
+        "နမူနာမြေပုံ",
+        "မြစ်အထက်–အောက်၊ layer နှင့် vein တစ်လျှောက် ဆက်လက်ဖြစ်ပေါ်မှုကို စစ်ပါ။",
+      ],
+      report: [
+        "ကွင်းဆင်း Report",
+        "နမူနာတစ်ခုချင်း သို့မဟုတ် project report ပြင်ပြီး PDF ထုတ်ပါ။",
+      ],
+      vault: [
+        "ဒေတာ Backup",
+        "Sensitive coordinate ကို လျှော့ချ၍ project data ထုတ်ယူ သို့မဟုတ် ပြန်သွင်းပါ။",
+      ],
+      plan: [
+        "နမူနာစီမံကိန်း",
+        "Point၊ channel၊ duplicate နှင့် control sample များ စီစဉ်ပါ။",
+      ],
+      qaqc: ["ဓာတ်ခွဲ QA/QC", "Blank၊ duplicate နှင့် CRM ရလဒ်ကို စစ်ပါ။"],
+      grade: [
+        "Grade တွက်ချက်ခြင်း",
+        "g/m³၊ recovery နှင့် laboratory grade ကို ပြောင်းတွက်ပါ။",
+      ],
+    },
+    fields: { result: "Assay", coords: "Coordinate", custody: "Custody" },
+  },
+};
+export default function ProjectDashboard({
+  lang,
+}: {
+  lang: "zh" | "en" | "my";
+}) {
+  const c = text[lang],
+    [records, setRecords] = useState<Sample[]>([]),
+    file = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    try {
+      const x = JSON.parse(
+        localStorage.getItem("goldfinder-samples-v2") || "[]",
+      );
+      if (Array.isArray(x)) setRecords(x);
+    } catch {}
+  }, []);
+  const stats = useMemo(
+    () => ({
+      located: records.filter(
+        (x) => valid(x.lat, -90, 90) && valid(x.lng, -180, 180),
+      ).length,
+      assayed: records.filter((x) => x.result?.trim()).length,
+      qc: records.filter((x) => x.qcType && x.qcType !== "Routine").length,
+      projects: new Set(records.map((x) => x.project).filter(Boolean)).size,
+    }),
+    [records],
+  );
+  function valid(v: string | undefined, min: number, max: number) {
+    const n = Number(v);
+    return (
+      v !== undefined && v !== "" && Number.isFinite(n) && n >= min && n <= max
+    );
+  }
+  function download(name: string, data: string, type = "application/json") {
+    const url = URL.createObjectURL(new Blob([data], { type })),
+      a = document.createElement("a");
+    a.href = url;
+    a.download = name;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+  function backup() {
+    download(
+      "goldfinder-project-backup.json",
+      JSON.stringify(
+        {
+          schema: "goldfinder.project",
+          version: 1,
+          exportedAt: new Date().toISOString(),
+          sampleSchemaVersion: 2,
+          records,
+        },
+        null,
+        2,
+      ),
+    );
+  }
+  function geo() {
+    const features = records
+      .filter((x) => valid(x.lat, -90, 90) && valid(x.lng, -180, 180))
+      .map((x) => ({
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: [Number(x.lng), Number(x.lat)],
+        },
+        properties: {
+          sample: x.sample || "",
+          project: x.project || "",
+          date: x.date || "",
+          sampleType: x.sampleType || "",
+          material: x.material || "",
+          qcType: x.qcType || "",
+          result: x.result || "",
+          resultUnit: x.resultUnit || "",
+        },
+      }));
+    download(
+      "goldfinder-sample-points.geojson",
+      JSON.stringify({ type: "FeatureCollection", features }, null, 2),
+      "application/geo+json",
+    );
+  }
+  async function restore() {
+    const f = file.current?.files?.[0];
+    if (!f) return;
+    try {
+      const d = JSON.parse(await f.text()),
+        rows =
+          d.schema === "goldfinder.project"
+            ? d.records
+            : d.schema === "goldfinder.samples"
+              ? d.records
+              : null;
+      if (!Array.isArray(rows)) throw new Error();
+      localStorage.setItem("goldfinder-samples-v2", JSON.stringify(rows));
+      setRecords(rows);
+      alert(`${rows.length} ${c.imported}`);
+    } catch {
+      alert(c.invalid);
+    } finally {
+      if (file.current) file.current.value = "";
+    }
+  }
+  const base = lang === "zh" ? "" : lang === "en" ? "/en" : "/my",
+    primary = [
+      { key: "record", href: `${base}/field`, Icon: ClipboardList },
+      { key: "map", href: `${base}/map`, Icon: Map },
+      { key: "report", href: `${base}/reports`, Icon: FileText },
+      { key: "vault", href: `${base}/backup`, Icon: Archive },
+    ] as const,
+    secondary = [
+      { key: "plan", href: `${base}/planner`, Icon: Route },
+      { key: "qaqc", href: `${base}/qaqc`, Icon: ClipboardCheck },
+      {
+        key: "grade",
+        href: lang === "my" ? "/my#my-calculator" : `${base}/sampling`,
+        Icon: Calculator,
+      },
+    ] as const;
+  return (
+    <>
+      <div className="page-head dashboard-head">
+        <p className="eyebrow">{c.eyebrow}</p>
+        <h1>{c.title}</h1>
+        <p className="lead">{c.lead}</p>
+        <div className="actions">
+          <Link className="button" href={`${base}/field`}>
+            {c.new}
+          </Link>
+          <Link className="button secondary" href={`${base}/atlas`}>
+            {c.atlas}
+          </Link>
+        </div>
+      </div>
+      <section className="section dashboard">
+        <div className="workspace-title">
+          <p className="eyebrow">WORKFLOW</p>
+          <h2>{c.workflow}</h2>
+        </div>
+        <div className="workspace-grid">
+          {primary.map(({ key, href, Icon }, i) => {
+            const item = c.tools[key];
+            return (
+              <Link href={href} className="workspace-card" key={key}>
+                <span className="workspace-index">0{i + 1}</span>
+                <Icon size={24} />
+                <div>
+                  <h3>{item[0]}</h3>
+                  <p>{item[1]}</p>
+                </div>
+                <ArrowRight size={18} />
+              </Link>
+            );
+          })}
+        </div>
+        <div className="metric-grid">
+          <Metric n={records.length} label={c.samples} />
+          <Metric n={stats.located} label={c.located} />
+          <Metric n={stats.assayed} label={c.assayed} />
+          <Metric n={stats.qc} label={c.qc} />
+          <Metric n={stats.projects} label={c.projects} />
+        </div>
+        <div className="dashboard-actions">
+          <button onClick={backup}>{c.backup}</button>
+          <button onClick={geo} disabled={!stats.located}>
+            {c.geo}
+          </button>
+          <button onClick={() => file.current?.click()}>{c.import}</button>
+          <input
+            ref={file}
+            type="file"
+            accept="application/json"
+            hidden
+            onChange={restore}
+          />
+          <span>{c.local}</span>
+        </div>
+        <p className="privacy-note">{c.privacy}</p>
+        <div className="support-head">
+          <p className="eyebrow">SUPPORT TOOLS</p>
+          <h2>{c.support}</h2>
+        </div>
+        <div className="support-grid">
+          {secondary.map(({ key, href, Icon }) => {
+            const item = c.tools[key];
+            return (
+              <Link href={href} key={key}>
+                <Icon size={20} />
+                <div>
+                  <b>{item[0]}</b>
+                  <span>{item[1]}</span>
+                </div>
+                <ArrowRight size={16} />
+              </Link>
+            );
+          })}
+        </div>
+        <div className="register-title">
+          <div>
+            <p className="eyebrow">SAMPLE STATUS</p>
+            <h2>{c.recent}</h2>
+          </div>
+          <strong>{records.length}</strong>
+        </div>
+        {!records.length ? (
+          <div className="card dashboard-empty">
+            <p>{c.empty}</p>
+            <Link href={`${base}/field`}>{c.new} →</Link>
+          </div>
+        ) : (
+          <div className="sample-table">
+            <div className="sample-row sample-header">
+              <span>ID</span>
+              <span>{c.projects}</span>
+              <span>{c.fields.coords}</span>
+              <span>{c.fields.result}</span>
+              <span>{c.fields.custody}</span>
+            </div>
+            {records.slice(0, 50).map((x, i) => {
+              const located = valid(x.lat, -90, 90) && valid(x.lng, -180, 180),
+                custody = Boolean(x.collectedBy && x.seal);
+              return (
+                <article
+                  className="sample-row"
+                  key={x.id || `${x.sample}-${i}`}
+                >
+                  <strong>
+                    {x.sample || "—"}
+                    <small>{x.date || x.sampleType || "—"}</small>
+                  </strong>
+                  <span>{x.project || "—"}</span>
+                  <span>
+                    {located ? (
+                      <a
+                        target="_blank"
+                        rel="noreferrer"
+                        href={`https://www.openstreetmap.org/?mlat=${x.lat}&mlon=${x.lng}#map=16/${x.lat}/${x.lng}`}
+                      >
+                        {c.map} ↗
+                      </a>
+                    ) : (
+                      <i>{c.missing}</i>
+                    )}
+                  </span>
+                  <span>
+                    {x.result ? (
+                      <b>
+                        {x.result} {x.resultUnit}
+                      </b>
+                    ) : (
+                      <i>{c.missing}</i>
+                    )}
+                  </span>
+                  <span className={custody ? "ok" : "warn"}>
+                    {custody ? c.complete : c.missing}
+                  </span>
+                </article>
+              );
+            })}
+          </div>
+        )}
+      </section>
+    </>
+  );
+}
+function Metric({ n, label }: { n: number; label: string }) {
+  return (
+    <article>
+      <strong>{n}</strong>
+      <span>{label}</span>
+    </article>
+  );
+}

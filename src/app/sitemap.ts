@@ -43,6 +43,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
   const my = [
     "/my",
+    "/my/search",
+    "/my/project",
     "/my/atlas",
     "/my/knowledge",
     "/my/tools",

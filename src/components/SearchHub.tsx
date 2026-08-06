@@ -18,7 +18,7 @@ import {
 import { atlasItems } from "@/data/media";
 import { enAtlas } from "@/data/english";
 import "./search-hub.css";
-type Lang = "zh" | "en";
+type Lang = "zh" | "en" | "my";
 type Item = {
   title: string;
   summary: string;
@@ -29,7 +29,13 @@ type Item = {
 };
 const pages = {
   zh: [
-    ["现场判断与自动报告","合并评估砂金与山金线索，生成评分、待补项目、下一步动作及可打印报告。","现场评分 判断报告 砂金 山金 优先级 打印 PDF 样品草稿","/assess","geology"],
+    [
+      "现场判断与自动报告",
+      "合并评估砂金与山金线索，生成评分、待补项目、下一步动作及可打印报告。",
+      "现场评分 判断报告 砂金 山金 优先级 打印 PDF 样品草稿",
+      "/assess",
+      "geology",
+    ],
     [
       "地质判断中心",
       "沙金河道、地层层位、山金构造蚀变和五级证据链。",
@@ -65,7 +71,13 @@ const pages = {
       "/tools",
       "tools",
     ],
-    ["样品工作台","集中进入样品档案、地图、现场报告、数据备份、取样规划和 QA/QC。","项目控制台 样品工作台 地图 报告 备份 规划 数据","/project","records"],
+    [
+      "样品工作台",
+      "集中进入样品档案、地图、现场报告、数据备份、取样规划和 QA/QC。",
+      "项目控制台 样品工作台 地图 报告 备份 规划 数据",
+      "/project",
+      "records",
+    ],
     [
       "样品记录",
       "保存地层、土质、坐标、体积、可见金、化验与交接链。",
@@ -94,7 +106,13 @@ const pages = {
       "/backup",
       "records",
     ],
-    ["防骗与证据核验","识别富样、编辑照片、截图式化验单、虚假矿权与高回报承诺。","防骗 假金 富样 假报告 化验单 矿权 骗局 调包","/knowledge#false-gold","knowledge"],
+    [
+      "防骗与证据核验",
+      "识别富样、编辑照片、截图式化验单、虚假矿权与高回报承诺。",
+      "防骗 假金 富样 假报告 化验单 矿权 骗局 调包",
+      "/knowledge#false-gold",
+      "knowledge",
+    ],
     [
       "资料来源",
       "核对 USGS、Geoscience Australia、图片作者和许可。",
@@ -104,7 +122,13 @@ const pages = {
     ],
   ],
   en: [
-    ["Field assessment and report","Score placer or lode evidence and generate missing controls, next actions, and a printable report.","field score assessment placer lode priority report print PDF sample draft","/en/assess","geology"],
+    [
+      "Field assessment and report",
+      "Score placer or lode evidence and generate missing controls, next actions, and a printable report.",
+      "field score assessment placer lode priority report print PDF sample draft",
+      "/en/assess",
+      "geology",
+    ],
     [
       "Geology interpretation",
       "Placer settings, stratigraphic traps, lode structure, alteration and the evidence ladder.",
@@ -140,7 +164,13 @@ const pages = {
       "/en/tools",
       "tools",
     ],
-    ["Sample workspace","Open the sample register, mapping, reports, backups, sampling design and QA/QC from one workspace.","project sample workspace map report backup design quality data","/en/project","records"],
+    [
+      "Sample workspace",
+      "Open the sample register, mapping, reports, backups, sampling design and QA/QC from one workspace.",
+      "project sample workspace map report backup design quality data",
+      "/en/project",
+      "records",
+    ],
     [
       "Sample register",
       "Store geology, material, coordinates, support, assays and chain of custody.",
@@ -169,12 +199,104 @@ const pages = {
       "/en/backup",
       "records",
     ],
-    ["Fraud and evidence verification","Screen selected rich samples, edited photographs, assay screenshots, false mineral rights and return promises.","fraud scam rich sample fake assay report mineral rights switched sample","/en/knowledge#false-gold","knowledge"],
+    [
+      "Fraud and evidence verification",
+      "Screen selected rich samples, edited photographs, assay screenshots, false mineral rights and return promises.",
+      "fraud scam rich sample fake assay report mineral rights switched sample",
+      "/en/knowledge#false-gold",
+      "knowledge",
+    ],
     [
       "References",
       "Review USGS, Geoscience Australia, image credits and licences.",
       "reference source copyright author licence USGS",
       "/en/sources",
+      "knowledge",
+    ],
+  ],
+  my: [
+    [
+      "ကွင်းဆင်းအမှတ်ပေးနှင့် Grade တွက်ချက်ခြင်း",
+      "ရွှေကျင်နှင့် မူလရွှေလက္ခဏာကို အမှတ်ပေးပြီး g/m³ သို့မဟုတ် ppm ↔ g/t တွက်ပါ။",
+      "ရွှေကျင် မူလရွှေ အမှတ် grade တွက်ချက် g/m3 ppm gt",
+      "/my#my-assessment",
+      "geology",
+    ],
+    [
+      "ဘူမိဗေဒနှင့် နမူနာအသိပညာ",
+      "ရွှေဖြစ်ပေါ်ပုံ၊ မြစ်အနည် trap၊ vein structure၊ alteration၊ sampling နှင့် evidence level ကို လေ့လာပါ။",
+      "ဘူမိဗေဒ ရွှေကျင် မူလရွှေ bedrock quartz vein alteration sampling",
+      "/my/knowledge",
+      "knowledge",
+    ],
+    [
+      "စနစ်တကျ နမူနာစီမံကိန်း",
+      "Sample fence၊ interval၊ layer၊ volume နှင့် QA/QC workload ကို စီစဉ်ပါ။",
+      "နမူနာ စီမံကိန်း grid traverse channel volume duplicate blank CRM",
+      "/my/planner",
+      "sampling",
+    ],
+    [
+      "ဓာတ်ခွဲအသုတ် QA/QC",
+      "Blank contamination၊ duplicate RPD၊ CRM recovery နှင့် control insertion rate ကို စစ်ပါ။",
+      "ဓာတ်ခွဲ အရည်အသွေး blank duplicate CRM RPD contamination",
+      "/my/qaqc",
+      "sampling",
+    ],
+    [
+      "ကွင်းဆင်းကိရိယာနှင့် နည်းလမ်း",
+      "Gold pan၊ sluice၊ sieve၊ magnet၊ GPS၊ XRF၊ fire assay နှင့် ICP ကို မှန်ကန်စွာ အသုံးပြုပါ။",
+      "ကိရိယာ pan sluice magnet compass GPS XRF fire assay ICP",
+      "/my/tools",
+      "tools",
+    ],
+    [
+      "နမူနာ Project Workspace",
+      "နမူနာမှတ်တမ်း၊ မြေပုံ၊ report၊ backup၊ sampling plan နှင့် QA/QC ကို တစ်နေရာတည်းမှ ဝင်ပါ။",
+      "project နမူနာ workspace မြေပုံ report backup ဒေတာ",
+      "/my/project",
+      "records",
+    ],
+    [
+      "နမူနာမှတ်တမ်း",
+      "Sample ID၊ geology၊ material၊ GPS၊ volume၊ assay နှင့် chain of custody ကို သိမ်းပါ။",
+      "နမူနာ မှတ်တမ်း sample ID GPS coordinate assay custody",
+      "/my/field",
+      "records",
+    ],
+    [
+      "နမူနာမြေပုံ",
+      "Project အလိုက် sample point များနှင့် upstream–downstream ဆက်စပ်မှုကို စစ်ပါ။",
+      "မြေပုံ GPS coordinate upstream downstream vein privacy",
+      "/my/map",
+      "records",
+    ],
+    [
+      "ကွင်းဆင်း Report",
+      "နမူနာတစ်ခုချင်းနှင့် project အလိုက် report ပြင်ပြီး PDF ထုတ်ပါ။",
+      "report PDF နမူနာ project ဓာတ်ခွဲစာရင်း",
+      "/my/reports",
+      "records",
+    ],
+    [
+      "ဒေတာ Backup နှင့် Privacy",
+      "ဒေတာထုတ်ယူ၊ ပေါင်းစပ်ပြန်သွင်း၊ coordinate လျှော့ချခြင်းနှင့် local data ရှင်းခြင်းကို စီမံပါ။",
+      "backup restore privacy coordinate JSON ဒေတာ",
+      "/my/backup",
+      "records",
+    ],
+    [
+      "ဓာတ်ပုံအစစ် သတ္တုနှင့်မြေလွှာ အကိုးအကား",
+      "ရွှေ၊ pyrite၊ black sand၊ quartz၊ soil နှင့် indicator mineral ၂၇ မျိုးကို နှိုင်းယှဉ်ပါ။",
+      "ဓာတ်ပုံ ရွှေ pyrite black sand quartz soil mineral ကျောက် မြေသား",
+      "/my/atlas",
+      "atlas",
+    ],
+    [
+      "လိမ်လည်မှုနှင့် သက်သေအထောက်အထား",
+      "Rich sample၊ ပြင်ထားသောပုံ၊ assay screenshot၊ မမှန်သည့် mineral right နှင့် အမြတ်အာမခံချက်ကို စစ်ပါ။",
+      "လိမ်လည်မှု အတုရွှေ rich sample fake report assay mineral rights",
+      "/my/knowledge#fraud",
       "knowledge",
     ],
   ],
@@ -213,6 +335,24 @@ const text = {
     clear: "Clear search",
     open: "Open page",
     hint: "Quick suggestions",
+  },
+  my: {
+    title: "Goldfinder တွင် ရှာဖွေရန်",
+    lead: "ဓာတ်ပုံအစစ် atlas၊ ဘူမိဗေဒ၊ နမူနာနည်းလမ်း၊ ကွင်းဆင်းကိရိယာနှင့် project feature များကို မြန်မာ သို့မဟုတ် English ဝေါဟာရဖြင့် ရှာပါ။",
+    placeholder: "ဥပမာ — black sand၊ pyrite၊ quartz vein၊ RPD…",
+    all: "အားလုံး",
+    knowledge: "အသိပညာနှင့် အရင်းအမြစ်",
+    atlas: "ဓာတ်ပုံ Atlas",
+    geology: "ဘူမိဗေဒ",
+    sampling: "နမူနာနှင့် ဓာတ်ခွဲ",
+    tools: "ကိရိယာ",
+    records: "မှတ်တမ်းနှင့် ဒေတာ",
+    found: "ခု တွေ့ရှိသည်",
+    empty:
+      "ကိုက်ညီသည့်အကြောင်းအရာ မတွေ့ပါ။ စကားလုံးတိုတိုသုံးပါ သို့မဟုတ် ‘အားလုံး’ ကို ရွေးပါ။",
+    clear: "ရှာဖွေမှု ရှင်းရန်",
+    open: "စာမျက်နှာဖွင့်ရန်",
+    hint: "အမြန်ရှာဖွေရန်",
   },
 } as const;
 const icons = {
@@ -262,9 +402,12 @@ export default function SearchHub({ lang }: { lang: Lang }) {
           }))
         : enAtlas.map((x, i) => ({
             title: x[0],
-            summary: x[2],
-            keywords: `${x[3]} ${x[4]}`,
-            href: `/en/atlas#item-${i + 1}`,
+            summary:
+              lang === "my"
+                ? "ဓာတ်ပုံ၊ field observation၊ limitation၊ creator နှင့် licence ကို စစ်ဆေးပါ။"
+                : x[2],
+            keywords: `${x[0]} ${x[2]} ${x[3]} ${x[4]}`,
+            href: `${lang === "my" ? "/my" : "/en"}/atlas#item-${i + 1}`,
             category: "atlas",
             image: `/images/${x[1]}`,
           }));
@@ -324,7 +467,13 @@ export default function SearchHub({ lang }: { lang: Lang }) {
       </div>
       <div
         className="search-cats"
-        aria-label={lang === "zh" ? "搜索分类" : "Search categories"}
+        aria-label={
+          lang === "zh"
+            ? "搜索分类"
+            : lang === "my"
+              ? "ရှာဖွေမှု category"
+              : "Search categories"
+        }
       >
         {cats.map((x) => {
           const Icon = x === "all" ? Search : icons[x];
@@ -345,14 +494,23 @@ export default function SearchHub({ lang }: { lang: Lang }) {
           <b>{c.hint}</b>
           {(lang === "zh"
             ? ["砂金", "黄铁矿", "黏土假底", "取样体积", "空白样", "XRF"]
-            : [
-                "placer gold",
-                "pyrite",
-                "false bedrock",
-                "sample volume",
-                "blank",
-                "XRF",
-              ]
+            : lang === "my"
+              ? [
+                  "ရွှေကျင်",
+                  "pyrite",
+                  "black sand",
+                  "quartz vein",
+                  "duplicate",
+                  "XRF",
+                ]
+              : [
+                  "placer gold",
+                  "pyrite",
+                  "false bedrock",
+                  "sample volume",
+                  "blank",
+                  "XRF",
+                ]
           ).map((x) => (
             <button key={x} onClick={() => setQuery(x)}>
               {x}
