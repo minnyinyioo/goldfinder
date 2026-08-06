@@ -20,6 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/sources",
     "/copyright",
     "/about",
+    "/review",
   ];
   const en = [
     "/en",
@@ -40,6 +41,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/en/sources",
     "/en/copyright",
     "/en/about",
+    "/en/review",
   ];
   const my = [
     "/my",
@@ -57,6 +59,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/my/map",
     "/my/reports",
     "/my/backup",
+    "/my/review",
   ];
   return [...zh, ...en, ...my].map((path) => ({
     url: base + path,

@@ -18,7 +18,7 @@
 ### P0 — content governance
 
 - Completed in v3.43.0 for the trilingual core knowledge library: every guide now carries section-level primary-source links with an explicit note describing which statement group each USGS or EPA source supports. Real-field geology cards retain their per-card scientific sources and shared guides retain editor/date/version metadata.
-- Add named geological reviewer, review date and revision history to every guide.
+- v3.44.0 established a trilingual public professional-review register with mandatory reviewer identity, credentials, scope, conflicts, signature date and reviewed-version fields. Named geological, Burmese terminology and local-compliance reviewers remain transparently unassigned; the site will not claim completion until genuine signed records are received.
 - Completed in v3.35.0: local, licensed real-photo examples for alluvial fans, terraces, alteration and shear zones.
 - Completed in v3.37.0: printable Myanmar-specific permit verification and universal emergency go/no-go checklist in three languages.
 
@@ -30,7 +30,7 @@
 
 ### P2 — production quality
 
-- Add professionally reviewed Burmese content.
+- v3.44.0 established a separate professional Burmese and geological-terminology review track with a public pending status and acceptance requirements. Professional endorsement remains pending a genuine named reviewer and is not represented as complete.
 - Completed in v3.41.0: keyboard skip navigation, universal high-contrast focus indicators, Escape-close and trapped focus for the overlay navigation, plus automated accessibility contract tests and manual trilingual keyboard verification.
 - Completed in v3.42.0: trilingual full-content discovery indexes knowledge articles, photo references and project tools with category filters, keyboard shortcuts and contextual previous/next guide navigation without expanding the global menu.
 - Completed in v3.40.0: automated sampling-math regression tests plus GitHub Actions type, test, build and high-severity dependency security gates for every push and pull request; production route/link/image verification remains available for post-deployment checks.

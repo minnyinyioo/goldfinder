@@ -69,6 +69,7 @@ const pairs: Record<string, string> = {
   "/sources": "/en/sources",
   "/copyright": "/en/copyright",
   "/about": "/en/about",
+  "/review": "/en/review",
 };
 export default function SiteNav() {
   const path = usePathname(),
@@ -157,13 +158,15 @@ export default function SiteNav() {
                             ? "/copyright"
                             : path === "/my/about"
                               ? "/about"
-                              : path === "/my/reports"
-                                ? "/reports"
-                                : path === "/my/backup"
-                                  ? "/backup"
-                                  : path === "/my/map"
-                                    ? "/map"
-                                    : "/"
+                              : path === "/my/review"
+                                ? "/review"
+                                : path === "/my/reports"
+                                  ? "/reports"
+                                  : path === "/my/backup"
+                                    ? "/backup"
+                                    : path === "/my/map"
+                                      ? "/map"
+                                      : "/"
         : path,
     enHref = isEn
       ? path
@@ -190,13 +193,15 @@ export default function SiteNav() {
                             ? "/en/copyright"
                             : path === "/my/about"
                               ? "/en/about"
-                              : path === "/my/reports"
-                                ? "/en/reports"
-                                : path === "/my/backup"
-                                  ? "/en/backup"
-                                  : path === "/my/map"
-                                    ? "/en/map"
-                                    : "/en"
+                              : path === "/my/review"
+                                ? "/en/review"
+                                : path === "/my/reports"
+                                  ? "/en/reports"
+                                  : path === "/my/backup"
+                                    ? "/en/backup"
+                                    : path === "/my/map"
+                                      ? "/en/map"
+                                      : "/en"
         : pairs[path] || "/en",
     myPath = path.replace(/^\/en/, "") || "/",
     myHref = isMy
@@ -221,15 +226,17 @@ export default function SiteNav() {
                         ? "/my/copyright"
                         : myPath === "/about"
                           ? "/my/about"
-                          : myPath === "/field"
-                            ? "/my/field"
-                            : myPath === "/map"
-                              ? "/my/map"
-                              : myPath === "/reports"
-                                ? "/my/reports"
-                                : myPath === "/backup"
-                                  ? "/my/backup"
-                                  : "/my",
+                          : myPath === "/review"
+                            ? "/my/review"
+                            : myPath === "/field"
+                              ? "/my/field"
+                              : myPath === "/map"
+                                ? "/my/map"
+                                : myPath === "/reports"
+                                  ? "/my/reports"
+                                  : myPath === "/backup"
+                                    ? "/my/backup"
+                                    : "/my",
     searchHref = isMy ? "/my/search" : isEn ? "/en/search" : "/search";
   const openLabel = isMy
       ? "လမ်းညွှန်ဖွင့်ရန်"
