@@ -299,6 +299,27 @@ const pages = {
       "/my/knowledge#fraud",
       "knowledge",
     ],
+    [
+      "အချက်အလက်နှင့် ဓာတ်ပုံအရင်းအမြစ်",
+      "USGS၊ WIPO၊ WHO၊ Geoscience Australia နှင့် image creator/licence record များကို စစ်ပါ။",
+      "source reference image credit licence USGS WIPO WHO",
+      "/my/sources",
+      "knowledge",
+    ],
+    [
+      "မူပိုင်ခွင့်နှင့် Disclaimer",
+      "Third-party rights၊ CC licence၊ attribution၊ correction နှင့် professional disclaimer ကို ဖတ်ပါ။",
+      "copyright licence attribution disclaimer creator rightsholder",
+      "/my/copyright",
+      "knowledge",
+    ],
+    [
+      "လုံခြုံရေးနှင့် တာဝန်ယူမှု",
+      "Water၊ slope၊ excavation၊ chemical၊ permit၊ environment နှင့် coordinate privacy အန္တရာယ်ကို စစ်ပါ။",
+      "safety law permit mercury cyanide environment privacy",
+      "/my/about",
+      "knowledge",
+    ],
   ],
 } as const;
 const text = {
