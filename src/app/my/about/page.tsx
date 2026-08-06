@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ExternalLink, ShieldAlert, TriangleAlert } from "lucide-react";
+import PermitSafetyChecklist from "@/components/PermitSafetyChecklist";
 
 export const metadata: Metadata = {
   title: "လုံခြုံရေးနှင့် တာဝန်ယူမှု | Goldfinder",
@@ -97,6 +98,7 @@ export default function MyanmarAbout() {
           service နှင့် authority ကို ဆက်သွယ်ပါ။
         </p>
       </article>
+      <PermitSafetyChecklist lang="my" />
     </>
   );
 }
