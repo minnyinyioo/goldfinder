@@ -68,6 +68,14 @@ https://goldfinder.vercel.app
 
 站点已适配 Telegram 的实时深浅主题、内容安全区域、展开视口、关闭确认、原生返回按钮和 `start_param`。当前适配不会读取、储存或上传 Telegram 用户资料。后续若增加账号绑定或服务器接口，必须在服务器端验证 `Telegram.WebApp.initData`；不得信任前端的 `initDataUnsafe`，也不得把 Bot Token 写入仓库。
 
+机器人 webhook 支持 `/start`、`/app`、`/offline` 与 `/help`，会按用户语言返回中、英或缅语欢迎说明和 Mini App 按钮。部署前在 Vercel Production 环境设置 `TELEGRAM_BOT_TOKEN` 与 `TELEGRAM_WEBHOOK_SECRET`，部署后在安全的本机终端以同名环境变量运行：
+
+```bash
+npm run telegram:setup
+```
+
+该命令会设置命令菜单、简介、聊天菜单按钮和带 secret header 验证的 webhook。不要把 Token 写进 `.env.example`、README、Issue、提交记录或聊天消息。
+
 ## 图片、资料与版权
 
 第三方图片和资料的权利归原作者或权利人，网站按各来源页标注的许可进行教育性整理与聚合。图片版权、原始链接和资料引用集中列在站内“资料与图片来源”及“版权与免责声明”页面。

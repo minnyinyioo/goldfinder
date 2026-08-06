@@ -68,12 +68,12 @@ export default function OfflinePackManager({ lang }: { lang: Lang }) {
       if (event.data?.type === "OFFLINE_COMPLETE") {
         setProgress({ done: event.data.done, total: event.data.total });
         setState(event.data.errors?.length ? "error" : "ready");
-        if (!event.data.errors?.length) localStorage.setItem("goldfinder-offline-pack", "3.50.0");
+        if (!event.data.errors?.length) localStorage.setItem("goldfinder-offline-pack", "3.51.0");
       }
     };
     addEventListener("beforeinstallprompt", capture);
     navigator.serviceWorker?.addEventListener("message", receive);
-    if (localStorage.getItem("goldfinder-offline-pack") === "3.50.0") setState("ready");
+    if (localStorage.getItem("goldfinder-offline-pack") === "3.51.0") setState("ready");
     return () => {
       removeEventListener("beforeinstallprompt", capture);
       navigator.serviceWorker?.removeEventListener("message", receive);
