@@ -25,8 +25,8 @@
 ### P1 — field resilience
 
 - Completed in v3.38.0: service-worker-backed offline availability for core trilingual knowledge, geology and safety pages, plus runtime caching for visited pages and local assets.
-- Add bulk photo archive export while preserving captions and sample links.
-- Add automated backup reminders and backup-integrity checks.
+- Completed in v3.39.0: bulk ZIP photo archive export preserves original files, captions, project/sample links and per-file SHA-256 digests.
+- Completed in v3.39.0: local backup reminders and SHA-256 validation for versioned JSON backup restore.
 
 ### P2 — production quality
 

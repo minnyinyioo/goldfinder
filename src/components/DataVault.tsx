@@ -12,6 +12,8 @@ import {
   Trash2,
   Upload,
 } from "lucide-react";
+import { strToU8, zipSync } from "fflate";
+import { getAllPhotos, type StoredPhoto } from "@/lib/field-media";
 import "./data-vault.css";
 type Lang = "zh" | "en" | "my";
 type Sample = Record<string, unknown> & {
@@ -32,7 +34,7 @@ const tx = {
     photos: "现场照片",
     local: "仅保存在当前浏览器",
     photoNote:
-      "照片存于独立的浏览器图片库，不会自动放入 JSON。请在现场记录页逐张下载原图，并与本备份一起保管。",
+      "照片不嵌入 JSON。请一键下载 ZIP：其中保留每张原图、样品关联、项目、说明和逐文件 SHA-256 校验值。",
     privacy: "坐标隐私",
     exact: "保留精确坐标",
     rounded: "约化到小数点后 2 位",
@@ -58,6 +60,11 @@ const tx = {
     generated: "生成时间",
     coords: "坐标处理",
     noPlan: "尚无已保存计划",
+    photoArchive: "下载照片归档 ZIP",
+    backupDue: "尚未创建本机备份，建议现在下载数据与照片归档。",
+    lastBackup: "最近备份",
+    integrity: "SHA-256 完整性校验",
+    noPhotos: "尚无可归档的现场照片。",
   },
   en: {
     title: "Device data vault",
@@ -67,7 +74,7 @@ const tx = {
     photos: "Field photographs",
     local: "Stored in this browser only",
     photoNote:
-      "Photographs use a separate browser image store and are not embedded in JSON. Download originals from Field Records and keep them beside this backup.",
+      "Photos are not embedded in JSON. Download one ZIP containing every original, sample link, project, caption and per-file SHA-256 digest.",
     privacy: "Coordinate privacy",
     exact: "Keep exact coordinates",
     rounded: "Round to 2 decimal places",
@@ -95,6 +102,11 @@ const tx = {
     generated: "Generated",
     coords: "Coordinate handling",
     noPlan: "No saved plan",
+    photoArchive: "Download photo archive ZIP",
+    backupDue: "No device backup has been created yet. Download the data and photo archives now.",
+    lastBackup: "Last backup",
+    integrity: "SHA-256 integrity check",
+    noPhotos: "There are no field photographs to archive.",
   },
   my: {
     title: "စက်တွင်း ဒေတာအရန်စင်တာ",
@@ -104,7 +116,7 @@ const tx = {
     photos: "ကွင်းဆင်းဓာတ်ပုံ",
     local: "ဤ browser နှင့် စက်တွင်သာ သိမ်းထားသည်",
     photoNote:
-      "ဓာတ်ပုံများသည် သီးခြား browser image store တွင်ရှိပြီး JSON backup ထဲ အလိုအလျောက် မပါဝင်ပါ။ Field Records မှ မူရင်းပုံများကို တစ်ပုံချင်း download လုပ်ပြီး backup နှင့်အတူ သိမ်းပါ။",
+      "ဓာတ်ပုံကို JSON ထဲ မထည့်ပါ။ မူရင်းပုံတိုင်း၊ sample ချိတ်ဆက်မှု၊ project၊ caption နှင့် file တစ်ခုချင်း SHA-256 ပါသော ZIP တစ်ခုကို download လုပ်ပါ။",
     privacy: "Coordinate privacy",
     exact: "Exact coordinate ထားရန်",
     rounded: "ဒဿမ ၂ နေရာအထိ လျှော့ရန်",
@@ -133,6 +145,11 @@ const tx = {
     generated: "ထုတ်လုပ်ချိန်",
     coords: "Coordinate ကိုင်တွယ်ပုံ",
     noPlan: "သိမ်းထားသော plan မရှိသေးပါ",
+    photoArchive: "ဓာတ်ပုံ archive ZIP download လုပ်ရန်",
+    backupDue: "ဤစက်တွင် backup မဖန်တီးရသေးပါ။ ဒေတာနှင့် ဓာတ်ပုံ archive ကို ယခု download လုပ်ပါ။",
+    lastBackup: "နောက်ဆုံး backup",
+    integrity: "SHA-256 integrity စစ်ဆေးမှု",
+    noPhotos: "Archive လုပ်ရန် ကွင်းဆင်းဓာတ်ပုံ မရှိသေးပါ။",
   },
 } as const;
 export default function DataVault({ lang }: { lang: Lang }) {
@@ -143,6 +160,8 @@ export default function DataVault({ lang }: { lang: Lang }) {
     [restoreMode, setRestoreMode] = useState<Restore>("merge"),
     [phrase, setPhrase] = useState(""),
     [message, setMessage] = useState(""),
+    [photos, setPhotos] = useState<StoredPhoto[]>([]),
+    [lastBackup, setLastBackup] = useState(""),
     [generatedAt, setGeneratedAt] = useState(""),
     file = useRef<HTMLInputElement>(null);
   function refresh() {
@@ -164,6 +183,8 @@ export default function DataVault({ lang }: { lang: Lang }) {
   }
   useEffect(() => {
     refresh();
+    getAllPhotos().then(setPhotos).catch(() => setPhotos([]));
+    setLastBackup(localStorage.getItem("goldfinder-last-backup") || "");
     setGeneratedAt(
       new Date().toLocaleDateString(
         lang === "zh" ? "zh-CN" : lang === "my" ? "my-MM" : "en-GB",
@@ -181,6 +202,8 @@ export default function DataVault({ lang }: { lang: Lang }) {
       ).length,
     [samples],
   );
+  const backupIsDue =
+    !lastBackup || Date.now() - new Date(lastBackup).getTime() > 14 * 86400000;
   function protectedSamples() {
     return samples.map((x) => {
       const row = { ...x };
@@ -198,13 +221,25 @@ export default function DataVault({ lang }: { lang: Lang }) {
       return row;
     });
   }
-  function download() {
+  function markBackup() {
+    const now = new Date().toISOString();
+    localStorage.setItem("goldfinder-last-backup", now);
+    setLastBackup(now);
+  }
+  async function digest(value: string | ArrayBuffer) {
+    const input = typeof value === "string" ? new TextEncoder().encode(value) : value;
+    const hash = await crypto.subtle.digest("SHA-256", input);
+    return Array.from(new Uint8Array(hash), (x) => x.toString(16).padStart(2, "0")).join("");
+  }
+  async function download() {
+    const contents = { samples: protectedSamples(), samplingPlan: plan };
     const payload = {
       schema: "goldfinder.vault",
-      version: 1,
+      version: 2,
       exportedAt: new Date().toISOString(),
       coordinateMode: mode,
-      contents: { samples: protectedSamples(), samplingPlan: plan },
+      contents,
+      integrity: { algorithm: "SHA-256", digest: await digest(JSON.stringify(contents)) },
     };
     const url = URL.createObjectURL(
         new Blob([JSON.stringify(payload, null, 2)], {
@@ -216,6 +251,27 @@ export default function DataVault({ lang }: { lang: Lang }) {
     a.download = `goldfinder-vault-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
+    markBackup();
+  }
+  async function downloadPhotos() {
+    if (!photos.length) return setMessage(c.noPhotos);
+    const entries: Record<string, Uint8Array> = {};
+    const manifest = [];
+    for (const [index, photo] of photos.entries()) {
+      const bytes = new Uint8Array(await photo.blob.arrayBuffer());
+      const safeName = photo.name.replace(/[^a-zA-Z0-9._-]+/g, "-");
+      const archivePath = `photos/${String(index + 1).padStart(3, "0")}-${safeName}`;
+      entries[archivePath] = bytes;
+      manifest.push({ ...photo, blob: undefined, archivePath, sha256: await digest(bytes.buffer) });
+    }
+    entries["manifest.json"] = strToU8(JSON.stringify({ schema: "goldfinder.photos", version: 1, exportedAt: new Date().toISOString(), integrity: "SHA-256 per file", photos: manifest }, null, 2));
+    const url = URL.createObjectURL(new Blob([zipSync(entries, { level: 0 }) as BlobPart], { type: "application/zip" }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `goldfinder-photos-${new Date().toISOString().slice(0, 10)}.zip`;
+    a.click();
+    URL.revokeObjectURL(url);
+    markBackup();
   }
   async function restore(e: ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];
@@ -224,11 +280,12 @@ export default function DataVault({ lang }: { lang: Lang }) {
       const d = JSON.parse(await f.text());
       if (
         d.schema !== "goldfinder.vault" ||
-        d.version !== 1 ||
+        ![1, 2].includes(d.version) ||
         !d.contents ||
         !Array.isArray(d.contents.samples)
       )
         throw new Error();
+      if (d.version === 2 && d.integrity?.digest !== await digest(JSON.stringify(d.contents))) throw new Error();
       if (restoreMode === "replace" && !confirm(c.confirmReplace)) return;
       let next = d.contents.samples as Sample[];
       if (restoreMode === "merge") {
@@ -292,7 +349,11 @@ export default function DataVault({ lang }: { lang: Lang }) {
           value={plan ? 1 : 0}
           label={plan ? c.plan : c.noPlan}
         />
-        <Metric icon={ImageIcon} value="—" label={c.photos} />
+        <Metric icon={ImageIcon} value={photos.length} label={c.photos} />
+      </div>
+      <div className="vault-backup-status" role="status">
+        <ShieldAlert size={18} />
+        <span>{backupIsDue ? c.backupDue : `${c.lastBackup}: ${new Date(lastBackup).toLocaleString()}`}</span>
       </div>
       <div className="vault-grid">
         <article>
@@ -320,7 +381,8 @@ export default function DataVault({ lang }: { lang: Lang }) {
                 "—"
               )}
             </span>
-            <span>{c.schema}: goldfinder.vault / 1</span>
+            <span>{c.schema}: goldfinder.vault / 2</span>
+            <span>{c.integrity}</span>
             <span>
               {c.generated}: {generatedAt || "—"}
             </span>
@@ -390,7 +452,7 @@ export default function DataVault({ lang }: { lang: Lang }) {
           />
           <div className="vault-photo-note">
             <ImageIcon size={19} />
-            <p>{c.photoNote}</p>
+            <div><p>{c.photoNote}</p><button className="vault-secondary" onClick={downloadPhotos} disabled={!photos.length}><Download size={17} />{c.photoArchive}</button></div>
           </div>
         </article>
       </div>
