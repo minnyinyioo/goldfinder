@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
 import "./language-picker.css";
@@ -77,6 +77,8 @@ export default function SiteNav() {
     [open, setOpen] = useState(false),
     [languageOpen, setLanguageOpen] = useState(false),
     [theme, setTheme] = useState<"dark" | "light">("dark"),
+    menuButton = useRef<HTMLButtonElement>(null),
+    overlay = useRef<HTMLDivElement>(null),
     links = isMy ? my : isEn ? en : zh;
   useEffect(() => {
     const saved = localStorage.getItem("goldfinder-theme"),
@@ -96,6 +98,32 @@ export default function SiteNav() {
     return () => {
       document.body.style.overflow = "";
     };
+  }, [open]);
+  useEffect(() => {
+    if (!open) return;
+    const focusable = overlay.current?.querySelectorAll<HTMLElement>(
+      "a[href],button:not([disabled])",
+    );
+    focusable?.[0]?.focus();
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+        menuButton.current?.focus();
+      }
+      if (event.key === "Tab" && focusable?.length) {
+        const first = focusable[0],
+          last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
   }, [open]);
   function toggle() {
     const next = theme === "dark" ? "light" : "dark";
@@ -215,6 +243,23 @@ export default function SiteNav() {
         : "关闭导航";
   return (
     <>
+      <a
+        className="skip-link"
+        href="#main-content"
+        onClick={(event) => {
+          event.preventDefault();
+          const main = document.getElementById("main-content");
+          main?.focus();
+          main?.scrollIntoView();
+          history.replaceState(null, "", "#main-content");
+        }}
+      >
+        {isMy
+          ? "အဓိကအကြောင်းအရာသို့"
+          : isEn
+            ? "Skip to main content"
+            : "跳到主要内容"}
+      </a>
       <header className="site-header">
         <Link className="brand" href={home} onClick={() => setOpen(false)}>
           <TestTubes size={21} />
@@ -302,6 +347,7 @@ export default function SiteNav() {
             )}
           </div>
           <button
+            ref={menuButton}
             className="menu-button"
             onClick={() => setOpen(!open)}
             aria-expanded={open}
@@ -326,9 +372,13 @@ export default function SiteNav() {
         </div>
       </header>
       <div
+        ref={overlay}
         id="site-menu"
         className={`nav-overlay ${open ? "is-open" : ""}`}
         aria-hidden={!open}
+        aria-label={
+          isMy ? "အဓိက လမ်းညွှန်" : isEn ? "Main navigation" : "主导航"
+        }
       >
         <div className="nav-inner">
           <p className="eyebrow">EXPLORE GOLDFINDER</p>

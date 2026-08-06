@@ -31,7 +31,7 @@
 ### P2 — production quality
 
 - Add professionally reviewed Burmese content.
-- Complete formal accessibility and keyboard testing.
+- Completed in v3.41.0: keyboard skip navigation, universal high-contrast focus indicators, Escape-close and trapped focus for the overlay navigation, plus automated accessibility contract tests and manual trilingual keyboard verification.
 - Add content search, filters and related-guide navigation.
 - Completed in v3.40.0: automated sampling-math regression tests plus GitHub Actions type, test, build and high-severity dependency security gates for every push and pull request; production route/link/image verification remains available for post-deployment checks.
 - Configure a custom production hostname and replace the temporary canonical domain.
