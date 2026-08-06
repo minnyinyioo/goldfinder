@@ -6,6 +6,7 @@ import { BookOpen, ExternalLink, Search, ShieldAlert } from "lucide-react";
 import { enAtlas } from "@/data/english";
 import GeologyFieldGallery from "./GeologyFieldGallery";
 import ContentReviewPanel from "./ContentReviewPanel";
+import RelatedGuideNav from "./RelatedGuideNav";
 import "@/app/knowledge/knowledge.css";
 
 type Category = "geology" | "identify" | "sampling" | "quality" | "safety";
@@ -19,7 +20,7 @@ type Topic = {
   verify: string;
   warning: string;
 };
-const topics: Topic[] = [
+export const myanmarTopics: Topic[] = [
   {
     id: "formation",
     category: "geology",
@@ -203,7 +204,7 @@ export default function MyanmarKnowledge() {
     [query, setQuery] = useState("");
   const shown = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return topics.filter(
+    return myanmarTopics.filter(
       (x) =>
         (category === "all" || x.category === category) &&
         (!q ||
@@ -305,6 +306,12 @@ export default function MyanmarKnowledge() {
                   </Link>
                   <Link href="/my/field">နမူနာမှတ်တမ်းဖွင့်ရန်</Link>
                 </div>
+                <RelatedGuideNav
+                  entries={shown}
+                  index={i}
+                  base="/my/knowledge"
+                  lang="my"
+                />
               </div>
             </article>
           );

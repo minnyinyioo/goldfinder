@@ -8,6 +8,7 @@ import { tools } from "@/data/tools";
 import { sampling } from "@/data/sampling";
 import { atlasItems } from "@/data/media";
 import ContentReviewPanel from "@/components/ContentReviewPanel";
+import RelatedGuideNav from "@/components/RelatedGuideNav";
 import "./knowledge.css";
 const visual: Record<string, string> = {
   basics: "native-gold",
@@ -70,6 +71,12 @@ export default function Knowledge() {
                   <Link href={`/atlas#${media.slug}`}>打开对应图鉴</Link>
                   <Link href="/sources">核对资料来源</Link>
                 </div>
+                <RelatedGuideNav
+                  entries={all}
+                  index={i}
+                  base="/knowledge"
+                  lang="zh"
+                />
               </div>
             </article>
           );

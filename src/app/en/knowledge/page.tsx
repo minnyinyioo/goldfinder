@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { enGuides } from "@/data/english";
 import ContentReviewPanel from "@/components/ContentReviewPanel";
+import RelatedGuideNav from "@/components/RelatedGuideNav";
 import "../../knowledge/knowledge.css";
 export default function EnglishKnowledge() {
   return (
@@ -52,6 +53,12 @@ export default function EnglishKnowledge() {
                 <Link href="/en/atlas">Open the photo atlas</Link>
                 <Link href="/en/sources">Review references</Link>
               </div>
+              <RelatedGuideNav
+                entries={enGuides}
+                index={i}
+                base="/en/knowledge"
+                lang="en"
+              />
             </div>
           </article>
         ))}

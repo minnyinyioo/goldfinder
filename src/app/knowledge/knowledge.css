@@ -74,6 +74,48 @@
   gap: 20px;
   font-size: 13px;
 }
+.related-guides {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.related-guides > strong {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.related-guides > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+.related-guides a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 64px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--text);
+  text-decoration: none;
+}
+.related-guides a:last-child {
+  text-align: right;
+}
+.related-guides a:hover {
+  border-color: var(--gold);
+}
+.related-guides small {
+  display: block;
+  color: var(--gold);
+  font-size: 0.68rem;
+}
 @media (max-width: 850px) {
   .knowledge-list {
     gap: 44px;
@@ -96,5 +138,8 @@
 @media (max-width: 480px) {
   .knowledge-image img {
     height: 280px;
+  }
+  .related-guides > div {
+    grid-template-columns: 1fr;
   }
 }

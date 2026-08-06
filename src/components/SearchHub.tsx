@@ -17,6 +17,9 @@ import {
 } from "lucide-react";
 import { atlasItems } from "@/data/media";
 import { enAtlas } from "@/data/english";
+import { enGuides } from "@/data/english";
+import { guides } from "@/data/knowledge";
+import { myanmarTopics } from "./MyanmarKnowledge";
 import "./search-hub.css";
 type Lang = "zh" | "en" | "my";
 type Item = {
@@ -432,7 +435,33 @@ export default function SearchHub({ lang }: { lang: Lang }) {
             category: "atlas",
             image: `/images/${x[1]}`,
           }));
-    return [...fixed, ...photos];
+    const articles =
+      lang === "zh"
+        ? guides.map((x) => ({
+            title: x.title,
+            summary: x.summary,
+            keywords: `${x.signals.join(" ")} ${x.verify}`,
+            href: `/knowledge#${x.id}`,
+            category: "knowledge",
+          }))
+        : lang === "en"
+          ? enGuides.map((x) => ({
+              title: x.title,
+              summary: x.summary,
+              keywords: `${x.signals.join(" ")} ${x.verify}`,
+              href: `/en/knowledge#${x.id}`,
+              category: "knowledge",
+              image: `/images/${x.image}`,
+            }))
+          : myanmarTopics.map((x) => ({
+              title: x.title,
+              summary: x.summary,
+              keywords: `${x.signals.join(" ")} ${x.verify}`,
+              href: `/my/knowledge#${x.id}`,
+              category: "knowledge",
+              image: `/images/${x.image}`,
+            }));
+    return [...articles, ...fixed, ...photos];
   }, [lang]);
   const result = useMemo(() => {
     const q = query.trim().toLocaleLowerCase();
@@ -549,12 +578,12 @@ export default function SearchHub({ lang }: { lang: Lang }) {
         </div>
       ) : (
         <div className="search-results">
-          {result.map((x) => {
+          {result.map((x, resultIndex) => {
             const Icon = icons[x.category as keyof typeof icons] || FileText;
             return (
               <Link
                 href={x.href}
-                key={`${x.category}-${x.href}-${x.title}`}
+                key={`${x.category}-${x.href}-${x.title}-${resultIndex}`}
                 className="search-result"
               >
                 {x.image ? (
