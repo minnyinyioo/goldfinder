@@ -1,2 +1,132 @@
-.hero-with-photo{max-width:1250px;display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center}.hero-photo{margin:0;position:relative}.hero-photo img{width:100%;height:520px;object-fit:cover;border-radius:16px;border:1px solid var(--line);filter:saturate(.82) contrast(1.05)}.hero-photo figcaption{position:absolute;left:14px;bottom:14px;background:#07100dcc;padding:6px 9px;border-radius:4px;font-size:11px;color:#d8e5dc}@media(max-width:900px){.hero-with-photo{grid-template-columns:1fr}.hero-photo img{height:350px}}
-.tool-hero h1{font-size:clamp(40px,6.2vw,75px)}.tool-section{padding-top:24px}.tool-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:25px}.tool-card{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:23px;border:1px solid var(--line);border-radius:16px;background:var(--panel);transition:.2s}.tool-card>svg{color:var(--gold)}.tool-card h3{margin:0 0 4px;font-size:21px}.tool-card p{margin:0;color:var(--muted);font-size:13px}.tool-card span{color:var(--gold);font-size:12px;font-weight:800}.tool-card:hover{border-color:var(--gold);transform:translateY(-2px)}.quick-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:16px}.quick-grid a{display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 8px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font-size:12px}.quick-grid a svg{color:var(--gold)}.quick-grid a:hover{border-color:var(--gold)}.notice{display:flex;align-items:center;gap:9px}.notice svg{flex:none;color:var(--gold)}@media(max-width:900px){.quick-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:650px){.tool-grid{grid-template-columns:1fr}.tool-card{grid-template-columns:auto 1fr}.tool-card span{grid-column:2}.quick-grid{grid-template-columns:repeat(2,1fr)}}
+.hero-with-photo {
+  max-width: 1250px;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 54px;
+  align-items: center;
+}
+.hero-photo {
+  margin: 0;
+  position: relative;
+}
+.hero-photo img {
+  width: 100%;
+  height: 520px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  filter: saturate(0.82) contrast(1.05);
+}
+.hero-photo figcaption {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  background: #07100dcc;
+  padding: 6px 9px;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #d8e5dc;
+}
+@media (max-width: 900px) {
+  .hero-with-photo {
+    grid-template-columns: 1fr;
+  }
+  .hero-photo img {
+    height: 350px;
+  }
+}
+.tool-hero h1 {
+  font-size: clamp(34px, 5vw, 58px);
+}
+.tool-section {
+  padding-top: 24px;
+}
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 25px;
+}
+.tool-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 23px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+  transition: 0.2s;
+}
+.tool-card > svg {
+  color: var(--gold);
+}
+.tool-card h3 {
+  margin: 0 0 4px;
+  font-size: 21px;
+}
+.tool-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.tool-card span {
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 800;
+}
+.tool-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-top: 16px;
+}
+.quick-grid a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 11px 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  font-size: 12px;
+}
+.quick-grid a svg {
+  color: var(--gold);
+}
+.quick-grid a:hover {
+  border-color: var(--gold);
+}
+.notice {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.notice svg {
+  flex: none;
+  color: var(--gold);
+}
+@media (max-width: 900px) {
+  .quick-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 650px) {
+  .tool-grid {
+    grid-template-columns: 1fr;
+  }
+  .tool-card {
+    grid-template-columns: auto 1fr;
+  }
+  .tool-card span {
+    grid-column: 2;
+  }
+  .quick-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

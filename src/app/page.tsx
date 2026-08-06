@@ -1,5 +1,138 @@
-import type {Metadata} from "next";import Image from "next/image";import Link from "next/link";import {BookOpenCheck,Calculator,Camera,ClipboardList,FileWarning,Scale,ShieldCheck} from "lucide-react";import "./home.css";
-export const metadata:Metadata={title:"探金知识库｜看地质、判样品、算品位",description:"真实图片识别、砂金与山金现场评分、品位计算和样品档案工具。",alternates:{canonical:"/",languages:{"zh-CN":"/",en:"/en",my:"/my","x-default":"/"}}};
-const primary=[{title:"看图识别",text:"用真实照片对照土、砂、石英和常见假金矿物",href:"/atlas",Icon:Camera},{title:"现场评分",text:"将砂金与山金迹象转成取样优先级",href:"/assess",Icon:BookOpenCheck},{title:"含金量计算",text:"按样品体积与金重换算 g/m³，核对实验室结果",href:"/sampling",Icon:Calculator},{title:"样品档案",text:"保存 GPS、照片、编号、观察和检测结果",href:"/field",Icon:ClipboardList}];
-const quick=[{label:"看图识金",href:"/atlas",Icon:Camera},{label:"现场打分",href:"/assess",Icon:BookOpenCheck},{label:"品位计算",href:"/sampling",Icon:Calculator},{label:"样品档案",href:"/field",Icon:ClipboardList},{label:"防骗与误判",href:"/knowledge#false-gold",Icon:FileWarning},{label:"合规安全",href:"/about",Icon:ShieldCheck}];
-export default function Home(){return <><section className="hero hero-with-photo tool-hero"><div><p className="eyebrow">GOLDFINDER · 现场工具站</p><h1>看地质、识砂金、<span>判样品、算品位</span></h1><p className="lead">现场判断只能判断证据强弱，含金量必须通过标准化采样称重或实验室检测确认。</p><div className="actions"><Link className="button" href="/assess">开始现场判断</Link><Link className="button secondary" href="/project">进入项目工作台</Link></div></div><figure className="hero-photo"><Image src="/images/panning.jpg" alt="BLM Alaska 工作人员在溪流边使用淘金盘" width={960} height={720} priority/><figcaption>真实现场参照 · BLM Alaska · Public Domain</figcaption></figure></section><section className="section tool-section"><p className="eyebrow">START HERE</p><h2>四个核心入口</h2><div className="tool-grid">{primary.map(({title,text,href,Icon})=><Link className="tool-card" href={href} key={title}><Icon size={25}/><div><h3>{title}</h3><p>{text}</p></div><span>进入 →</span></Link>)}</div><div className="quick-grid">{quick.map(({label,href,Icon})=><Link href={href} key={label}><Icon size={18}/><b>{label}</b></Link>)}</div></section><section className="section"><p className="eyebrow">EVIDENCE CHAIN</p><h2>从发现线索到可复核结论</h2><div className="steps">{[["01","对照","用真实图片排除常见误判"],["02","评分","选择值得验证的目标"],["03","取样","固定体积并设置对照样"],["04","复核","计算品位、送检与检查 QA/QC"]].map(x=><div className="step" key={x[0]}><strong>{x[0]}</strong><h3>{x[1]}</h3><p>{x[2]}</p></div>)}</div><div className="notice"><Scale size={18}/> 单一颜色、照片、评分或一个样品都不能证明存在可采矿体。</div></section></>}
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import HomeSupport from "@/components/HomeSupport";
+import {
+  BookOpenCheck,
+  Calculator,
+  Camera,
+  ClipboardList,
+  FileWarning,
+  Scale,
+  ShieldCheck,
+} from "lucide-react";
+import "./home.css";
+export const metadata: Metadata = {
+  title: "探金知识库｜看地质、判样品、算品位",
+  description: "真实图片识别、砂金与山金现场评分、品位计算和样品档案工具。",
+  alternates: {
+    canonical: "/",
+    languages: { "zh-CN": "/", en: "/en", my: "/my", "x-default": "/" },
+  },
+};
+const primary = [
+  {
+    title: "看图识别",
+    text: "用真实照片对照土、砂、石英和常见假金矿物",
+    href: "/atlas",
+    Icon: Camera,
+  },
+  {
+    title: "现场评分",
+    text: "将砂金与山金迹象转成取样优先级",
+    href: "/assess",
+    Icon: BookOpenCheck,
+  },
+  {
+    title: "含金量计算",
+    text: "按样品体积与金重换算 g/m³，核对实验室结果",
+    href: "/sampling",
+    Icon: Calculator,
+  },
+  {
+    title: "样品档案",
+    text: "保存 GPS、照片、编号、观察和检测结果",
+    href: "/field",
+    Icon: ClipboardList,
+  },
+];
+const quick = [
+  { label: "看图识金", href: "/atlas", Icon: Camera },
+  { label: "现场打分", href: "/assess", Icon: BookOpenCheck },
+  { label: "品位计算", href: "/sampling", Icon: Calculator },
+  { label: "样品档案", href: "/field", Icon: ClipboardList },
+  { label: "防骗与误判", href: "/knowledge#false-gold", Icon: FileWarning },
+  { label: "合规安全", href: "/about", Icon: ShieldCheck },
+];
+export default function Home() {
+  return (
+    <>
+      <section className="hero hero-with-photo tool-hero">
+        <div>
+          <p className="eyebrow">GOLDFINDER · 现场工具站</p>
+          <h1>
+            看地质、识砂金、<span>判样品、算品位</span>
+          </h1>
+          <p className="lead">
+            现场判断只能判断证据强弱，含金量必须通过标准化采样称重或实验室检测确认。
+          </p>
+          <div className="actions">
+            <Link className="button" href="/assess">
+              开始现场判断
+            </Link>
+            <Link className="button secondary" href="/project">
+              进入项目工作台
+            </Link>
+          </div>
+        </div>
+        <figure className="hero-photo">
+          <Image
+            src="/images/panning.jpg"
+            alt="BLM Alaska 工作人员在溪流边使用淘金盘"
+            width={960}
+            height={720}
+            priority
+          />
+          <figcaption>真实现场参照 · BLM Alaska · Public Domain</figcaption>
+        </figure>
+      </section>
+      <section className="section tool-section">
+        <p className="eyebrow">START HERE</p>
+        <h2>四个核心入口</h2>
+        <div className="tool-grid">
+          {primary.map(({ title, text, href, Icon }) => (
+            <Link className="tool-card" href={href} key={title}>
+              <Icon size={25} />
+              <div>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </div>
+              <span>进入 →</span>
+            </Link>
+          ))}
+        </div>
+        <div className="quick-grid">
+          {quick.map(({ label, href, Icon }) => (
+            <Link href={href} key={label}>
+              <Icon size={18} />
+              <b>{label}</b>
+            </Link>
+          ))}
+        </div>
+      </section>
+      <section className="section">
+        <p className="eyebrow">EVIDENCE CHAIN</p>
+        <h2>从发现线索到可复核结论</h2>
+        <div className="steps">
+          {[
+            ["01", "对照", "用真实图片排除常见误判"],
+            ["02", "评分", "选择值得验证的目标"],
+            ["03", "取样", "固定体积并设置对照样"],
+            ["04", "复核", "计算品位、送检与检查 QA/QC"],
+          ].map((x) => (
+            <div className="step" key={x[0]}>
+              <strong>{x[0]}</strong>
+              <h3>{x[1]}</h3>
+              <p>{x[2]}</p>
+            </div>
+          ))}
+        </div>
+        <div className="notice">
+          <Scale size={18} />{" "}
+          单一颜色、照片、评分或一个样品都不能证明存在可采矿体。
+        </div>
+      </section>
+      <HomeSupport lang="zh" />
+    </>
+  );
+}

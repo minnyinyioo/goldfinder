@@ -1,0 +1,114 @@
+.usage-guide,
+.home-faq {
+  position: relative;
+}
+.usage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.usage-grid a {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-content: start;
+  min-height: 230px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: linear-gradient(145deg, var(--panel), var(--surface));
+  box-shadow: 0 16px 45px #0001;
+}
+.usage-grid a > span {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+.usage-grid a > svg {
+  color: var(--gold);
+}
+.usage-grid h3,
+.usage-grid p {
+  grid-column: 1/-1;
+}
+.usage-grid h3 {
+  margin: 28px 0 7px;
+}
+.usage-grid p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+.usage-grid a > svg:last-child {
+  position: absolute;
+  right: 18px;
+  bottom: 17px;
+}
+.usage-grid a:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+.faq-grid details {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  overflow: hidden;
+}
+.faq-grid summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 58px;
+  padding: 13px 15px;
+  color: var(--text);
+  font-weight: 800;
+  cursor: pointer;
+  list-style: none;
+}
+.faq-grid summary::-webkit-details-marker {
+  display: none;
+}
+.faq-grid summary svg {
+  flex: none;
+  color: var(--gold);
+  transition: transform 0.2s;
+}
+.faq-grid details[open] summary svg {
+  transform: rotate(180deg);
+}
+.faq-grid details p {
+  margin: 0;
+  padding: 0 15px 15px;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+.faq-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  color: var(--gold);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+@media (max-width: 900px) {
+  .usage-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 650px) {
+  .usage-grid,
+  .faq-grid {
+    grid-template-columns: 1fr;
+  }
+  .usage-grid a {
+    min-height: 190px;
+  }
+}

@@ -1,8 +1,8 @@
 :root[data-theme="light"] {
-  --bg: #f2f4ef;
-  --surface: #ffffff;
-  --panel: #e8eee9;
-  --line: #c7d0ca;
+  --bg: #e9eee8;
+  --surface: #fbfcf9;
+  --panel: #f1f5f0;
+  --line: #bac7be;
   --text: #16231d;
   --muted: #5c6c63;
   --gold: #76570b;
@@ -12,10 +12,19 @@
 }
 :root[data-theme="light"] body {
   background:
-    radial-gradient(circle at 80% -10%, #dbe9df 0, transparent 34%), var(--bg);
+    radial-gradient(circle at 83% -8%, #c9dfd0 0, transparent 34%),
+    radial-gradient(circle at 8% 20%, #eee1b9 0, transparent 25%),
+    linear-gradient(160deg, #f4f6f1 0, #e5ece6 48%, #eef1e8 100%);
+}
+:root[data-theme="light"] body:before {
+  opacity: 0.055;
+  background-image:
+    linear-gradient(#315b47 1px, transparent 1px),
+    linear-gradient(90deg, #315b47 1px, transparent 1px);
 }
 :root[data-theme="light"] .site-header {
-  background: #f2f4eff2;
+  background: #f5f8f3e8;
+  box-shadow: 0 10px 35px #294b3920;
 }
 :root[data-theme="light"] .nav-overlay {
   background: #f2f4eff8;
@@ -25,7 +34,30 @@
   color: #303b35;
 }
 :root[data-theme="light"] .card {
-  background: linear-gradient(145deg, #fff, #edf2ee);
+  background:
+    radial-gradient(circle at 100% 0, #dbe8dd 0, transparent 35%),
+    linear-gradient(145deg, #fff, #edf2ee);
+  box-shadow: 0 18px 48px #284c3817;
+}
+:root[data-theme="light"]
+  :where(
+    .tool-card,
+    .step,
+    .quick-grid a,
+    .usage-grid a,
+    .faq-grid details,
+    .search-result,
+    .review-table article,
+    .vault-grid > article,
+    .dashboard-card
+  ) {
+  background:
+    radial-gradient(circle at 100% 0, #dce9df 0, transparent 38%),
+    linear-gradient(145deg, #fbfcf9, #edf2ed);
+  box-shadow: 0 14px 38px #24493214;
+}
+:root[data-theme="light"] :where(.section, .page-head) {
+  position: relative;
 }
 :root[data-theme="light"] input,
 :root[data-theme="light"] select,
