@@ -1,4 +1,4 @@
-const VERSION = "goldfinder-v3.49.0";
+const VERSION = "goldfinder-v3.50.0";
 const PAGE_CACHE = `${VERSION}-pages`;
 const ASSET_CACHE = `${VERSION}-assets`;
 

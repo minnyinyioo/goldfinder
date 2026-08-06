@@ -56,6 +56,18 @@ g/m³ = 黄金重量（g）÷ 原位采样体积（m³）
 
 离线包包含站内三语页面、知识资料、图片、计算器和本地记录工具。地图底图由外部地图服务提供，未提前浏览过的区域断网后可能无法显示；样点坐标和本机记录不会因此丢失。首次下载和版本更新必须联网完成。
 
+## Telegram Mini App
+
+Goldfinder 可直接作为 Telegram Mini App 运行，生产 URL 为：
+
+```text
+https://goldfinder.vercel.app
+```
+
+在 `@BotFather` 中依次进入 `/mybots` → 选择机器人 → **Bot Settings** → **Configure Mini App** → **Enable Mini App**，并填写上述 HTTPS URL。也可以使用 `/setmenubutton` 将它设置为聊天菜单按钮。
+
+站点已适配 Telegram 的实时深浅主题、内容安全区域、展开视口、关闭确认、原生返回按钮和 `start_param`。当前适配不会读取、储存或上传 Telegram 用户资料。后续若增加账号绑定或服务器接口，必须在服务器端验证 `Telegram.WebApp.initData`；不得信任前端的 `initDataUnsafe`，也不得把 Bot Token 写入仓库。
+
 ## 图片、资料与版权
 
 第三方图片和资料的权利归原作者或权利人，网站按各来源页标注的许可进行教育性整理与聚合。图片版权、原始链接和资料引用集中列在站内“资料与图片来源”及“版权与免责声明”页面。

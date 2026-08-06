@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import OfflineStatus from "@/components/OfflineStatus";
+import TelegramMiniApp from "@/components/TelegramMiniApp";
 import "./globals.css";
 import "./chrome.css";
 import "./theme.css";
@@ -136,6 +138,10 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body>
+        <Script
+          src="https://telegram.org/js/telegram-web-app.js?63"
+          strategy="beforeInteractive"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structured) }}
@@ -146,6 +152,7 @@ export default function RootLayout({
         </main>
         <SiteFooter />
         <OfflineStatus />
+        <TelegramMiniApp />
       </body>
     </html>
   );
